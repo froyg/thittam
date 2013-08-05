@@ -1,0 +1,27 @@
+
+def build (bld):
+    gmock_dir = bld.path.find_node("gmock")
+    gtest_dir = gmock_dir.find_node("gtest")
+
+    build_opts = {
+        'includes' : [ gtest_dir, gtest_dir.find_node('include'),
+                       gmock_dir, gmock_dir.find_node('include') ],
+        'export_includes' : [ gtest_dir.find_node('include'),
+                              gmock_dir.find_node('include') ],
+        'defines'  : [ ],
+        'cxxflags' : [ '-Wall', "-g", "-Wextra" ],
+        }
+    
+    src = [gtest_dir.find_node('src/gtest-all.cc'),
+           gmock_dir.find_node('src/gmock-all.cc') ]
+
+    bld.stlib(source=src, target="gmock", **build_opts)
+    bld.stlib(source=[gtest_dir.find_node("src/gtest_main.cc"), ],
+              target="gtest-main",
+              **build_opts)
+
+# Local Variables:
+# mode: python
+# indent-tabs-mode: nil
+# tab-width: 4
+# End:
