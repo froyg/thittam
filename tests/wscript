@@ -1,0 +1,33 @@
+
+def build(bld):
+    if bld.is_install: return
+
+    src_dir = bld.path
+    src_files = [  src_dir.find_node(sfile) for sfile in test_src_files ]
+    test_data_dir_def = 'TEST_DATA_DIR="%s"' % (bld.path)
+
+    common_libs = ['gmock', 'gtest-main', 'pthread']
+    build_opts = {
+        'source'   : src_files,
+        'includes' : [ ".", ".." ],
+        'lib'      : 'pthread',
+        'defines'  : [ test_data_dir_def, ],
+        'cxxflags' : [ '-O3', ],
+        }
+    libs = common_libs + ['thittam-plib', ]
+    bld.program(target='test', use=libs, **build_opts)
+
+    if bld.env.ENABLE_DEBUG_BUILD is True:
+        libs = common_libs + ['thittam-plib-dbg', ]
+        build_opts['cxxflags'] = [ '-g', ]
+        bld.program(target='test.debug', use=libs, **build_opts)
+
+test_src_files = [
+    "test_config.cxx",
+    ]
+
+# Local Variables:
+# mode: python
+# indent-tabs-mode: nil
+# tab-width: 4
+# End:

@@ -1,0 +1,47 @@
+
+def build(bld):
+    src_dir = bld.path
+    plib_src_files = [src_dir.find_node(sfile) for sfile in _plib_src_files]
+    prg_src_files = [src_dir.find_node(sfile) for sfile in _prg_src_files]
+
+    build_opts = {
+        'includes': [".", ".."],
+        'export_includes': [src_dir, ],
+        'defines': ['__STDC_CONSTANT_MACROS=1', '__STDC_FORMAT_MACROS=1',
+                    'RESOURCE_DIR="%s"' % (bld.env.RESOURCE_DIR)],
+        'cxxflags': ['-O3', ],
+        'use': ['BOOST', 'GTKMM', 'HDB_LOG'],
+        }
+
+    bld.stlib(source=plib_src_files,
+              target="thittam-plib", **build_opts)
+
+    build_opts['use'] = ['thittam-plib', ]
+    bld.program(source=prg_src_files, target="thittam", **build_opts)
+
+    if bld.env.ENABLE_DEBUG_BUILD is True:
+        build_opts['cxxflags'] = ['-g', ]
+
+        bld.stlib(source=plib_src_files, target='thittam-plib-dbg',
+                  **build_opts)
+        build_opts['use'] = ['thittam-plib-dbg', ]
+        bld.program(source=prg_src_files, target='thittam.debug',
+                    **build_opts)
+
+_plib_src_files = [
+    "common.cxx",
+    "config_impl.cxx",
+    "app_impl.cxx",
+    "main-view_impl.cxx",
+    ]
+
+_prg_src_files = [
+    "main.cxx",
+    ]
+
+
+# Local Variables:
+# mode: python
+# indent-tabs-mode: nil
+# tab-width: 4
+# End:
