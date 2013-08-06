@@ -22,7 +22,7 @@
 #include "app_impl.h"
 #include "config_impl.h"
 #include "main-view_impl.h"
-
+#include "req-tree-ui_impl.h"
 
 AppImpl::AppImpl ()
 {
@@ -174,6 +174,7 @@ AppImpl::create_app_stage1 (void)
                            bofs::path ("main.glade"));
   m_ui_builder = Gtk::Builder::create_from_file (builder_file.c_str ());
   m_view_main = MainViewImpl::create (m_logger, m_ui_builder);
+  m_req_tree_ui = ReqTreeUIImpl::create (m_logger, m_ui_builder);
 
   m_view_main->signal_close ().connect
     (std::bind (std::mem_fn (&AppImpl::quit), shared_from_this ()));

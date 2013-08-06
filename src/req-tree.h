@@ -14,7 +14,7 @@
 
 #include <boost/signals2.hpp>
 
-#include "Requirement.h"
+#include "requirement.h"
 
 class ReqTree
 {
