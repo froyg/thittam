@@ -29,18 +29,25 @@ public:
      then add it to the root node. If duplicate is true re-number the
      reqid's in the given child node tree and add it. */
   virtual void add_child (Requirement::ptr_t parent,
-                          Requirement::ptr_t new_node,
+                          Requirement::ptr_t new_req,
                           bool duplicate) = 0;
   virtual void add_sibling (Requirement::ptr_t sibling,
-                            Requirement::ptr_t new_node,
+                            Requirement::ptr_t new_req,
                             bool duplicate) = 0;
 
-  /* Node move operations. Return true if the operation is
-     successful */
-  virtual bool up_sibling (Requirement::ptr_t node) = 0;
-  virtual bool down_sibling (Requirement::ptr_t node) = 0;
-  virtual bool up_level (Requirement::ptr_t node) = 0;
-  virtual bool down_level (Requirement::ptr_t node) = 0;
+  /* move operations. Return true if the operation is successful */
+  virtual bool up_sibling (Requirement::ptr_t req) = 0;
+  virtual bool down_sibling (Requirement::ptr_t req) = 0;
+  virtual bool up_level (Requirement::ptr_t req) = 0;
+  virtual bool down_level (Requirement::ptr_t req) = 0;
+
+  /* position check helpers */
+  virtual bool is_first_sibling (Requirement::ptr_t req) = 0;
+  virtual bool is_last_sibling (Requirement::ptr_t req) = 0;
+  virtual bool is_top_level (Requirement::ptr_t req) = 0;
+  virtual bool is_bottom_level (Requirement::ptr_t req) = 0;
+
+  virtual int last_id (void) = 0;
 
   virtual Requirement::ptr_t get (const std::string & reqid) = 0;
   virtual void detach (Requirement::ptr_t node) = 0;
