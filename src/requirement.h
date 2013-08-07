@@ -11,6 +11,7 @@
 #define HIPRO_THITTAM__7c81bf88_fe59_11e2_934c_68a3c42125fd
 
 #include <memory>
+#include <string>
 
 #include <boost/signals2.hpp>
 
@@ -20,6 +21,9 @@ public:
   typedef std::shared_ptr<Requirement> ptr_t;
 
 public:
+  virtual std::string id (void) = 0;
+  virtual std::string title (void) = 0;
+  virtual std::string description (void) = 0;
   virtual int height (void) = 0;
   virtual void add_child (Requirement::ptr_t child) = 0;
   virtual void add_depends (Requirement::ptr_t depends) = 0;
