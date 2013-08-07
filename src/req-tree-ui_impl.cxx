@@ -94,6 +94,20 @@ ReqTreeUIImpl::ReqTreeUIImpl (HLogPtr logger,
     (sigc::mem_fun (this, &ReqTreeUIImpl::cb_on_move_down));
 
   /* Set the initial menu state */
+  m_menu_node_add_child->set_sensitive (true);
+  m_menu_node_add_sibling->set_sensitive (false);
+  m_menu_node_cut->set_sensitive (false);
+  m_menu_node_copy->set_sensitive (false);
+  m_menu_node_paste->set_sensitive (false);
+  m_menu_node_delete->set_sensitive (false);
+  m_tb_node_cut->set_sensitive (false);
+  m_tb_node_copy->set_sensitive (false);
+  m_tb_node_paste->set_sensitive (false);
+  m_tb_node_delete->set_sensitive (false);
+  m_tb_node_indent->set_sensitive (false);
+  m_tb_node_unindent->set_sensitive (false);
+  m_tb_node_up->set_sensitive (false);
+  m_tb_node_down->set_sensitive (false);
 
 
 }
@@ -128,6 +142,11 @@ void
 ReqTreeUIImpl::cb_on_add_child (void)
 {
   Log_D1 << "cb_on_add_child: Not yet implemented";
+  // auto it = m_tree_selection->get_selected ();
+  // if (it)
+  //   {
+  //     auto req = get_req_from_iter (it);
+  //   }
 }
 
 void
@@ -184,8 +203,46 @@ ReqTreeUIImpl::cb_on_move_down (void)
   Log_D1 << "cb_on_move_down: Not yet implemented";
 }
 
+Requirement::ptr_t
+ReqTreeUIImpl::get_req_from_iter (Gtk::TreeModel::iterator it)
+{
+  ASSERT ((it), "Given iterator is invalid");
+  std::string reqid;
+  const Gtk::TreeModel::Row & row = *it;
+  row.get_value (0, reqid);
+  return m_req_tree->get (reqid);
+}
 
+void
+ReqTreeUIImpl::enable_node_operation (bool state)
+{
+  m_menu_node_add_sibling->set_sensitive (state);
+  m_menu_node_cut->set_sensitive (state);
+  m_menu_node_copy->set_sensitive (state);
+  m_menu_node_paste->set_sensitive (state);
+  m_menu_node_delete->set_sensitive (state);
+  m_tb_node_cut->set_sensitive (state);
+  m_tb_node_copy->set_sensitive (state);
+  m_tb_node_paste->set_sensitive (state);
+  m_tb_node_delete->set_sensitive (state);
+}
 
+void
+ReqTreeUIImpl::enable_node_manipulation (bool state)
+{
+  m_tb_node_indent->set_sensitive (state);
+  m_tb_node_unindent->set_sensitive (state);
+  m_tb_node_up->set_sensitive (state);
+  m_tb_node_down->set_sensitive (state);
+}
+
+void
+ReqTreeUIImpl::display (Requirement::ptr_t req)
+{
+  m_lbl_node_info_reqid->set_label (req->id ());
+  m_lbl_node_info_title->set_label (req->title ());
+  m_lbl_node_info_description->set_label (req->description ());
+}
 /*
   Local Variables:
   mode: c++

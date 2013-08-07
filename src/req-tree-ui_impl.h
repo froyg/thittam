@@ -17,6 +17,8 @@
 #include <boost/signals2.hpp>
 
 #include "common.h"
+#include "req-tree.h"
+#include "requirement.h"
 #include "req-tree-ui.h"
 
 class ReqTreeUIImpl : public ReqTreeUI
@@ -40,9 +42,11 @@ public:
   void load (ReqTree::ptr_t req_tree)
   {
     Log_D1 << "load: Not yet implemented";
+    m_req_tree = req_tree;
   }
 
 private:
+  /* Gtk signal callback handlers */
   void cb_on_row_selected (void);
   bool cb_on_button_pressed (GdkEventButton * event);
   void cb_on_row_activated (const Gtk::TreeModel::Path & path,
@@ -59,8 +63,15 @@ private:
   void cb_on_move_up (void);
   void cb_on_move_down (void);
 
+  /* Other convenience methods */
+  Requirement::ptr_t get_req_from_iter (Gtk::TreeModel::iterator it);
+  void enable_node_operation (bool state);
+  void enable_node_manipulation (bool state);
+  void display (Requirement::ptr_t req);
+
 private:
   HLogPtr m_logger;
+  ReqTree::ptr_t m_req_tree;
   std::unique_ptr<Gtk::TreeView> m_tree_view;
   Glib::RefPtr<Gtk::TreeStore> m_tree_store;
   Glib::RefPtr<Gtk::TreeSelection> m_tree_selection;
