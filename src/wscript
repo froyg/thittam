@@ -34,6 +34,7 @@ _plib_src_files = [
     "app_impl.cxx",
     "main-view_impl.cxx",
     "req-tree-ui_impl.cxx",
+    "req-form-ui_impl.cxx",
     ]
 
 _prg_src_files = [
