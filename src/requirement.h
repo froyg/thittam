@@ -20,7 +20,7 @@ public:
   typedef std::shared_ptr<Requirement> ptr_t;
 
 public:
-  virtual int max_tree_depth (void) = 0;
+  virtual int height (void) = 0;
   virtual void add_child (Requirement::ptr_t child) = 0;
   virtual void add_depends (Requirement::ptr_t depends) = 0;
   virtual void remove_child (Requirement::ptr_t child) = 0;
