@@ -27,6 +27,12 @@ public:
   ReqFormUIImpl (HLogPtr logger);
   ~ReqFormUIImpl () {}
 
+  static ptr_t create (HLogPtr logger)
+  {
+    ptr_t object (new ReqFormUIImpl (logger));
+    return object;
+  }
+
   /* ------- Methods required by interface ------- */
   int show (void);
   int show (Requirement::ptr_t req);
