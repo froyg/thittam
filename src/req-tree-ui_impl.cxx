@@ -10,14 +10,21 @@
 #include <gtkmm.h>
 
 #include "req-tree-ui_impl.h"
+#include "req-form-ui_impl.h"
 
 ReqTreeUIImpl::ReqTreeUIImpl (HLogPtr logger,
                               Glib::RefPtr<Gtk::Builder> builder) :
   m_logger (logger)
 {
+  /* create the requirement form UI in order to be used later */
+  m_req_form_ui = ReqFormUIImpl::create (logger);
+
   Gtk::TreeView * tv;
   builder->get_widget ("req-tree-view", tv);
   m_tree_view = std::unique_ptr<Gtk::TreeView> (tv);
+
+  m_tree_store = Glib::RefPtr<Gtk::TreeStore>::cast_static
+    (builder->get_object ("req-tree-store"));
 
   /* signals related to TreeView */
   m_tree_view->signal_button_press_event ().connect
@@ -31,7 +38,6 @@ ReqTreeUIImpl::ReqTreeUIImpl (HLogPtr logger,
   m_tree_selection = m_tree_view->get_selection ();
   m_tree_selection->signal_changed ().connect
     (sigc::mem_fun (this, &ReqTreeUIImpl::cb_on_row_selected));
-
 
   /* Get menu items and listen for their signals */
   builder->get_widget ("menu-node", m_menu_node);
@@ -141,18 +147,57 @@ ReqTreeUIImpl::cb_on_cursor_changed (void)
 void
 ReqTreeUIImpl::cb_on_add_child (void)
 {
-  Log_D1 << "cb_on_add_child: Not yet implemented";
-  // auto it = m_tree_selection->get_selected ();
-  // if (it)
-  //   {
-  //     auto req = get_req_from_iter (it);
-  //   }
+  ASSERT ((m_req_tree), "Requirement tree model not yet set");
+  auto new_req = get_new ();
+  if (!new_req)
+    {
+      return;
+    }
+  Requirement::ptr_t sel_req = nullptr;
+  auto it = m_tree_selection->get_selected ();
+  Gtk::TreeModel::Row row;
+  if (it)
+    {
+      row = *(m_tree_store->append (it->children ()));
+      sel_req = get_req_from_iter (it);
+      auto path = m_tree_store->get_path (it);
+      m_tree_view->expand_row (path, false);
+      enable_node_manipulation (sel_req);
+    }
+  else
+    {
+      row = *(m_tree_store->append ());
+    }
+  row.set_value (0, std::string("new"));
+  row.set_value (1, new_req->title ());
+  m_req_tree->add_child (sel_req, new_req, false);
 }
 
 void
 ReqTreeUIImpl::cb_on_add_sibling (void)
 {
-  Log_D1 << "cb_on_add_sibling: Not yet implemented";
+  ASSERT ((m_req_tree), "Requirement tree model not yet set");
+  auto new_req = get_new ();
+  if (!new_req)
+    {
+      return;
+    }
+  Requirement::ptr_t sel_req = nullptr;
+  auto it = m_tree_selection->get_selected ();
+  Gtk::TreeModel::Row row;
+  if (it)
+    {
+      row = *(m_tree_store->insert_after (it));
+      sel_req = get_req_from_iter (it);
+      enable_node_manipulation (sel_req);
+    }
+  else
+    {
+      row = *(m_tree_store->append ());
+    }
+  row.set_value (0, std::string("snew"));
+  row.set_value (1, new_req->title ());
+  m_req_tree->add_sibling (sel_req, new_req, false);
 }
 
 void
@@ -206,6 +251,7 @@ ReqTreeUIImpl::cb_on_move_down (void)
 Requirement::ptr_t
 ReqTreeUIImpl::get_req_from_iter (Gtk::TreeModel::iterator it)
 {
+  ASSERT ((m_req_tree), "Requirement tree model not yet set");
   ASSERT ((it), "Given iterator is invalid");
   std::string reqid;
   const Gtk::TreeModel::Row & row = *it;
@@ -228,21 +274,40 @@ ReqTreeUIImpl::enable_node_operation (bool state)
 }
 
 void
-ReqTreeUIImpl::enable_node_manipulation (bool state)
+ReqTreeUIImpl::enable_node_manipulation (Requirement::ptr_t req)
 {
-  m_tb_node_indent->set_sensitive (state);
-  m_tb_node_unindent->set_sensitive (state);
-  m_tb_node_up->set_sensitive (state);
-  m_tb_node_down->set_sensitive (state);
+  ASSERT ((m_req_tree), "Requirement tree model not yet set");
+  ASSERT ((req), "Invalid Requirement");
+  m_tb_node_indent->set_sensitive (!m_req_tree->is_bottom_level (req));
+  m_tb_node_unindent->set_sensitive (!m_req_tree->is_top_level (req));
+  m_tb_node_up->set_sensitive (!m_req_tree->is_first_sibling (req));
+  m_tb_node_down->set_sensitive (!m_req_tree->is_last_sibling (req));
 }
 
 void
 ReqTreeUIImpl::display (Requirement::ptr_t req)
 {
+  ASSERT ((req), "Invalid Requirement");
   m_lbl_node_info_reqid->set_label (req->id ());
   m_lbl_node_info_title->set_label (req->title ());
   m_lbl_node_info_description->set_label (req->description ());
 }
+
+Requirement::ptr_t
+ReqTreeUIImpl::get_new (void)
+{
+  ASSERT ((m_req_form_ui), "Invalid requirement form UI");
+  if (m_req_form_ui->show () != Gtk::RESPONSE_OK)
+    {
+      m_req_form_ui->hide ();
+      return nullptr;
+    }
+  /* Create the requirement from the form ui entered fields and add it
+     to the local treestore */
+  m_req_form_ui->hide ();
+  return nullptr; /* Has to be fixed */
+}
+
 /*
   Local Variables:
   mode: c++

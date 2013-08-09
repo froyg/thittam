@@ -20,6 +20,7 @@
 #include "req-tree.h"
 #include "requirement.h"
 #include "req-tree-ui.h"
+#include "req-form-ui.h"
 
 class ReqTreeUIImpl : public ReqTreeUI
 {
@@ -66,12 +67,14 @@ private:
   /* Other convenience methods */
   Requirement::ptr_t get_req_from_iter (Gtk::TreeModel::iterator it);
   void enable_node_operation (bool state);
-  void enable_node_manipulation (bool state);
+  void enable_node_manipulation (Requirement::ptr_t req);
   void display (Requirement::ptr_t req);
+  Requirement::ptr_t get_new (void);
 
 private:
   HLogPtr m_logger;
   ReqTree::ptr_t m_req_tree;
+  ReqFormUI::ptr_t m_req_form_ui;
   std::unique_ptr<Gtk::TreeView> m_tree_view;
   Glib::RefPtr<Gtk::TreeStore> m_tree_store;
   Glib::RefPtr<Gtk::TreeSelection> m_tree_selection;
