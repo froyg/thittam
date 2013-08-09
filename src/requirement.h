@@ -13,21 +13,27 @@
 #include <memory>
 #include <string>
 
-#include <boost/signals2.hpp>
-
 class Requirement
 {
 public:
   typedef std::shared_ptr<Requirement> ptr_t;
+  typedef std::weak_ptr<Requirement> weak_ptr_t;
 
 public:
-  virtual std::string id (void) = 0;
-  virtual std::string title (void) = 0;
-  virtual std::string description (void) = 0;
-  virtual int height (void) = 0;
+  virtual const std::string & id (void) const = 0;
+  virtual const std::string & title (void) const = 0;
+  virtual const std::string & description (void) const = 0;
+  virtual Requirement::ptr_t parent (void) = 0;
+
+  virtual void set_id (const std::string & id) = 0;
+  virtual void set_title (const std::string & title) = 0;
+  virtual void set_description (const std::string & description) = 0;
+  virtual void set_parent (Requirement::ptr_t parent) = 0;
+
   virtual void add_child (Requirement::ptr_t child) = 0;
-  virtual void add_depends (Requirement::ptr_t depends) = 0;
   virtual void remove_child (Requirement::ptr_t child) = 0;
+  virtual void add_depends (Requirement::ptr_t depends) = 0;
+  virtual void remove_depends (Requirement::ptr_t depends) = 0;
 
   /* virtual dtor */
   virtual ~Requirement () {}
