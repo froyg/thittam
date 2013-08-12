@@ -58,6 +58,7 @@ public:
 
   virtual bool is_dirty (void) = 0;
   virtual void clear_dirty (void) = 0;
+  virtual void set_dirty (void) = 0;
 
   /* populate the json string data */
   virtual void load (const std::string & data) = 0;
