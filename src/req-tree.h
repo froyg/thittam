@@ -51,7 +51,6 @@ public:
   virtual bool is_top_level (Requirement::ptr_t req) = 0;
   virtual bool is_bottom_level (Requirement::ptr_t req) = 0;
 
-  virtual int last_id (void) = 0;
   virtual int height (void) = 0;
 
   virtual Requirement::ptr_t get (const std::string & reqid) = 0;
