@@ -70,11 +70,15 @@ private:
   void enable_node_manipulation (Requirement::ptr_t req);
   void display (Requirement::ptr_t req);
   Requirement::ptr_t get_new (void);
+  void load_ui_children (Requirement::ptr_t parent,
+                         Gtk::TreeModel::iterator parent_iter);
 
 private:
   HLogPtr m_logger;
   ReqTree::ptr_t m_req_tree;
   ReqFormUI::ptr_t m_req_form_ui;
+  Requirement::ptr_t m_clipboard_req;
+  bool m_clipboard_duplicate;
   std::unique_ptr<Gtk::TreeView> m_tree_view;
   Glib::RefPtr<Gtk::TreeStore> m_tree_store;
   Glib::RefPtr<Gtk::TreeSelection> m_tree_selection;

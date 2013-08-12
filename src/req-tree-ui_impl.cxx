@@ -14,7 +14,8 @@
 
 ReqTreeUIImpl::ReqTreeUIImpl (HLogPtr logger,
                               Glib::RefPtr<Gtk::Builder> builder) :
-  m_logger (logger)
+  m_logger (logger),
+  m_clipboard_duplicate (false)
 {
   /* create the requirement form UI in order to be used later */
   m_req_form_ui = ReqFormUIImpl::create (logger);
@@ -236,25 +237,53 @@ ReqTreeUIImpl::cb_on_add_sibling (void)
 void
 ReqTreeUIImpl::cb_on_cut (void)
 {
-  Log_D1 << "cb_on_cut: Not yet implemented";
+  auto it = m_tree_selection->get_selected ();
+  if (it)
+    {
+      m_clipboard_req = get_req_from_iter (it);
+      m_req_tree->detach (m_clipboard_req);
+      m_clipboard_duplicate = false;
+      m_tree_store->erase (it);
+    }
 }
 
 void
 ReqTreeUIImpl::cb_on_copy (void)
 {
-  Log_D1 << "cb_on_copy: Not yet implemented";
+  auto it = m_tree_selection->get_selected ();
+  if (it)
+    {
+      m_clipboard_req = get_req_from_iter (it);
+      m_clipboard_duplicate = true;
+    }
 }
 
 void
 ReqTreeUIImpl::cb_on_delete (void)
 {
-  Log_D1 << "cb_on_delete: Not yet implemented";
+  auto it = m_tree_selection->get_selected ();
+  if (it)
+    {
+      m_req_tree->detach (get_req_from_iter (it));
+      m_tree_store->erase (it);
+    }
 }
 
 void
 ReqTreeUIImpl::cb_on_paste (void)
 {
-  Log_D1 << "cb_on_paste: Not yet implemented";
+  if (!m_clipboard_req)
+    {
+      return;
+    }
+  auto it = m_tree_selection->get_selected ();
+  auto parent_req = get_req_from_iter (it);
+  m_req_tree->add_child (parent_req, m_clipboard_req, m_clipboard_duplicate);
+  auto new_it = m_tree_store->append (it->children ());
+  Gtk::TreeModel::Row row = *new_it;
+  row.set_value (0, m_clipboard_req->id ());
+  row.set_value (1, m_clipboard_req->title ());
+  load_ui_children (m_clipboard_req, new_it);
 }
 
 void
@@ -339,6 +368,21 @@ ReqTreeUIImpl::get_new (void)
      to the local treestore */
   m_req_form_ui->hide ();
   return nullptr; /* Has to be fixed */
+}
+
+void
+ReqTreeUIImpl::load_ui_children (Requirement::ptr_t parent,
+                                 Gtk::TreeModel::iterator parent_iter)
+{
+  auto end = parent->child_list_end ();
+  for (auto it = parent->child_list_begin (); it != end; ++it)
+    {
+      auto tree_iter = m_tree_store->append (parent_iter->children ());
+      Gtk::TreeModel::Row row = *tree_iter;
+      row.set_value(0, (*it)->id ());
+      row.set_value(1, (*it)->title ());
+      load_ui_children (*it, tree_iter);
+    }
 }
 
 /*
