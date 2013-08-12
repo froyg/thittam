@@ -170,7 +170,13 @@ ReqTreeUIImpl::cb_on_row_activated (const Gtk::TreeModel::Path & path,
 void
 ReqTreeUIImpl::cb_on_cursor_changed (void)
 {
-  Log_D1 << "cb_on_cursor_changed: Not yet implemented";
+  auto it = m_tree_selection->get_selected ();
+  if (!it)
+    {
+      return;
+    }
+  auto req = get_req_from_iter (it);
+  display (req);
 }
 
 void
@@ -197,9 +203,8 @@ ReqTreeUIImpl::cb_on_add_child (void)
     {
       row = *(m_tree_store->append ());
     }
-  row.set_value (0, std::string("new"));
+  row.set_value (0, m_req_tree->add_child (sel_req, new_req, false));
   row.set_value (1, new_req->title ());
-  m_req_tree->add_child (sel_req, new_req, false);
 }
 
 void
@@ -224,9 +229,8 @@ ReqTreeUIImpl::cb_on_add_sibling (void)
     {
       row = *(m_tree_store->append ());
     }
-  row.set_value (0, std::string("snew"));
+  row.set_value (0, m_req_tree->add_sibling (sel_req, new_req, false));
   row.set_value (1, new_req->title ());
-  m_req_tree->add_sibling (sel_req, new_req, false);
 }
 
 void
