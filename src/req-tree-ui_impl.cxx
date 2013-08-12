@@ -114,8 +114,6 @@ ReqTreeUIImpl::ReqTreeUIImpl (HLogPtr logger,
   m_tb_node_unindent->set_sensitive (false);
   m_tb_node_up->set_sensitive (false);
   m_tb_node_down->set_sensitive (false);
-
-
 }
 
 void
@@ -153,7 +151,20 @@ void
 ReqTreeUIImpl::cb_on_row_activated (const Gtk::TreeModel::Path & path,
                                     Gtk::TreeViewColumn * column)
 {
-  Log_D1 << "cb_on_row_activated: Not yet implemented";
+  auto it = m_tree_selection->get_selected ();
+  auto req = get_req_from_iter (it);
+  if (m_req_form_ui->show (req) != Gtk::RESPONSE_OK)
+    {
+      m_req_form_ui->hide ();
+      return;
+    }
+  req->set_title (m_req_form_ui->title ());
+  req->set_description (m_req_form_ui->description ());
+  display (req);
+  Gtk::TreeModel::Row row = *it;
+  row.set_value(1, req->title ());
+  m_req_tree->set_dirty ();
+  m_req_form_ui->hide ();
 }
 
 void
