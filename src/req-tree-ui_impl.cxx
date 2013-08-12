@@ -121,13 +121,31 @@ ReqTreeUIImpl::ReqTreeUIImpl (HLogPtr logger,
 void
 ReqTreeUIImpl::cb_on_row_selected (void)
 {
-  Log_D1 << "cb_on_row_selected: Not yet implemented";
+  auto it = m_tree_selection->get_selected ();
+  if (!it)
+    {
+      enable_node_operation (false);
+      return;
+    }
+  enable_node_operation (true);
+  auto req = get_req_from_iter (it);
+  enable_node_manipulation (req);
 }
 
 bool
 ReqTreeUIImpl::cb_on_button_pressed (GdkEventButton * event)
 {
-  Log_D1 << "cb_on_button_pressed: Not yet implemented";
+  if (((int)event->type == (int)Gdk::BUTTON_PRESS) && (event->button == 3))
+    {
+      Gtk::TreeModel::Path path;
+      if (m_tree_view->get_path_at_pos (event->x, event->y, path))
+        {
+          m_tree_view->grab_focus ();
+          m_tree_view->set_cursor (path);
+          m_menu_node->popup (event->button, event->time);
+          return true;
+        }
+    }
   return false;
 }
 
