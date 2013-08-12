@@ -55,6 +55,7 @@ public:
 
   bool is_dirty (void);
   void clear_dirty (void);
+  void set_dirty (void);
 
   void load (const std::string & data);
   void load (const std::ifstream & file);
