@@ -29,6 +29,8 @@ RequirementImpl::RequirementImpl
 void
 RequirementImpl::add_child (Requirement::ptr_t child)
 {
+  /* TBD: Should we check whether the given child already in the
+     children list? */
   child->set_parent (shared_from_this ());
   m_children.push_back (child);
 }
@@ -46,6 +48,29 @@ RequirementImpl::remove_child (Requirement::ptr_t child)
         }
     }
   ASSERT ((false), "Requirement=%s not found", child->id ().c_str ());
+}
+
+void
+RequirementImpl::add_depends (Requirement::ptr_t depends)
+{
+  /* TBD: Should we check whether the given requirement is already on
+     the dependency list? */
+  m_depends.push_back (depends);
+}
+
+void
+RequirementImpl::remove_depends (Requirement::ptr_t depends)
+{
+  auto end = m_depends.end ();
+  for (auto it = m_depends.begin (); it != end; ++it)
+    {
+      if ((*it)->id () == depends->id ())
+        {
+          m_depends.erase (it);
+          return;
+        }
+    }
+  ASSERT ((false), "Requirement=%s not found", depends->id ().c_str ());
 }
 
 /*
