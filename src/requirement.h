@@ -18,6 +18,7 @@ class Requirement
 public:
   typedef std::shared_ptr<Requirement> ptr_t;
   typedef std::weak_ptr<Requirement> weak_ptr_t;
+  typedef std::vector<ptr_t> requirement_list_t;
 
 public:
   virtual const std::string & id (void) const = 0;
@@ -34,6 +35,11 @@ public:
   virtual void remove_child (Requirement::ptr_t child) = 0;
   virtual void add_depends (Requirement::ptr_t depends) = 0;
   virtual void remove_depends (Requirement::ptr_t depends) = 0;
+
+  virtual requirement_list_t::iterator child_list_begin (void) = 0;
+  virtual requirement_list_t::iterator child_list_end (void) = 0;
+  virtual requirement_list_t::iterator depends_list_begin (void) = 0;
+  virtual requirement_list_t::iterator depends_list_end (void) = 0;
 
   /* virtual dtor */
   virtual ~Requirement () {}

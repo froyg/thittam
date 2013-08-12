@@ -83,6 +83,26 @@ public:
     m_parent = parent;
   }
 
+  requirement_list_t::iterator child_list_begin (void)
+  {
+    return m_children.begin ();
+  }
+
+  requirement_list_t::iterator child_list_end (void)
+  {
+    return m_children.end ();
+  }
+
+  requirement_list_t::iterator depends_list_begin (void)
+  {
+    return m_depends.begin ();
+  }
+
+  requirement_list_t::iterator depends_list_end (void)
+  {
+    return m_depends.end ();
+  }
+
   void add_child (Requirement::ptr_t child);
   void remove_child (Requirement::ptr_t child);
   void add_depends (Requirement::ptr_t depends);
