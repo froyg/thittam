@@ -108,7 +108,7 @@ private:
   std::vector<std::shared_ptr<Requirement>> m_depends;
 };
 
-class RequirementFactoryImpl
+class RequirementFactoryImpl : public RequirementFactory
 {
 public:
   RequirementFactoryImpl (HLogPtr logger)
@@ -127,7 +127,7 @@ public:
     auto obj = std::make_shared<RequirementImpl> (m_logger);
     obj->set_title (title);
     obj->set_description (description);
-    return obj
+    return obj;
   }
 
   std::shared_ptr<Requirement>
@@ -138,7 +138,7 @@ public:
     obj->set_id (id);
     obj->set_title (title);
     obj->set_description (description);
-    return obj
+    return obj;
   }
 
 private:
