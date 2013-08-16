@@ -28,7 +28,7 @@ public:
     > signal_edit_t;
 
 public:
-  virtual void load (ReqTree::ptr_t req_tree) = 0;
+  virtual void load (std::shared_ptr<ReqTree> req_tree) = 0;
 
   virtual ~ReqTreeUI () {}
 };

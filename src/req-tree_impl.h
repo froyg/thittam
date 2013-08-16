@@ -20,52 +20,77 @@
 class ReqTreeImpl : public ReqTree
 {
 public:
-  typedef std::shared_ptr<ReqTreeImpl> ptr_t;
-
-public:
-  /* ----------- ctor/dtor ------------- */
-  ReqTreeImpl (HLogPtr logger);
+  /*--- ctor/dtor ---*/
+  ReqTreeImpl (HLogPtr logger, std::shared_ptr<RequirementFactory> req_factory);
   ~ReqTreeImpl () {}
 
-  /* ----------- methods required by the interface --------- */
+  /*--- methods required by the ReqTree interface ---*/
   signal_tree_dirty_t & signal_tree_dirty (void)
   {
     return m_signal_tree_dirty;
   }
 
-  std::string add_child (Requirement::ptr_t parent,
-                         Requirement::ptr_t new_req, bool duplicate);
-  std::string add_sibling (Requirement::ptr_t sibling,
-                           Requirement::ptr_t new_req, bool duplicate);
+  std::string add_child (std::shared_ptr<Requirement> parent,
+                         std::shared_ptr<Requirement> new_req,
+                         bool duplicate);
+  std::string add_sibling (std::shared_ptr<Requirement> sibling,
+                           std::shared_ptr<Requirement> new_req,
+                           bool duplicate);
+  void detach (std::shared_ptr<Requirement> node);
 
-  bool up_sibling (Requirement::ptr_t req);
-  bool down_sibling (Requirement::ptr_t req);
-  bool up_level (Requirement::ptr_t req);
-  bool down_level (Requirement::ptr_t req);
+  bool is_first_child (std::shared_ptr<const Requirement> req) const;
+  bool is_last_child (std::shared_ptr<const Requirement> req) const;
+  bool is_top_level (std::shared_ptr<const Requirement> req) const;
 
-  bool is_first_sibling (Requirement::ptr_t req);
-  bool is_last_sibling (Requirement::ptr_t req);
-  bool is_top_level (Requirement::ptr_t req);
-  bool is_bottom_level (Requirement::ptr_t req);
+  void up_child (std::shared_ptr<Requirement> req);
+  void down_child (std::shared_ptr<Requirement> req);
+  void up_level (std::shared_ptr<Requirement> req);
+  void down_level (std::shared_ptr<Requirement> req);
 
-  int height (void);
+  size_t height (void) const;
+  std::shared_ptr<Requirement> get (const std::string & reqid) const;
+  std::shared_ptr<Requirement> root (void) const
+  {
+    return m_root;
+  }
 
-  Requirement::ptr_t get (const std::string & reqid);
-  void detach (Requirement::ptr_t node);
-
-  bool is_dirty (void);
-  void clear_dirty (void);
-  void set_dirty (void);
+  bool is_dirty (void) const
+  {
+    return m_dirty;
+  }
+  void clear_dirty (void)
+  {
+    m_dirty = false;
+  }
+  void set_dirty (void)
+  {
+    m_dirty = true;
+  }
 
   void load (const std::string & data);
   void load (const std::ifstream & file);
   std::string serialize (void);
 
 private:
+  size_t compute_height (std::shared_ptr<const Requirement> node) const;
+  std::string next_id (void);
+  std::shared_ptr<Requirement> duplicate_tree (
+    std::shared_ptr<const Requirement> node);
+  void add_to_req_id_map (std::shared_ptr<Requirement> req);
+  void remove_from_req_id_map (std::shared_ptr<Requirement> req);
+  void set_dirty_noisily (void);
+
+private:
   HLogPtr m_logger;
+  std::shared_ptr<RequirementFactory> m_req_factory;
+
   signal_tree_dirty_t m_signal_tree_dirty;
   int m_last_id;
   bool m_dirty;
+  std::shared_ptr<Requirement> m_root;
+
+  typedef std::map< std::string, std::shared_ptr<Requirement> > req_id_map_t;
+  req_id_map_t m_req_id_map;
 };
 
 
@@ -75,7 +100,5 @@ private:
   Local Variables:
   mode: c++
   indent-tabs-mode: nil
-  tab-width: 4
-  c-file-style: "gnu"
   End:
 */

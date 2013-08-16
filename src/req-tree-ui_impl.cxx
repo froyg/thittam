@@ -303,9 +303,9 @@ ReqTreeUIImpl::cb_on_move_up (void)
 {
   auto it = m_tree_selection->get_selected ();
   auto req = get_req_from_iter (it);
-  ASSERT ((!m_req_tree->is_first_sibling (req)), "Logic error: Can't move up");
+  ASSERT ((!m_req_tree->is_first_child (req)), "Logic error: Can't move up");
   /* Update the req-tree backend */
-  ASSERT ((m_req_tree->up_sibling (req)), "Unable to move node up");
+  m_req_tree->up_child (req);
   /* Update the UI */
   it--; /* Get the previous iter and do insert operation before it */
   auto new_it =  m_tree_store->insert (it);
@@ -327,9 +327,9 @@ ReqTreeUIImpl::cb_on_move_down (void)
 {
   auto it = m_tree_selection->get_selected ();
   auto req = get_req_from_iter (it);
-  ASSERT ((!m_req_tree->is_last_sibling (req)), "Logic error: Can't move down");
+  ASSERT ((!m_req_tree->is_last_child (req)), "Logic error: Can't move down");
   /* Update the req-tree backend */
-  ASSERT ((m_req_tree->down_sibling (req)), "Unable to move node down");
+  m_req_tree->down_child (req);
   /* Update the UI */
   it++;
   auto new_it = m_tree_store->insert_after (it);
@@ -376,10 +376,10 @@ ReqTreeUIImpl::enable_node_manipulation (std::shared_ptr<Requirement> req)
 {
   ASSERT ((m_req_tree), "Requirement tree model not yet set");
   ASSERT ((req), "Invalid Requirement");
-  m_tb_node_indent->set_sensitive (!m_req_tree->is_bottom_level (req));
+  //m_tb_node_indent->set_sensitive (!m_req_tree->is_bottom_level (req));
   m_tb_node_unindent->set_sensitive (!m_req_tree->is_top_level (req));
-  m_tb_node_up->set_sensitive (!m_req_tree->is_first_sibling (req));
-  m_tb_node_down->set_sensitive (!m_req_tree->is_last_sibling (req));
+  m_tb_node_up->set_sensitive (!m_req_tree->is_first_child (req));
+  m_tb_node_down->set_sensitive (!m_req_tree->is_last_child (req));
 }
 
 void
@@ -410,8 +410,8 @@ void
 ReqTreeUIImpl::load_ui_children (std::shared_ptr<Requirement> parent,
                                  Gtk::TreeModel::iterator parent_iter)
 {
-  auto end = parent->child_list_end ();
-  for (auto it = parent->child_list_begin (); it != end; ++it)
+  auto end = parent->children_cend ();
+  for (auto it = parent->children_cbegin (); it != end; ++it)
     {
       auto tree_iter = m_tree_store->append (parent_iter->children ());
       Gtk::TreeModel::Row row = *tree_iter;

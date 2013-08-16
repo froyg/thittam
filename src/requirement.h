@@ -28,16 +28,16 @@ public:
   virtual void set_title (const std::string & title) = 0;
   virtual void set_description (const std::string & description) = 0;
 
-  virtual requirement_list_t::const_iterator child_list_begin (void) const = 0;
-  virtual requirement_list_t::const_iterator child_list_end (void) const = 0;
-  virtual requirement_list_t::const_iterator depends_list_begin (void) const = 0;
-  virtual requirement_list_t::const_iterator depends_list_end (void) const = 0;
+  virtual requirement_list_t::const_iterator children_cbegin (void) const = 0;
+  virtual requirement_list_t::const_iterator children_cend (void) const = 0;
+  virtual requirement_list_t::const_iterator depends_cbegin (void) const = 0;
+  virtual requirement_list_t::const_iterator depends_cend (void) const = 0;
 
   /*--- Interface for ReqTree ---*/
   virtual void set_id (const std::string & id) = 0;
   virtual void set_parent (std::shared_ptr<Requirement> parent) = 0;
-  virtual requirement_list_t & children (void) = 0;
-  virtual requirement_list_t & depends (void) = 0;
+  virtual requirement_list_t * children (void) = 0;
+  virtual requirement_list_t * depends (void) = 0;
 
   /* virtual dtor */
   virtual ~Requirement () {}

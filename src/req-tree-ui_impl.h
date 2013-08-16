@@ -40,7 +40,7 @@ public:
   ~ReqTreeUIImpl () {}
 
   /* -------- methods needed by interface -------- */
-  void load (ReqTree::ptr_t req_tree)
+  void load (std::shared_ptr<ReqTree> req_tree)
   {
     Log_D1 << "load: Not yet implemented";
     m_req_tree = req_tree;
@@ -75,7 +75,7 @@ private:
 
 private:
   HLogPtr m_logger;
-  ReqTree::ptr_t m_req_tree;
+  std::shared_ptr<ReqTree> m_req_tree;
   ReqFormUI::ptr_t m_req_form_ui;
   std::shared_ptr<Requirement> m_clipboard_req;
   bool m_clipboard_duplicate;

@@ -18,11 +18,10 @@
 
 #include "requirement.h"
 
+
 class ReqTree
 {
 public:
-  typedef std::shared_ptr<ReqTree> ptr_t;
-
   /* This signal is raised when the tree has changed */
   typedef boost::signals2::signal <void (void)> signal_tree_dirty_t;
 
@@ -30,33 +29,45 @@ public:
   virtual signal_tree_dirty_t & signal_tree_dirty (void) = 0;
 
   /* Add the given child to the parent node. If parent node is nullptr
-     then add it to the root node. If duplicate is true re-number the
-     reqid's in the given child node tree and return the new reqid. */
-  virtual std::string add_child (std::shared_ptr<Requirement> parent,
-                                 std::shared_ptr<Requirement> new_req,
-                                 bool duplicate) = 0;
-  virtual std::string add_sibling (std::shared_ptr<Requirement> sibling,
-                                   std::shared_ptr<Requirement> new_req,
-                                   bool duplicate) = 0;
+   * then add it to the root node. If duplicate is true re-number the
+   * reqid's in the given child node tree and return the new reqid. */
+  virtual std::string add_child (
+    std::shared_ptr<Requirement> parent,
+    std::shared_ptr<Requirement> new_req,
+    bool duplicate) = 0;
+  virtual std::string add_sibling (
+    std::shared_ptr<Requirement> sibling,
+    std::shared_ptr<Requirement> new_req,
+    bool duplicate) = 0;
 
-  /* move operations. Return true if the operation is successful */
-  virtual bool up_sibling (std::shared_ptr<Requirement> req) = 0;
-  virtual bool down_sibling (std::shared_ptr<Requirement> req) = 0;
-  virtual bool up_level (std::shared_ptr<Requirement> req) = 0;
-  virtual bool down_level (std::shared_ptr<Requirement> req) = 0;
-
-  /* position check helpers */
-  virtual bool is_first_sibling (std::shared_ptr<Requirement> req) = 0;
-  virtual bool is_last_sibling (std::shared_ptr<Requirement> req) = 0;
-  virtual bool is_top_level (std::shared_ptr<Requirement> req) = 0;
-  virtual bool is_bottom_level (std::shared_ptr<Requirement> req) = 0;
-
-  virtual int height (void) = 0;
-
-  virtual std::shared_ptr<Requirement> get (const std::string & reqid) = 0;
+  /* Detach the given node and its sub-tree from the ReqTree */
   virtual void detach (std::shared_ptr<Requirement> node) = 0;
 
-  virtual bool is_dirty (void) = 0;
+  /* Methods to check the position of a Requirement object in the
+   * "requirement tree" */
+  virtual bool is_first_child (
+    std::shared_ptr<const Requirement> req) const = 0;
+  virtual bool is_last_child (
+    std::shared_ptr<const Requirement> req) const = 0;
+  virtual bool is_top_level (
+    std::shared_ptr<const Requirement> req) const = 0;
+
+  /* Move operations. It is an error if the requested 'Requirement'
+   * cannot be moved. The caller should use the is_*() methods to make
+   * sure the operation is possible */
+  virtual void up_child (std::shared_ptr<Requirement> req) = 0;
+  virtual void down_child (std::shared_ptr<Requirement> req) = 0;
+  virtual void up_level (std::shared_ptr<Requirement> req) = 0;
+  virtual void down_level (std::shared_ptr<Requirement> req) = 0;
+
+  /* Methods to walk the tree */
+  virtual size_t height (void) const = 0;
+  virtual std::shared_ptr<Requirement> get (
+    const std::string & reqid) const = 0;
+  virtual std::shared_ptr<Requirement> root (void) const = 0;
+
+  /* Manage the dirty flag */
+  virtual bool is_dirty (void) const = 0;
   virtual void clear_dirty (void) = 0;
   virtual void set_dirty (void) = 0;
 
@@ -79,6 +90,5 @@ public:
   mode: c++
   indent-tabs-mode: nil
   tab-width: 4
-  c-file-style: "gnu"
   End:
 */

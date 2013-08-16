@@ -56,22 +56,22 @@ public:
     m_description = description;
   }
 
-  requirement_list_t::const_iterator child_list_begin (void) const
+  requirement_list_t::const_iterator children_cbegin (void) const
   {
     return m_children.cbegin ();
   }
 
-  requirement_list_t::const_iterator child_list_end (void) const
+  requirement_list_t::const_iterator children_cend (void) const
   {
     return m_children.cend ();
   }
 
-  requirement_list_t::const_iterator depends_list_begin (void) const
+  requirement_list_t::const_iterator depends_cbegin (void) const
   {
     return m_depends.cbegin ();
   }
 
-  requirement_list_t::const_iterator depends_list_end (void) const
+  requirement_list_t::const_iterator depends_cend (void) const
   {
     return m_depends.cend ();
   }
@@ -86,14 +86,14 @@ public:
     m_parent = parent;
   }
 
-  requirement_list_t & children (void)
+  requirement_list_t * children (void)
   {
-    return m_children;
+    return &m_children;
   }
 
-  requirement_list_t & depends (void)
+  requirement_list_t * depends (void)
   {
-    return m_depends;
+    return &m_depends;
   }
 
 private:
