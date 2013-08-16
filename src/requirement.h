@@ -16,33 +16,47 @@
 class Requirement
 {
 public:
-  typedef std::shared_ptr<Requirement> ptr_t;
-  typedef std::weak_ptr<Requirement> weak_ptr_t;
-  typedef std::vector<ptr_t> requirement_list_t;
+  typedef std::vector< std::shared_ptr<Requirement> > requirement_list_t;
 
 public:
+  /*--- Public interface ---*/
   virtual const std::string & id (void) const = 0;
   virtual const std::string & title (void) const = 0;
   virtual const std::string & description (void) const = 0;
-  virtual Requirement::ptr_t parent (void) = 0;
+  virtual std::shared_ptr<Requirement> parent (void) const = 0;
 
-  virtual void set_id (const std::string & id) = 0;
   virtual void set_title (const std::string & title) = 0;
   virtual void set_description (const std::string & description) = 0;
-  virtual void set_parent (Requirement::ptr_t parent) = 0;
 
-  virtual void add_child (Requirement::ptr_t child) = 0;
-  virtual void remove_child (Requirement::ptr_t child) = 0;
-  virtual void add_depends (Requirement::ptr_t depends) = 0;
-  virtual void remove_depends (Requirement::ptr_t depends) = 0;
+  virtual requirement_list_t::const_iterator child_list_begin (void) const = 0;
+  virtual requirement_list_t::const_iterator child_list_end (void) const = 0;
+  virtual requirement_list_t::const_iterator depends_list_begin (void) const = 0;
+  virtual requirement_list_t::const_iterator depends_list_end (void) const = 0;
 
-  virtual requirement_list_t::iterator child_list_begin (void) = 0;
-  virtual requirement_list_t::iterator child_list_end (void) = 0;
-  virtual requirement_list_t::iterator depends_list_begin (void) = 0;
-  virtual requirement_list_t::iterator depends_list_end (void) = 0;
+  /*--- Interface for ReqTree ---*/
+  virtual void set_id (const std::string & id) = 0;
+  virtual void set_parent (std::shared_ptr<Requirement> parent) = 0;
+  virtual requirement_list_t & children (void) = 0;
+  virtual requirement_list_t & depends (void) = 0;
 
   /* virtual dtor */
   virtual ~Requirement () {}
+};
+
+class RequirementFactory
+{
+public:
+  /* virtual dtor */
+  virtual ~RequirementFactory () {}
+
+  virtual std::shared_ptr<Requirement> create (void) = 0;
+
+  virtual std::shared_ptr<Requirement>
+  create (const std::string & title, const std::string & description) = 0;
+
+  virtual std::shared_ptr<Requirement>
+  create (const std::string & id, const std::string & title,
+          const std::string & description) = 0;
 };
 
 #endif // HIPRO_THITTAM__7c81bf88_fe59_11e2_934c_68a3c42125fd

@@ -19,28 +19,11 @@ class RequirementImpl : public std::enable_shared_from_this<RequirementImpl>,
                         public Requirement
 {
 public:
-  typedef std::shared_ptr<RequirementImpl> ptr_t;
-
-public:
   /* ------- ctor/dtor ----------- */
-  RequirementImpl (HLogPtr logger);
-  RequirementImpl (HLogPtr logger, const std::string & id,
-                   const std::string & title, const std::string & description);
+  RequirementImpl (HLogPtr logger)
+  : m_logger (logger)
+  { }
   ~RequirementImpl () {}
-
-  static ptr_t create (HLogPtr logger, const std::string & id,
-                       const std::string & title,
-                       const std::string & description)
-  {
-    ptr_t object (new RequirementImpl (logger, id, title, description));
-    return object;
-  }
-
-  static ptr_t create (HLogPtr logger)
-  {
-    ptr_t object (new RequirementImpl (logger));
-    return object;
-  }
 
   /* ------- Methods required by the interface ----------- */
   const std::string & id (void) const
@@ -58,14 +41,9 @@ public:
     return m_description;
   }
 
-  Requirement::ptr_t parent (void)
+  std::shared_ptr<Requirement> parent (void) const
   {
     return m_parent.lock ();
-  }
-
-  void set_id (const std::string & id)
-  {
-    m_id = id;
   }
 
   void set_title (const std::string & title)
@@ -78,44 +56,93 @@ public:
     m_description = description;
   }
 
-  void set_parent (Requirement::ptr_t parent)
+  requirement_list_t::const_iterator child_list_begin (void) const
+  {
+    return m_children.cbegin ();
+  }
+
+  requirement_list_t::const_iterator child_list_end (void) const
+  {
+    return m_children.cend ();
+  }
+
+  requirement_list_t::const_iterator depends_list_begin (void) const
+  {
+    return m_depends.cbegin ();
+  }
+
+  requirement_list_t::const_iterator depends_list_end (void) const
+  {
+    return m_depends.cend ();
+  }
+
+  void set_id (const std::string & id)
+  {
+    m_id = id;
+  }
+
+  void set_parent (std::shared_ptr<Requirement> parent)
   {
     m_parent = parent;
   }
 
-  requirement_list_t::iterator child_list_begin (void)
+  requirement_list_t & children (void)
   {
-    return m_children.begin ();
+    return m_children;
   }
 
-  requirement_list_t::iterator child_list_end (void)
+  requirement_list_t & depends (void)
   {
-    return m_children.end ();
+    return m_depends;
   }
-
-  requirement_list_t::iterator depends_list_begin (void)
-  {
-    return m_depends.begin ();
-  }
-
-  requirement_list_t::iterator depends_list_end (void)
-  {
-    return m_depends.end ();
-  }
-
-  void add_child (Requirement::ptr_t child);
-  void remove_child (Requirement::ptr_t child);
-  void add_depends (Requirement::ptr_t depends);
-  void remove_depends (Requirement::ptr_t depends);
 
 private:
   HLogPtr m_logger;
+
   std::string m_id;
   std::string m_title;
   std::string m_description;
-  Requirement::weak_ptr_t m_parent;
-  std::vector<Requirement::ptr_t> m_children;
-  std::vector<Requirement::ptr_t> m_depends;
+
+  std::weak_ptr<Requirement> m_parent;
+  std::vector<std::shared_ptr<Requirement>> m_children;
+  std::vector<std::shared_ptr<Requirement>> m_depends;
+};
+
+class RequirementFactoryImpl
+{
+public:
+  RequirementFactoryImpl (HLogPtr logger)
+  : m_logger (logger)
+  {
+  }
+
+  std::shared_ptr<Requirement> create (void)
+  {
+    return std::make_shared<RequirementImpl> (m_logger);
+  }
+
+  std::shared_ptr<Requirement>
+  create (const std::string & title, const std::string & description)
+  {
+    auto obj = std::make_shared<RequirementImpl> (m_logger);
+    obj->set_title (title);
+    obj->set_description (description);
+    return obj
+  }
+
+  std::shared_ptr<Requirement>
+  create (const std::string & id, const std::string & title,
+          const std::string & description)
+  {
+    auto obj = std::make_shared<RequirementImpl> (m_logger);
+    obj->set_id (id);
+    obj->set_title (title);
+    obj->set_description (description);
+    return obj
+  }
+
+private:
+  HLogPtr m_logger;
 };
 
 #endif // HIPRO_THITTAM__5dd9f5ac_00e6_11e3_beb6_68a3c42125fd

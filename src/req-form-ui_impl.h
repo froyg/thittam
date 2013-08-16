@@ -35,7 +35,7 @@ public:
 
   /* ------- Methods required by interface ------- */
   int show (void);
-  int show (Requirement::ptr_t req);
+  int show (std::shared_ptr<Requirement> req);
   void hide (void);
   std::string title (void);
   std::string description (void);

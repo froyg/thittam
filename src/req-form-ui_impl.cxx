@@ -46,7 +46,7 @@ ReqFormUIImpl::show (void)
 }
 
 int
-ReqFormUIImpl::show (Requirement::ptr_t req)
+ReqFormUIImpl::show (std::shared_ptr<Requirement> req)
 {
   m_lbl_reqid->set_label (req->id ());
   m_ent_title->set_text (req->title ());

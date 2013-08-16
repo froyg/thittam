@@ -65,19 +65,19 @@ private:
   void cb_on_move_down (void);
 
   /* Other convenience methods */
-  Requirement::ptr_t get_req_from_iter (Gtk::TreeModel::iterator it);
+  std::shared_ptr<Requirement> get_req_from_iter (Gtk::TreeModel::iterator it);
   void enable_node_operation (bool state);
-  void enable_node_manipulation (Requirement::ptr_t req);
-  void display (Requirement::ptr_t req);
-  Requirement::ptr_t get_new (void);
-  void load_ui_children (Requirement::ptr_t parent,
+  void enable_node_manipulation (std::shared_ptr<Requirement> req);
+  void display (std::shared_ptr<Requirement> req);
+  std::shared_ptr<Requirement> get_new (void);
+  void load_ui_children (std::shared_ptr<Requirement> parent,
                          Gtk::TreeModel::iterator parent_iter);
 
 private:
   HLogPtr m_logger;
   ReqTree::ptr_t m_req_tree;
   ReqFormUI::ptr_t m_req_form_ui;
-  Requirement::ptr_t m_clipboard_req;
+  std::shared_ptr<Requirement> m_clipboard_req;
   bool m_clipboard_duplicate;
   std::unique_ptr<Gtk::TreeView> m_tree_view;
   Glib::RefPtr<Gtk::TreeStore> m_tree_store;

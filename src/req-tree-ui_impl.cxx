@@ -189,7 +189,7 @@ ReqTreeUIImpl::cb_on_add_child (void)
     {
       return;
     }
-  Requirement::ptr_t sel_req = nullptr;
+  std::shared_ptr<Requirement> sel_req = nullptr;
   auto it = m_tree_selection->get_selected ();
   Gtk::TreeModel::Row row;
   if (it)
@@ -217,7 +217,7 @@ ReqTreeUIImpl::cb_on_add_sibling (void)
     {
       return;
     }
-  Requirement::ptr_t sel_req = nullptr;
+  std::shared_ptr<Requirement> sel_req = nullptr;
   auto it = m_tree_selection->get_selected ();
   Gtk::TreeModel::Row row;
   if (it)
@@ -346,7 +346,7 @@ ReqTreeUIImpl::cb_on_move_down (void)
   m_tree_selection->select (new_it);
 }
 
-Requirement::ptr_t
+std::shared_ptr<Requirement>
 ReqTreeUIImpl::get_req_from_iter (Gtk::TreeModel::iterator it)
 {
   ASSERT ((m_req_tree), "Requirement tree model not yet set");
@@ -372,7 +372,7 @@ ReqTreeUIImpl::enable_node_operation (bool state)
 }
 
 void
-ReqTreeUIImpl::enable_node_manipulation (Requirement::ptr_t req)
+ReqTreeUIImpl::enable_node_manipulation (std::shared_ptr<Requirement> req)
 {
   ASSERT ((m_req_tree), "Requirement tree model not yet set");
   ASSERT ((req), "Invalid Requirement");
@@ -383,7 +383,7 @@ ReqTreeUIImpl::enable_node_manipulation (Requirement::ptr_t req)
 }
 
 void
-ReqTreeUIImpl::display (Requirement::ptr_t req)
+ReqTreeUIImpl::display (std::shared_ptr<Requirement> req)
 {
   ASSERT ((req), "Invalid Requirement");
   m_lbl_node_info_reqid->set_label (req->id ());
@@ -391,7 +391,7 @@ ReqTreeUIImpl::display (Requirement::ptr_t req)
   m_lbl_node_info_description->set_label (req->description ());
 }
 
-Requirement::ptr_t
+std::shared_ptr<Requirement>
 ReqTreeUIImpl::get_new (void)
 {
   ASSERT ((m_req_form_ui), "Invalid requirement form UI");
@@ -407,7 +407,7 @@ ReqTreeUIImpl::get_new (void)
 }
 
 void
-ReqTreeUIImpl::load_ui_children (Requirement::ptr_t parent,
+ReqTreeUIImpl::load_ui_children (std::shared_ptr<Requirement> parent,
                                  Gtk::TreeModel::iterator parent_iter)
 {
   auto end = parent->child_list_end ();

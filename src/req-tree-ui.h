@@ -23,7 +23,10 @@ class ReqTreeUI
 public:
   typedef std::shared_ptr<ReqTreeUI> ptr_t;
 
-  typedef boost::signals2::signal <void (Requirement::ptr_t req)> signal_edit_t;
+  typedef boost::signals2::signal <
+    void (std::shared_ptr<Requirement>)
+    > signal_edit_t;
+
 public:
   virtual void load (ReqTree::ptr_t req_tree) = 0;
 

@@ -24,7 +24,7 @@ public:
   /* Show form to get new requirement */
   virtual int show (void) = 0;
   /* Show the existing requirement */
-  virtual int show (Requirement::ptr_t req) = 0;
+  virtual int show (std::shared_ptr<Requirement> req) = 0;
   /* Hide the requirement form dialog */
   virtual void hide (void) = 0;
   virtual std::string title (void) = 0;
