@@ -93,6 +93,25 @@ private:
   req_id_map_t m_req_id_map;
 };
 
+class ReqTreeFactoryImpl : public ReqTreeFactory
+{
+public:
+  ReqTreeFactoryImpl (HLogPtr logger,
+                      std::shared_ptr<RequirementFactory> req_factory)
+    : m_logger (logger),
+      m_req_factory (req_factory)
+  {
+  }
+
+  std::shared_ptr<ReqTree> create (void)
+  {
+    return std::make_shared<ReqTreeImpl> (m_logger, m_req_factory);
+  }
+
+private:
+  HLogPtr m_logger;
+  std::shared_ptr<RequirementFactory> m_req_factory;
+};
 
 #endif // HIPRO_THITTAM__a0055c6a_00db_11e3_ae98_68a3c42125fd
 

@@ -82,6 +82,11 @@ public:
   virtual ~ReqTree () {}
 };
 
+class ReqTreeFactory
+{
+public:
+  virtual std::shared_ptr<ReqTree> create (void) = 0;
+};
 
 #endif // HIPRO_THITTAM__9f2aa1b2_fe59_11e2_8d34_68a3c42125fd
 
