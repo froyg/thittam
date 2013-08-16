@@ -24,6 +24,7 @@ def build(bld):
 
 test_src_files = [
     "test_config.cxx",
+    "test_req-tree.cxx",
     ]
 
 # Local Variables:
