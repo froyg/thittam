@@ -21,7 +21,8 @@ ReqTreeImpl::ReqTreeImpl (HLogPtr logger,
 
 std::string
 ReqTreeImpl::add_child (std::shared_ptr<Requirement> parent,
-                        std::shared_ptr<Requirement> child, bool duplicate)
+                        std::shared_ptr<Requirement> child,
+                        bool duplicate)
 {
   std::shared_ptr<Requirement> real_child (child);
   if (duplicate == true)
@@ -45,7 +46,8 @@ ReqTreeImpl::add_child (std::shared_ptr<Requirement> parent,
 
 std::string
 ReqTreeImpl::add_sibling (std::shared_ptr<Requirement> sibling,
-                          std::shared_ptr<Requirement> new_req, bool duplicate)
+                          std::shared_ptr<Requirement> new_req,
+                          bool duplicate)
 {
   auto parent = sibling->parent ();
   std::shared_ptr<Requirement> real_child (new_req);
@@ -188,6 +190,12 @@ ReqTreeImpl::height (void) const
   return (compute_height (m_root) - 1);
 }
 
+std::shared_ptr<Requirement>
+ReqTreeImpl::get (const std::string & reqid) const
+{
+  return m_req_id_map.at (reqid);
+}
+
 size_t
 ReqTreeImpl::compute_height (std::shared_ptr<const Requirement> node) const
 {
@@ -252,6 +260,33 @@ ReqTreeImpl::remove_from_req_id_map (std::shared_ptr<Requirement> req)
       auto child = *it;
       remove_from_req_id_map (child);
     }
+}
+
+
+void
+ReqTreeImpl::set_dirty_noisily (void)
+{
+  m_dirty = true;
+  m_signal_tree_dirty ();
+}
+
+void
+ReqTreeImpl::load (const std::string & data)
+{
+  ASSERT ((false), "not implemented");
+}
+
+void
+ReqTreeImpl::load (const std::ifstream & file)
+{
+  ASSERT ((false), "not implemented");
+}
+
+std::string
+ReqTreeImpl::serialize (void)
+{
+  ASSERT ((false), "not implemented");
+  return "";
 }
 
 /*

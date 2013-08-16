@@ -32,10 +32,10 @@ public:
 
   std::string add_child (std::shared_ptr<Requirement> parent,
                          std::shared_ptr<Requirement> new_req,
-                         bool duplicate);
+                         bool duplicate=false);
   std::string add_sibling (std::shared_ptr<Requirement> sibling,
                            std::shared_ptr<Requirement> new_req,
-                           bool duplicate);
+                           bool duplicate=false);
   void detach (std::shared_ptr<Requirement> node);
 
   bool is_first_child (std::shared_ptr<const Requirement> req) const;

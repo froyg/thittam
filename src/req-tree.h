@@ -34,11 +34,11 @@ public:
   virtual std::string add_child (
     std::shared_ptr<Requirement> parent,
     std::shared_ptr<Requirement> new_req,
-    bool duplicate) = 0;
+    bool duplicate=false) = 0;
   virtual std::string add_sibling (
     std::shared_ptr<Requirement> sibling,
     std::shared_ptr<Requirement> new_req,
-    bool duplicate) = 0;
+    bool duplicate=false) = 0;
 
   /* Detach the given node and its sub-tree from the ReqTree */
   virtual void detach (std::shared_ptr<Requirement> node) = 0;
