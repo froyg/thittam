@@ -305,7 +305,7 @@ ReqTreeUIImpl::cb_on_move_up (void)
   auto req = get_req_from_iter (it);
   ASSERT ((!m_req_tree->is_first_sibling (req)), "Logic error: Can't move up");
   /* Update the req-tree backend */
-  m_req_tree->up_sibling (req);
+  ASSERT ((m_req_tree->up_sibling (req)), "Unable to move node up");
   /* Update the UI */
   it--; /* Get the previous iter and do insert operation before it */
   auto new_it =  m_tree_store->insert (it);
@@ -325,7 +325,25 @@ ReqTreeUIImpl::cb_on_move_up (void)
 void
 ReqTreeUIImpl::cb_on_move_down (void)
 {
-  Log_D1 << "cb_on_move_down: Not yet implemented";
+  auto it = m_tree_selection->get_selected ();
+  auto req = get_req_from_iter (it);
+  ASSERT ((!m_req_tree->is_last_sibling (req)), "Logic error: Can't move down");
+  /* Update the req-tree backend */
+  ASSERT ((m_req_tree->down_sibling (req)), "Unable to move node down");
+  /* Update the UI */
+  it++;
+  auto new_it = m_tree_store->insert_after (it);
+  Gtk::TreeModel::Row row = *new_it;
+  row.set_value (0, req->id ());
+  row.set_value (1, req->title ());
+  /* Load the sub-nodes of it, if any */
+  load_ui_children (req, new_it);
+  /* As the iterator have been changed get the selected iter again and
+     remove it from the tree-store */
+  it = m_tree_selection->get_selected ();
+  m_tree_store->erase (it);
+  /* Set the selection to the newly added node */
+  m_tree_selection->select (new_it);
 }
 
 Requirement::ptr_t
