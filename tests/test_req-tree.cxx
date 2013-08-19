@@ -112,7 +112,25 @@ TEST_F (ReqTreeTest, UpChild)
   EXPECT_FALSE (m_req_tree->is_last_child (req5));
 }
 
-
+TEST_F (ReqTreeTest, DownChild)
+{
+  auto req1 = m_req_factory->create ("1", "1", "1");
+  m_req_tree->add_child (nullptr, req1);
+  auto req2 = m_req_factory->create ("2", "2", "2");
+  m_req_tree->add_sibling (req1, req2);
+  auto req5 = m_req_factory->create ("3", "3", "3");
+  m_req_tree->add_child (nullptr, req5);
+  auto req3 = m_req_factory->create ("2.1", "2.1", "2.1");
+  m_req_tree->add_child (req2, req3);
+  auto req4 = m_req_factory->create ("2.2", "2.2", "2.2");
+  m_req_tree->add_child (req2, req4);
+  m_req_tree->down_child (req3);
+  EXPECT_TRUE (m_req_tree->is_last_child (req3));
+  EXPECT_TRUE (m_req_tree->is_last_child (req5));
+  m_req_tree->down_child (req2);
+  EXPECT_FALSE (m_req_tree->is_last_child (req5));
+  EXPECT_TRUE (m_req_tree->is_last_child (req2));
+}
 
 /*
   Local Variables:
