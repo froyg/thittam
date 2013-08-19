@@ -293,7 +293,7 @@ ReqTreeUIImpl::cb_on_indent (void)
   auto req = get_req_from_iter (it);
   ASSERT ((!m_req_tree->is_first_child (req)), "Logic error: Can't indent");
   /* Update the backend */
-  m_req_tree->down_child (req);
+  m_req_tree->down_level (req);
   /* Update the UI */
   it--;
   auto new_it = m_tree_store->append (it->children ());
@@ -313,8 +313,22 @@ ReqTreeUIImpl::cb_on_indent (void)
 void
 ReqTreeUIImpl::cb_on_unindent (void)
 {
-  Log_D1 << "cb_on_unindent: Not yet implemented";
-
+  auto it = m_tree_selection->get_selected ();
+  auto req = get_req_from_iter (it);
+  ASSERT ((!m_req_tree->is_top_level (req)), "Logic error: Can't unindent");
+  /* Update the backend */
+  m_req_tree->up_level (req);
+  /* Update the UI */
+  auto new_it = m_tree_store->insert_after (it->parent ());
+  Gtk::TreeModel::Row row = *new_it;
+  row.set_value (0, req->id ());
+  row.set_value (1, req->title ());
+  /* Load the sub-nodes of it, if any */
+  load_ui_children (req, new_it);
+  /* Remove the selected iterator */
+  m_tree_store->erase (it);
+  /* Set the selection to the newly added node */
+  m_tree_selection->select (new_it);
 }
 
 void
