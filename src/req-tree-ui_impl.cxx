@@ -289,13 +289,32 @@ ReqTreeUIImpl::cb_on_paste (void)
 void
 ReqTreeUIImpl::cb_on_indent (void)
 {
-  Log_D1 << "cb_on_indent: Not yet implemented";
+  auto it = m_tree_selection->get_selected ();
+  auto req = get_req_from_iter (it);
+  ASSERT ((!m_req_tree->is_first_child (req)), "Logic error: Can't indent");
+  /* Update the backend */
+  m_req_tree->down_child (req);
+  /* Update the UI */
+  it--;
+  auto new_it = m_tree_store->append (it->children ());
+  Gtk::TreeModel::Row row = *new_it;
+  row.set_value (0, req->id ());
+  row.set_value (1, req->title ());
+  /* Load the sub-nodes of it, if any */
+  load_ui_children (req, new_it);
+  /* As the iterator have been changed get the selected iter again and
+     remove it from the tree-store */
+  it = m_tree_selection->get_selected ();
+  m_tree_store->erase (it);
+  /* Set the selection to the newly added node */
+  m_tree_selection->select (new_it);
 }
 
 void
 ReqTreeUIImpl::cb_on_unindent (void)
 {
   Log_D1 << "cb_on_unindent: Not yet implemented";
+
 }
 
 void
@@ -376,7 +395,7 @@ ReqTreeUIImpl::enable_node_manipulation (std::shared_ptr<Requirement> req)
 {
   ASSERT ((m_req_tree), "Requirement tree model not yet set");
   ASSERT ((req), "Invalid Requirement");
-  //m_tb_node_indent->set_sensitive (!m_req_tree->is_bottom_level (req));
+  m_tb_node_indent->set_sensitive (!m_req_tree->is_first_child (req));
   m_tb_node_unindent->set_sensitive (!m_req_tree->is_top_level (req));
   m_tb_node_up->set_sensitive (!m_req_tree->is_first_child (req));
   m_tb_node_down->set_sensitive (!m_req_tree->is_last_child (req));
