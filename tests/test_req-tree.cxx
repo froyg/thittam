@@ -148,6 +148,26 @@ TEST_F (ReqTreeTest, UpLevel)
   EXPECT_TRUE (m_req_tree->is_last_child (req3));
 }
 
+TEST_F (ReqTreeTest, DownLevel)
+{
+ auto req1 = m_req_factory->create ("1", "1", "1");
+  m_req_tree->add_child (nullptr, req1);
+  auto req2 = m_req_factory->create ("2", "2", "2");
+  m_req_tree->add_sibling (req1, req2);
+  auto req3 = m_req_factory->create ("2.1", "2.1", "2.1");
+  m_req_tree->add_child (req2, req3);
+  auto req4 = m_req_factory->create ("2.2", "2.2", "2.2");
+  m_req_tree->add_child (req2, req4);
+  m_req_tree->down_level (req4);
+  m_req_tree->down_level (req2);
+  EXPECT_TRUE (m_req_tree->is_first_child (req4));
+  EXPECT_TRUE (m_req_tree->is_last_child (req4));
+  EXPECT_TRUE (m_req_tree->is_first_child (req2));
+  EXPECT_TRUE (m_req_tree->is_last_child (req2));
+  EXPECT_TRUE (m_req_tree->is_first_child (req1));
+  EXPECT_TRUE (m_req_tree->is_last_child (req1));
+}
+
 /*
   Local Variables:
   mode: c++
