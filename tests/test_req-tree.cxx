@@ -47,6 +47,24 @@ TEST_F (ReqTreeTest, SimpleChildAddToRoot)
   EXPECT_EQ (m_req_tree->get ("1"), req1);
 }
 
+TEST_F (ReqTreeTest, FirstChild)
+{
+  auto req1 = m_req_factory->create ("1", "1", "1");
+  m_req_tree->add_child (nullptr, req1);
+  auto req2 = m_req_factory->create ("2", "2", "2");
+  m_req_tree->add_child (req1, req2);
+  EXPECT_TRUE (m_req_tree->is_first_child (req1));
+}
+
+TEST_F (ReqTreeTest, LastChild)
+{
+  auto req1 = m_req_factory->create ("1", "1", "1");
+  m_req_tree->add_child (nullptr, req1);
+  auto req2 = m_req_factory->create ("2", "2", "2");
+  m_req_tree->add_child (req1, req2);
+  EXPECT_TRUE (m_req_tree->is_last_child (req1));
+}
+
 /*
   Local Variables:
   mode: c++
