@@ -181,9 +181,9 @@ AppImpl::create_app_stage1 (void)
     std::make_shared<ReqTreeFactoryImpl> (m_logger, req_factory);
 
   m_ui_builder = Gtk::Builder::create_from_file (builder_file.c_str ());
-  m_view_main =
-    std::make_shared<MainViewImpl> (m_logger, m_ui_builder, req_tree_factory);
-  m_req_tree_ui = std::make_shared<ReqTreeViewImpl> (m_logger, m_ui_builder);
+  auto tree_view = std::make_shared<ReqTreeViewImpl> (m_logger, m_ui_builder);
+  m_view_main = std::make_shared<MainViewImpl>
+    (m_logger, m_ui_builder, req_tree_factory, tree_view);
 
   m_view_main->signal_close ().connect
     (std::bind (std::mem_fn (&AppImpl::quit), shared_from_this ()));

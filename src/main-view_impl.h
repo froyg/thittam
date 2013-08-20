@@ -19,6 +19,7 @@
 #include "common.h"
 #include "main-view.h"
 #include "req-tree.h"
+#include "req-tree-view.h"
 
 class MainViewImpl : public MainView
 {
@@ -29,7 +30,8 @@ public:
   /*--- ctor/dtor ---*/
   MainViewImpl (HLogPtr logger,
                 Glib::RefPtr<Gtk::Builder> builder,
-                std::shared_ptr<ReqTreeFactory> req_tree_factory);
+                std::shared_ptr<ReqTreeFactory> req_tree_factory,
+                std::shared_ptr<ReqTreeView> req_tree_view);
   ~MainViewImpl () { }
 
   /*--- Methods required by the MainView interface ---*/
@@ -62,6 +64,7 @@ private:
   HLogPtr m_logger;
   std::shared_ptr<ReqTreeFactory> m_req_tree_factory;
   std::shared_ptr<ReqTree> m_req_tree;
+  std::shared_ptr<ReqTreeView> m_req_tree_view;
 
   std::string m_file_name;
 

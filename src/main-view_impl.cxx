@@ -14,9 +14,11 @@
 
 MainViewImpl::MainViewImpl (HLogPtr logger,
                             Glib::RefPtr<Gtk::Builder> builder,
-                            std::shared_ptr<ReqTreeFactory> req_tree_factory)
+                            std::shared_ptr<ReqTreeFactory> req_tree_factory,
+                            std::shared_ptr<ReqTreeView> req_tree_view)
   : m_logger (logger),
-    m_req_tree_factory (req_tree_factory)
+    m_req_tree_factory (req_tree_factory),
+    m_req_tree_view (req_tree_view)
 {
   builder->get_widget ("main-window", m_window);
   m_window->signal_hide ().connect
@@ -52,6 +54,8 @@ MainViewImpl::MainViewImpl (HLogPtr logger,
     (sigc::mem_fun (this, &MainViewImpl::cb_on_close));
 
   m_req_tree = m_req_tree_factory->create ();
+  m_req_tree_view->load (m_req_tree);
+
   m_window->show ();
 }
 
