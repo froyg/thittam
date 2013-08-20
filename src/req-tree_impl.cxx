@@ -29,6 +29,11 @@ ReqTreeImpl::add_child (std::shared_ptr<Requirement> parent,
     {
       real_child = duplicate_tree (child);
     }
+  else
+    {
+      /* Here we assume that the child will not have children */
+      real_child->set_id (next_id ());
+    }
   add_to_req_id_map (real_child);
 
   std::shared_ptr<Requirement> real_parent (parent);
@@ -54,6 +59,11 @@ ReqTreeImpl::add_sibling (std::shared_ptr<Requirement> sibling,
   if (duplicate == true)
     {
       real_child = duplicate_tree (new_req);
+    }
+  else
+    {
+      /* Here we assume that the child will not have children */
+      real_child->set_id (next_id ());
     }
   add_to_req_id_map (real_child);
 
