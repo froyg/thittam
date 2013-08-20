@@ -18,11 +18,9 @@
 #include "requirement.h"
 #include "req-tree.h"
 
-class ReqTreeUI
+class ReqTreeView
 {
 public:
-  typedef std::shared_ptr<ReqTreeUI> ptr_t;
-
   typedef boost::signals2::signal <
     void (std::shared_ptr<Requirement>)
     > signal_edit_t;
@@ -30,7 +28,7 @@ public:
 public:
   virtual void load (std::shared_ptr<ReqTree> req_tree) = 0;
 
-  virtual ~ReqTreeUI () {}
+  virtual ~ReqTreeView () {}
 };
 #endif // HIPRO_THITTAM__a79a60a8_fe59_11e2_911b_68a3c42125fd
 

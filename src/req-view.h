@@ -15,11 +15,8 @@
 
 #include "requirement.h"
 
-class ReqFormUI
+class ReqView
 {
-public:
-  typedef std::shared_ptr<ReqFormUI> ptr_t;
-
 public:
   /* Show form to get new requirement */
   virtual int show (void) = 0;

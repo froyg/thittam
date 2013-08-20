@@ -20,7 +20,7 @@
 
 #include "config.h"
 #include "main-view.h"
-#include "req-tree-ui.h"
+#include "req-tree-view.h"
 
 namespace bofs = ::boost::filesystem;
 
@@ -63,7 +63,7 @@ public:
 
   Glib::RefPtr<Gtk::Builder> m_ui_builder;
   MainView::ptr_t m_view_main;
-  ReqTreeUI::ptr_t m_req_tree_ui;
+  std::shared_ptr<ReqTreeView> m_req_tree_ui;
 
   typedef std::vector<SubApp::ptr_t> sub_app_list_t;
   sub_app_list_t m_sub_app_list;

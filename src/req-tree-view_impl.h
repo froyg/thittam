@@ -19,25 +19,15 @@
 #include "common.h"
 #include "req-tree.h"
 #include "requirement.h"
-#include "req-tree-ui.h"
-#include "req-form-ui.h"
+#include "req-tree-view.h"
+#include "req-view.h"
 
-class ReqTreeUIImpl : public ReqTreeUI
+class ReqTreeViewImpl : public ReqTreeView
 {
 public:
-  typedef std::shared_ptr<ReqTreeUIImpl> ptr_t;
-
-public:
   /* -------- ctor/dtor ------------ */
-  static ptr_t create (HLogPtr logger,
-                       Glib::RefPtr<Gtk::Builder> builder)
-  {
-    ptr_t object (new ReqTreeUIImpl (logger, builder));
-    return object;
-  }
-
-  ReqTreeUIImpl (HLogPtr logger, Glib::RefPtr<Gtk::Builder> builder);
-  ~ReqTreeUIImpl () {}
+  ReqTreeViewImpl (HLogPtr logger, Glib::RefPtr<Gtk::Builder> builder);
+  ~ReqTreeViewImpl () {}
 
   /* -------- methods needed by interface -------- */
   void load (std::shared_ptr<ReqTree> req_tree)
@@ -76,7 +66,7 @@ private:
 private:
   HLogPtr m_logger;
   std::shared_ptr<ReqTree> m_req_tree;
-  ReqFormUI::ptr_t m_req_form_ui;
+  std::shared_ptr<ReqView> m_req_view;
   std::shared_ptr<Requirement> m_clipboard_req;
   bool m_clipboard_duplicate;
   std::unique_ptr<Gtk::TreeView> m_tree_view;

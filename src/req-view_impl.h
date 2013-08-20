@@ -15,23 +15,14 @@
 #include <gtkmm.h>
 
 #include "common.h"
-#include "req-form-ui.h"
+#include "req-view.h"
 
-class ReqFormUIImpl : public ReqFormUI
+class ReqViewImpl : public ReqView
 {
 public:
-  typedef std::shared_ptr<ReqFormUIImpl> ptr_t;
-
-public:
   /* ------- ctor/dtor ------- */
-  ReqFormUIImpl (HLogPtr logger);
-  ~ReqFormUIImpl () {}
-
-  static ptr_t create (HLogPtr logger)
-  {
-    ptr_t object (new ReqFormUIImpl (logger));
-    return object;
-  }
+  ReqViewImpl (HLogPtr logger);
+  ~ReqViewImpl () {}
 
   /* ------- Methods required by interface ------- */
   int show (void);

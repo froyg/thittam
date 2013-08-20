@@ -9,16 +9,16 @@
 
 #include <gtkmm.h>
 
-#include "req-tree-ui_impl.h"
-#include "req-form-ui_impl.h"
+#include "req-tree-view_impl.h"
+#include "req-view_impl.h"
 
-ReqTreeUIImpl::ReqTreeUIImpl (HLogPtr logger,
-                              Glib::RefPtr<Gtk::Builder> builder) :
+ReqTreeViewImpl::ReqTreeViewImpl (HLogPtr logger,
+                                  Glib::RefPtr<Gtk::Builder> builder) :
   m_logger (logger),
   m_clipboard_duplicate (false)
 {
   /* create the requirement form UI in order to be used later */
-  m_req_form_ui = ReqFormUIImpl::create (logger);
+  m_req_view = std::make_shared<ReqViewImpl> (logger);
 
   Gtk::TreeView * tv;
   builder->get_widget ("req-tree-view", tv);
@@ -29,76 +29,76 @@ ReqTreeUIImpl::ReqTreeUIImpl (HLogPtr logger,
 
   /* signals related to TreeView */
   m_tree_view->signal_button_press_event ().connect
-    (sigc::mem_fun (this, &ReqTreeUIImpl::cb_on_button_pressed));
+    (sigc::mem_fun (this, &ReqTreeViewImpl::cb_on_button_pressed));
   m_tree_view->signal_row_activated ().connect
-    (sigc::mem_fun (this, &ReqTreeUIImpl::cb_on_row_activated));
+    (sigc::mem_fun (this, &ReqTreeViewImpl::cb_on_row_activated));
   m_tree_view->signal_cursor_changed ().connect
-    (sigc::mem_fun (this, &ReqTreeUIImpl::cb_on_cursor_changed));
+    (sigc::mem_fun (this, &ReqTreeViewImpl::cb_on_cursor_changed));
 
   /* signals related to TreeSelection */
   m_tree_selection = m_tree_view->get_selection ();
   m_tree_selection->signal_changed ().connect
-    (sigc::mem_fun (this, &ReqTreeUIImpl::cb_on_row_selected));
+    (sigc::mem_fun (this, &ReqTreeViewImpl::cb_on_row_selected));
 
   /* Get menu items and listen for their signals */
   builder->get_widget ("menu-node", m_menu_node);
 
   builder->get_widget ("menu-node-add-child", m_menu_node_add_child);
   m_menu_node_add_child->signal_activate ().connect
-    (sigc::mem_fun (this, &ReqTreeUIImpl::cb_on_add_child));
+    (sigc::mem_fun (this, &ReqTreeViewImpl::cb_on_add_child));
 
   builder->get_widget ("menu-node-add-sibling", m_menu_node_add_sibling);
   m_menu_node_add_sibling->signal_activate ().connect
-    (sigc::mem_fun (this, &ReqTreeUIImpl::cb_on_add_sibling));
+    (sigc::mem_fun (this, &ReqTreeViewImpl::cb_on_add_sibling));
 
   builder->get_widget ("menu-node-cut", m_menu_node_cut);
   m_menu_node_cut->signal_activate ().connect
-    (sigc::mem_fun (this, &ReqTreeUIImpl::cb_on_cut));
+    (sigc::mem_fun (this, &ReqTreeViewImpl::cb_on_cut));
 
   builder->get_widget ("menu-node-copy", m_menu_node_copy);
   m_menu_node_copy->signal_activate ().connect
-    (sigc::mem_fun (this, &ReqTreeUIImpl::cb_on_copy));
+    (sigc::mem_fun (this, &ReqTreeViewImpl::cb_on_copy));
 
   builder->get_widget ("menu-node-paste", m_menu_node_paste);
   m_menu_node_paste->signal_activate ().connect
-    (sigc::mem_fun (this, &ReqTreeUIImpl::cb_on_paste));
+    (sigc::mem_fun (this, &ReqTreeViewImpl::cb_on_paste));
 
   builder->get_widget ("menu-node-delete", m_menu_node_delete);
   m_menu_node_delete->signal_activate ().connect
-    (sigc::mem_fun (this, &ReqTreeUIImpl::cb_on_delete));
+    (sigc::mem_fun (this, &ReqTreeViewImpl::cb_on_delete));
 
   /* Get toolbar items and listen for their signals */
   builder->get_widget ("tb-cut", m_tb_node_cut);
   m_tb_node_cut->signal_clicked ().connect
-    (sigc::mem_fun (this, &ReqTreeUIImpl::cb_on_cut));
+    (sigc::mem_fun (this, &ReqTreeViewImpl::cb_on_cut));
 
   builder->get_widget ("tb-copy", m_tb_node_copy);
   m_tb_node_copy->signal_clicked ().connect
-    (sigc::mem_fun (this, &ReqTreeUIImpl::cb_on_copy));
+    (sigc::mem_fun (this, &ReqTreeViewImpl::cb_on_copy));
 
   builder->get_widget ("tb-paste", m_tb_node_paste);
   m_tb_node_paste->signal_clicked ().connect
-    (sigc::mem_fun (this, &ReqTreeUIImpl::cb_on_paste));
+    (sigc::mem_fun (this, &ReqTreeViewImpl::cb_on_paste));
 
   builder->get_widget ("tb-delete", m_tb_node_delete);
   m_tb_node_delete->signal_clicked ().connect
-    (sigc::mem_fun (this, &ReqTreeUIImpl::cb_on_delete));
+    (sigc::mem_fun (this, &ReqTreeViewImpl::cb_on_delete));
 
   builder->get_widget ("tb-indent", m_tb_node_indent);
   m_tb_node_indent->signal_clicked ().connect
-    (sigc::mem_fun (this, &ReqTreeUIImpl::cb_on_indent));
+    (sigc::mem_fun (this, &ReqTreeViewImpl::cb_on_indent));
 
   builder->get_widget ("tb-unindent", m_tb_node_unindent);
   m_tb_node_unindent->signal_clicked ().connect
-    (sigc::mem_fun (this, &ReqTreeUIImpl::cb_on_unindent));
+    (sigc::mem_fun (this, &ReqTreeViewImpl::cb_on_unindent));
 
   builder->get_widget ("tb-up", m_tb_node_up);
   m_tb_node_up->signal_clicked ().connect
-    (sigc::mem_fun (this, &ReqTreeUIImpl::cb_on_move_up));
+    (sigc::mem_fun (this, &ReqTreeViewImpl::cb_on_move_up));
 
   builder->get_widget ("tb-down", m_tb_node_down);
   m_tb_node_up->signal_clicked ().connect
-    (sigc::mem_fun (this, &ReqTreeUIImpl::cb_on_move_down));
+    (sigc::mem_fun (this, &ReqTreeViewImpl::cb_on_move_down));
 
   /* Set the initial menu state */
   m_menu_node_add_child->set_sensitive (true);
@@ -118,7 +118,7 @@ ReqTreeUIImpl::ReqTreeUIImpl (HLogPtr logger,
 }
 
 void
-ReqTreeUIImpl::cb_on_row_selected (void)
+ReqTreeViewImpl::cb_on_row_selected (void)
 {
   auto it = m_tree_selection->get_selected ();
   if (!it)
@@ -132,7 +132,7 @@ ReqTreeUIImpl::cb_on_row_selected (void)
 }
 
 bool
-ReqTreeUIImpl::cb_on_button_pressed (GdkEventButton * event)
+ReqTreeViewImpl::cb_on_button_pressed (GdkEventButton * event)
 {
   if (((int)event->type == (int)Gdk::BUTTON_PRESS) && (event->button == 3))
     {
@@ -149,27 +149,27 @@ ReqTreeUIImpl::cb_on_button_pressed (GdkEventButton * event)
 }
 
 void
-ReqTreeUIImpl::cb_on_row_activated (const Gtk::TreeModel::Path & path,
-                                    Gtk::TreeViewColumn * column)
+ReqTreeViewImpl::cb_on_row_activated (const Gtk::TreeModel::Path & path,
+                                      Gtk::TreeViewColumn * column)
 {
   auto it = m_tree_selection->get_selected ();
   auto req = get_req_from_iter (it);
-  if (m_req_form_ui->show (req) != Gtk::RESPONSE_OK)
+  if (m_req_view->show (req) != Gtk::RESPONSE_OK)
     {
-      m_req_form_ui->hide ();
+      m_req_view->hide ();
       return;
     }
-  req->set_title (m_req_form_ui->title ());
-  req->set_description (m_req_form_ui->description ());
+  req->set_title (m_req_view->title ());
+  req->set_description (m_req_view->description ());
   display (req);
   Gtk::TreeModel::Row row = *it;
   row.set_value(1, req->title ());
   m_req_tree->set_dirty ();
-  m_req_form_ui->hide ();
+  m_req_view->hide ();
 }
 
 void
-ReqTreeUIImpl::cb_on_cursor_changed (void)
+ReqTreeViewImpl::cb_on_cursor_changed (void)
 {
   auto it = m_tree_selection->get_selected ();
   if (!it)
@@ -181,7 +181,7 @@ ReqTreeUIImpl::cb_on_cursor_changed (void)
 }
 
 void
-ReqTreeUIImpl::cb_on_add_child (void)
+ReqTreeViewImpl::cb_on_add_child (void)
 {
   ASSERT ((m_req_tree), "Requirement tree model not yet set");
   auto new_req = get_new ();
@@ -209,7 +209,7 @@ ReqTreeUIImpl::cb_on_add_child (void)
 }
 
 void
-ReqTreeUIImpl::cb_on_add_sibling (void)
+ReqTreeViewImpl::cb_on_add_sibling (void)
 {
   ASSERT ((m_req_tree), "Requirement tree model not yet set");
   auto new_req = get_new ();
@@ -235,7 +235,7 @@ ReqTreeUIImpl::cb_on_add_sibling (void)
 }
 
 void
-ReqTreeUIImpl::cb_on_cut (void)
+ReqTreeViewImpl::cb_on_cut (void)
 {
   auto it = m_tree_selection->get_selected ();
   if (it)
@@ -248,7 +248,7 @@ ReqTreeUIImpl::cb_on_cut (void)
 }
 
 void
-ReqTreeUIImpl::cb_on_copy (void)
+ReqTreeViewImpl::cb_on_copy (void)
 {
   auto it = m_tree_selection->get_selected ();
   if (it)
@@ -259,7 +259,7 @@ ReqTreeUIImpl::cb_on_copy (void)
 }
 
 void
-ReqTreeUIImpl::cb_on_delete (void)
+ReqTreeViewImpl::cb_on_delete (void)
 {
   auto it = m_tree_selection->get_selected ();
   if (it)
@@ -270,7 +270,7 @@ ReqTreeUIImpl::cb_on_delete (void)
 }
 
 void
-ReqTreeUIImpl::cb_on_paste (void)
+ReqTreeViewImpl::cb_on_paste (void)
 {
   if (!m_clipboard_req)
     {
@@ -287,7 +287,7 @@ ReqTreeUIImpl::cb_on_paste (void)
 }
 
 void
-ReqTreeUIImpl::cb_on_indent (void)
+ReqTreeViewImpl::cb_on_indent (void)
 {
   auto it = m_tree_selection->get_selected ();
   auto req = get_req_from_iter (it);
@@ -311,7 +311,7 @@ ReqTreeUIImpl::cb_on_indent (void)
 }
 
 void
-ReqTreeUIImpl::cb_on_unindent (void)
+ReqTreeViewImpl::cb_on_unindent (void)
 {
   auto it = m_tree_selection->get_selected ();
   auto req = get_req_from_iter (it);
@@ -332,7 +332,7 @@ ReqTreeUIImpl::cb_on_unindent (void)
 }
 
 void
-ReqTreeUIImpl::cb_on_move_up (void)
+ReqTreeViewImpl::cb_on_move_up (void)
 {
   auto it = m_tree_selection->get_selected ();
   auto req = get_req_from_iter (it);
@@ -356,7 +356,7 @@ ReqTreeUIImpl::cb_on_move_up (void)
 }
 
 void
-ReqTreeUIImpl::cb_on_move_down (void)
+ReqTreeViewImpl::cb_on_move_down (void)
 {
   auto it = m_tree_selection->get_selected ();
   auto req = get_req_from_iter (it);
@@ -380,7 +380,7 @@ ReqTreeUIImpl::cb_on_move_down (void)
 }
 
 std::shared_ptr<Requirement>
-ReqTreeUIImpl::get_req_from_iter (Gtk::TreeModel::iterator it)
+ReqTreeViewImpl::get_req_from_iter (Gtk::TreeModel::iterator it)
 {
   ASSERT ((m_req_tree), "Requirement tree model not yet set");
   ASSERT ((it), "Given iterator is invalid");
@@ -391,7 +391,7 @@ ReqTreeUIImpl::get_req_from_iter (Gtk::TreeModel::iterator it)
 }
 
 void
-ReqTreeUIImpl::enable_node_operation (bool state)
+ReqTreeViewImpl::enable_node_operation (bool state)
 {
   m_menu_node_add_sibling->set_sensitive (state);
   m_menu_node_cut->set_sensitive (state);
@@ -405,7 +405,7 @@ ReqTreeUIImpl::enable_node_operation (bool state)
 }
 
 void
-ReqTreeUIImpl::enable_node_manipulation (std::shared_ptr<Requirement> req)
+ReqTreeViewImpl::enable_node_manipulation (std::shared_ptr<Requirement> req)
 {
   ASSERT ((m_req_tree), "Requirement tree model not yet set");
   ASSERT ((req), "Invalid Requirement");
@@ -416,7 +416,7 @@ ReqTreeUIImpl::enable_node_manipulation (std::shared_ptr<Requirement> req)
 }
 
 void
-ReqTreeUIImpl::display (std::shared_ptr<Requirement> req)
+ReqTreeViewImpl::display (std::shared_ptr<Requirement> req)
 {
   ASSERT ((req), "Invalid Requirement");
   m_lbl_node_info_reqid->set_label (req->id ());
@@ -425,23 +425,23 @@ ReqTreeUIImpl::display (std::shared_ptr<Requirement> req)
 }
 
 std::shared_ptr<Requirement>
-ReqTreeUIImpl::get_new (void)
+ReqTreeViewImpl::get_new (void)
 {
-  ASSERT ((m_req_form_ui), "Invalid requirement form UI");
-  if (m_req_form_ui->show () != Gtk::RESPONSE_OK)
+  ASSERT ((m_req_view), "Invalid requirement view");
+  if (m_req_view->show () != Gtk::RESPONSE_OK)
     {
-      m_req_form_ui->hide ();
+      m_req_view->hide ();
       return nullptr;
     }
   /* Create the requirement from the form ui entered fields and add it
      to the local treestore */
-  m_req_form_ui->hide ();
+  m_req_view->hide ();
   return nullptr; /* Has to be fixed */
 }
 
 void
-ReqTreeUIImpl::load_ui_children (std::shared_ptr<Requirement> parent,
-                                 Gtk::TreeModel::iterator parent_iter)
+ReqTreeViewImpl::load_ui_children (std::shared_ptr<Requirement> parent,
+                                   Gtk::TreeModel::iterator parent_iter)
 {
   auto end = parent->children_cend ();
   for (auto it = parent->children_cbegin (); it != end; ++it)

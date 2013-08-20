@@ -11,11 +11,11 @@
 
 #include <boost/filesystem.hpp>
 
-#include "req-form-ui_impl.h"
+#include "req-view_impl.h"
 
 namespace bofs = ::boost::filesystem;
 
-ReqFormUIImpl::ReqFormUIImpl (HLogPtr logger) :
+ReqViewImpl::ReqViewImpl (HLogPtr logger) :
   m_logger (logger)
 {
   bofs::path builder_file (bofs::path (RESOURCE_DIR) /
@@ -37,7 +37,7 @@ ReqFormUIImpl::ReqFormUIImpl (HLogPtr logger) :
 }
 
 int
-ReqFormUIImpl::show (void)
+ReqViewImpl::show (void)
 {
   m_lbl_reqid->set_label ("New");
   m_ent_title->set_text ("");
@@ -46,7 +46,7 @@ ReqFormUIImpl::show (void)
 }
 
 int
-ReqFormUIImpl::show (std::shared_ptr<Requirement> req)
+ReqViewImpl::show (std::shared_ptr<Requirement> req)
 {
   m_lbl_reqid->set_label (req->id ());
   m_ent_title->set_text (req->title ());
@@ -55,13 +55,13 @@ ReqFormUIImpl::show (std::shared_ptr<Requirement> req)
 }
 
 std::string
-ReqFormUIImpl::title (void)
+ReqViewImpl::title (void)
 {
   return m_ent_title->get_text ();
 }
 
 std::string
-ReqFormUIImpl::description (void)
+ReqViewImpl::description (void)
 {
   auto start_it = m_tb_description->begin ();
   auto end_it = m_tb_description->end ();
@@ -69,7 +69,7 @@ ReqFormUIImpl::description (void)
 }
 
 void
-ReqFormUIImpl::hide (void)
+ReqViewImpl::hide (void)
 {
   m_dlg_main->hide ();
 }

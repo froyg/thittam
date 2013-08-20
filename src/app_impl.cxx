@@ -22,7 +22,7 @@
 #include "app_impl.h"
 #include "config_impl.h"
 #include "main-view_impl.h"
-#include "req-tree-ui_impl.h"
+#include "req-tree-view_impl.h"
 #include "requirement_impl.h"
 #include "req-tree_impl.h"
 
@@ -183,7 +183,7 @@ AppImpl::create_app_stage1 (void)
   m_ui_builder = Gtk::Builder::create_from_file (builder_file.c_str ());
   m_view_main =
     std::make_shared<MainViewImpl> (m_logger, m_ui_builder, req_tree_factory);
-  m_req_tree_ui = ReqTreeUIImpl::create (m_logger, m_ui_builder);
+  m_req_tree_ui = std::make_shared<ReqTreeViewImpl> (m_logger, m_ui_builder);
 
   m_view_main->signal_close ().connect
     (std::bind (std::mem_fn (&AppImpl::quit), shared_from_this ()));
