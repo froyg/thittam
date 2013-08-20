@@ -68,6 +68,7 @@ private:
   std::shared_ptr<ReqTree> m_req_tree;
   std::shared_ptr<ReqView> m_req_view;
   std::shared_ptr<Requirement> m_clipboard_req;
+  std::shared_ptr<RequirementFactory> m_req_factory;
   bool m_clipboard_duplicate;
   std::unique_ptr<Gtk::TreeView> m_tree_view;
   Glib::RefPtr<Gtk::TreeStore> m_tree_store;

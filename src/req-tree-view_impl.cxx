@@ -10,6 +10,7 @@
 #include <gtkmm.h>
 
 #include "req-tree-view_impl.h"
+#include "requirement_impl.h"
 #include "req-view_impl.h"
 
 ReqTreeViewImpl::ReqTreeViewImpl (HLogPtr logger,
@@ -19,6 +20,7 @@ ReqTreeViewImpl::ReqTreeViewImpl (HLogPtr logger,
 {
   /* create the requirement form UI in order to be used later */
   m_req_view = std::make_shared<ReqViewImpl> (logger);
+  m_req_factory = std::make_shared<RequirementFactoryImpl> (logger);
 
   Gtk::TreeView * tv;
   builder->get_widget ("req-tree-view", tv);
@@ -26,6 +28,11 @@ ReqTreeViewImpl::ReqTreeViewImpl (HLogPtr logger,
 
   m_tree_store = Glib::RefPtr<Gtk::TreeStore>::cast_static
     (builder->get_object ("req-tree-store"));
+
+  /* Get the display labels */
+  builder->get_widget ("lbl-reqid", m_lbl_node_info_reqid);
+  builder->get_widget ("lbl-title", m_lbl_node_info_title);
+  builder->get_widget ("lbl-description", m_lbl_node_info_description);
 
   /* signals related to TreeView */
   m_tree_view->signal_button_press_event ().connect
@@ -435,8 +442,10 @@ ReqTreeViewImpl::get_new (void)
     }
   /* Create the requirement from the form ui entered fields and add it
      to the local treestore */
+  auto req = m_req_factory->create (m_req_view->title (),
+                                    m_req_view->description ());
   m_req_view->hide ();
-  return nullptr; /* Has to be fixed */
+  return req; /* Has to be fixed */
 }
 
 void
