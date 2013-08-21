@@ -104,7 +104,7 @@ ReqTreeViewImpl::ReqTreeViewImpl (HLogPtr logger,
     (sigc::mem_fun (this, &ReqTreeViewImpl::cb_on_move_up));
 
   builder->get_widget ("tb-down", m_tb_node_down);
-  m_tb_node_up->signal_clicked ().connect
+  m_tb_node_down->signal_clicked ().connect
     (sigc::mem_fun (this, &ReqTreeViewImpl::cb_on_move_down));
 
   /* Set the initial menu state */
