@@ -31,11 +31,13 @@ public:
   }
 
   std::string add_child (std::shared_ptr<Requirement> parent,
-                         std::shared_ptr<Requirement> new_req,
-                         bool duplicate=false);
+                         std::shared_ptr<Requirement> new_req);
   std::string add_sibling (std::shared_ptr<Requirement> sibling,
-                           std::shared_ptr<Requirement> new_req,
-                           bool duplicate=false);
+                           std::shared_ptr<Requirement> new_req);
+  std::shared_ptr<Requirement> add_duplicate_child (
+    std::shared_ptr<Requirement> parent, std::shared_ptr<Requirement> child);
+
+
   void detach (std::shared_ptr<Requirement> node);
 
   bool is_first_child (std::shared_ptr<const Requirement> req) const;

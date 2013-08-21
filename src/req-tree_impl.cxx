@@ -21,20 +21,11 @@ ReqTreeImpl::ReqTreeImpl (HLogPtr logger,
 
 std::string
 ReqTreeImpl::add_child (std::shared_ptr<Requirement> parent,
-                        std::shared_ptr<Requirement> child,
-                        bool duplicate)
+                        std::shared_ptr<Requirement> child)
 {
-  std::shared_ptr<Requirement> real_child (child);
-  if (duplicate == true)
-    {
-      real_child = duplicate_tree (child);
-    }
-  else
-    {
-      /* Here we assume that the child will not have children */
-      real_child->set_id (next_id ());
-    }
-  add_to_req_id_map (real_child);
+  /* Here we assume that the child will not have children */
+  child->set_id (next_id ());
+  add_to_req_id_map (child);
 
   std::shared_ptr<Requirement> real_parent (parent);
   if (!real_parent)
@@ -46,37 +37,44 @@ ReqTreeImpl::add_child (std::shared_ptr<Requirement> parent,
   child->set_parent (real_parent);
   children->push_back (child);
   set_dirty_noisily ();
-  return real_child->id ();
+  return child->id ();
 }
 
 std::string
 ReqTreeImpl::add_sibling (std::shared_ptr<Requirement> sibling,
-                          std::shared_ptr<Requirement> new_req,
-                          bool duplicate)
+                          std::shared_ptr<Requirement> new_sibling)
 {
   auto parent = sibling->parent ();
-  std::shared_ptr<Requirement> real_child (new_req);
-  if (duplicate == true)
-    {
-      real_child = duplicate_tree (new_req);
-    }
-  else
-    {
-      /* Here we assume that the child will not have children */
-      real_child->set_id (next_id ());
-    }
-  add_to_req_id_map (real_child);
+  /* Here we assume that the new_sibling will not have children */
+  new_sibling->set_id (next_id ());
+  add_to_req_id_map (new_sibling);
 
   auto children = parent->children ();
   auto pos = std::find (children->begin (), children->end (), sibling);
   ASSERT ((pos != children->end ()), "sibling=%s not a child of %s",
           sibling->id ().c_str (), parent->id ().c_str ());
   pos ++;
-  real_child->set_parent (parent);
-  children->insert (pos, real_child);
+  new_sibling->set_parent (parent);
+  children->insert (pos, new_sibling);
   set_dirty_noisily ();
-  return real_child->id ();
+  return new_sibling->id ();
 }
+
+std::shared_ptr<Requirement>
+ReqTreeImpl::add_duplicate_child (std::shared_ptr<Requirement> parent,
+                                  std::shared_ptr<Requirement> child)
+{
+  /* Here we assume that the child can have children */
+  auto duplicate_child = duplicate_tree (child);
+  add_to_req_id_map (duplicate_child);
+
+  auto children = parent->children ();
+  duplicate_child->set_parent (parent);
+  children->push_back (duplicate_child);
+  set_dirty_noisily ();
+  return duplicate_child;
+}
+
 
 void
 ReqTreeImpl::detach (std::shared_ptr<Requirement> node)

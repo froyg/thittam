@@ -211,7 +211,7 @@ ReqTreeViewImpl::cb_on_add_child (void)
     {
       row = *(m_tree_store->append ());
     }
-  row.set_value (0, m_req_tree->add_child (sel_req, new_req, false));
+  row.set_value (0, m_req_tree->add_child (sel_req, new_req));
   row.set_value (1, new_req->title ());
 }
 
@@ -237,7 +237,7 @@ ReqTreeViewImpl::cb_on_add_sibling (void)
     {
       row = *(m_tree_store->append ());
     }
-  row.set_value (0, m_req_tree->add_sibling (sel_req, new_req, false));
+  row.set_value (0, m_req_tree->add_sibling (sel_req, new_req));
   row.set_value (1, new_req->title ());
 }
 
@@ -251,6 +251,8 @@ ReqTreeViewImpl::cb_on_cut (void)
       m_req_tree->detach (m_clipboard_req);
       m_clipboard_duplicate = false;
       m_tree_store->erase (it);
+      m_menu_node_paste->set_sensitive (true);
+      m_tb_node_paste->set_sensitive (true);
     }
 }
 
@@ -262,6 +264,8 @@ ReqTreeViewImpl::cb_on_copy (void)
     {
       m_clipboard_req = get_req_from_iter (it);
       m_clipboard_duplicate = true;
+      m_menu_node_paste->set_sensitive (true);
+      m_tb_node_paste->set_sensitive (true);
     }
 }
 
@@ -285,12 +289,23 @@ ReqTreeViewImpl::cb_on_paste (void)
     }
   auto it = m_tree_selection->get_selected ();
   auto parent_req = get_req_from_iter (it);
-  m_req_tree->add_child (parent_req, m_clipboard_req, m_clipboard_duplicate);
+  std::shared_ptr<Requirement> paste_req (m_clipboard_req);
+  if (m_clipboard_duplicate)
+    {
+      paste_req = m_req_tree->add_duplicate_child (parent_req, m_clipboard_req);
+    }
+  else
+    {
+      m_req_tree->add_child (parent_req, m_clipboard_req);
+      m_menu_node_paste->set_sensitive (false);
+      m_tb_node_paste->set_sensitive (false);
+      m_clipboard_req.reset ();
+    }
   auto new_it = m_tree_store->append (it->children ());
   Gtk::TreeModel::Row row = *new_it;
-  row.set_value (0, m_clipboard_req->id ());
-  row.set_value (1, m_clipboard_req->title ());
-  load_ui_children (m_clipboard_req, new_it);
+  row.set_value (0, paste_req->id ());
+  row.set_value (1, paste_req->title ());
+  load_ui_children (paste_req, new_it);
 }
 
 void
@@ -403,12 +418,20 @@ ReqTreeViewImpl::enable_node_operation (bool state)
   m_menu_node_add_sibling->set_sensitive (state);
   m_menu_node_cut->set_sensitive (state);
   m_menu_node_copy->set_sensitive (state);
-  m_menu_node_paste->set_sensitive (state);
   m_menu_node_delete->set_sensitive (state);
   m_tb_node_cut->set_sensitive (state);
   m_tb_node_copy->set_sensitive (state);
-  m_tb_node_paste->set_sensitive (state);
   m_tb_node_delete->set_sensitive (state);
+  if ((state) && (m_clipboard_req))
+    {
+      m_menu_node_paste->set_sensitive (state);
+      m_tb_node_paste->set_sensitive (state);
+    }
+  else
+    {
+      m_menu_node_paste->set_sensitive (false);
+      m_tb_node_paste->set_sensitive (false);
+    }
 }
 
 void

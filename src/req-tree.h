@@ -29,16 +29,20 @@ public:
   virtual signal_tree_dirty_t & signal_tree_dirty (void) = 0;
 
   /* Add the given child to the parent node. If parent node is nullptr
-   * then add it to the root node. If duplicate is true re-number the
-   * reqid's in the given child node tree and return the new reqid. */
+   * then add it to the root node. */
   virtual std::string add_child (
     std::shared_ptr<Requirement> parent,
-    std::shared_ptr<Requirement> new_req,
-    bool duplicate=false) = 0;
+    std::shared_ptr<Requirement> new_req) = 0;
   virtual std::string add_sibling (
     std::shared_ptr<Requirement> sibling,
-    std::shared_ptr<Requirement> new_req,
-    bool duplicate=false) = 0;
+    std::shared_ptr<Requirement> new_req) = 0;
+
+  /* Renumber ID's of child requirement recursively and it to the
+   * given parent and return the newly created child requirement's
+   * shared pointer */
+  virtual std::shared_ptr<Requirement> add_duplicate_child (
+    std::shared_ptr<Requirement> parent,
+    std::shared_ptr<Requirement> child) = 0;
 
   /* Detach the given node and its sub-tree from the ReqTree */
   virtual void detach (std::shared_ptr<Requirement> node) = 0;
