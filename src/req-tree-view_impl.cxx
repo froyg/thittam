@@ -324,6 +324,12 @@ ReqTreeViewImpl::cb_on_indent (void)
   row.set_value (1, req->title ());
   /* Load the sub-nodes of it, if any */
   load_ui_children (req, new_it);
+  /* If the 'it' was in closed state or if there was no previous
+   * children for it, when we indent and try to select the new
+   * indented node it won't work. so we expand the parent of the
+   * indented node */
+  auto path = m_tree_store->get_path (it);
+  m_tree_view->expand_row (path, false);
   /* As the iterator have been changed get the selected iter again and
      remove it from the tree-store */
   it = m_tree_selection->get_selected ();
