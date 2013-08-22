@@ -248,6 +248,7 @@ ReqTreeImpl::duplicate_tree (std::shared_ptr<const Requirement> node)
     {
       auto child = *it;
       auto new_child = duplicate_tree (child);
+      new_child->set_parent (new_node);
       children->push_back (new_child);
     }
   return new_node;
