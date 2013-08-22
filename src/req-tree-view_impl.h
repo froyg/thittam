@@ -30,11 +30,7 @@ public:
   ~ReqTreeViewImpl () {}
 
   /* -------- methods needed by interface -------- */
-  void load (std::shared_ptr<ReqTree> req_tree)
-  {
-    Log_D1 << "load: Not yet implemented";
-    m_req_tree = req_tree;
-  }
+  void load (std::shared_ptr<ReqTree> req_tree);
 
 private:
   /* Gtk signal callback handlers */

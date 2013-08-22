@@ -125,6 +125,23 @@ ReqTreeViewImpl::ReqTreeViewImpl (HLogPtr logger,
 }
 
 void
+ReqTreeViewImpl::load (std::shared_ptr<ReqTree> req_tree)
+{
+  m_req_tree = req_tree;
+  m_tree_store->clear ();
+  auto root_req = req_tree->root ();
+  auto end = root_req->children_cend ();
+  for (auto it = root_req->children_cbegin (); it != end; ++it)
+    {
+      auto tree_iter = m_tree_store->append ();
+      Gtk::TreeModel::Row row = *tree_iter;
+      row.set_value (0, (*it)->id ());
+      row.set_value (1, (*it)->title ());
+      load_ui_children (*it, tree_iter);
+    }
+}
+
+void
 ReqTreeViewImpl::cb_on_row_selected (void)
 {
   auto it = m_tree_selection->get_selected ();
