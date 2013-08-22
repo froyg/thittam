@@ -11,6 +11,7 @@
 #define HIPRO_THITTAM__a0055c6a_00db_11e3_ae98_68a3c42125fd
 
 #include <memory>
+#include <string>
 
 #include <boost/signals2.hpp>
 
@@ -30,13 +31,14 @@ public:
     return m_signal_tree_dirty;
   }
 
+  std::string add_new_child (std::shared_ptr<Requirement> parent,
+                             std::shared_ptr<Requirement> new_req);
+  std::string add_new_sibling (std::shared_ptr<Requirement> sibling,
+                               std::shared_ptr<Requirement> new_req);
   std::string add_child (std::shared_ptr<Requirement> parent,
-                         std::shared_ptr<Requirement> new_req);
-  std::string add_sibling (std::shared_ptr<Requirement> sibling,
-                           std::shared_ptr<Requirement> new_req);
+                         std::shared_ptr<Requirement> req);
   std::shared_ptr<Requirement> add_duplicate_child (
     std::shared_ptr<Requirement> parent, std::shared_ptr<Requirement> child);
-
 
   void detach (std::shared_ptr<Requirement> node);
 
@@ -91,7 +93,7 @@ private:
   bool m_dirty;
   std::shared_ptr<Requirement> m_root;
 
-  typedef std::map< std::string, std::shared_ptr<Requirement> > req_id_map_t;
+  typedef std::map< const std::string, std::shared_ptr<Requirement> > req_id_map_t;
   req_id_map_t m_req_id_map;
 };
 

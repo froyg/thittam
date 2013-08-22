@@ -43,16 +43,16 @@ protected:
 TEST_F (ReqTreeTest, SimpleChildAddToRoot)
 {
   auto req1 = m_req_factory->create ("1", "1", "1");
-  m_req_tree->add_child (nullptr, req1);
-  EXPECT_EQ (m_req_tree->get ("1"), req1);
+  auto reqid1 = m_req_tree->add_new_child (nullptr, req1);
+  EXPECT_EQ (m_req_tree->get (reqid1), req1);
 }
 
 TEST_F (ReqTreeTest, FirstChild)
 {
   auto req1 = m_req_factory->create ("1", "1", "1");
-  m_req_tree->add_child (nullptr, req1);
+  m_req_tree->add_new_child (nullptr, req1);
   auto req2 = m_req_factory->create ("2", "2", "2");
-  m_req_tree->add_child (req1, req2);
+  m_req_tree->add_new_child (req1, req2);
   EXPECT_TRUE (m_req_tree->is_first_child (req1));
   EXPECT_TRUE (m_req_tree->is_first_child (req2));
 }
@@ -60,9 +60,9 @@ TEST_F (ReqTreeTest, FirstChild)
 TEST_F (ReqTreeTest, LastChild)
 {
   auto req1 = m_req_factory->create ("1", "1", "1");
-  m_req_tree->add_child (nullptr, req1);
+  m_req_tree->add_new_child (nullptr, req1);
   auto req2 = m_req_factory->create ("2", "2", "2");
-  m_req_tree->add_child (req1, req2);
+  m_req_tree->add_new_child (req1, req2);
   EXPECT_TRUE (m_req_tree->is_last_child (req1));
   EXPECT_TRUE (m_req_tree->is_last_child (req2));
 }
@@ -70,9 +70,9 @@ TEST_F (ReqTreeTest, LastChild)
 TEST_F (ReqTreeTest, TopLevel)
 {
   auto req1 = m_req_factory->create ("1", "1", "1");
-  m_req_tree->add_child (nullptr, req1);
+  m_req_tree->add_new_child (nullptr, req1);
   auto req2 = m_req_factory->create ("2", "2", "2");
-  m_req_tree->add_child (req1, req2);
+  m_req_tree->add_new_child (req1, req2);
   EXPECT_TRUE (m_req_tree->is_top_level (req1));
   EXPECT_FALSE (m_req_tree->is_top_level (req2));
 }
@@ -80,13 +80,13 @@ TEST_F (ReqTreeTest, TopLevel)
 TEST_F (ReqTreeTest, Siblings)
 {
   auto req1 = m_req_factory->create ("1", "1", "1");
-  m_req_tree->add_child (nullptr, req1);
+  m_req_tree->add_new_child (nullptr, req1);
   auto req2 = m_req_factory->create ("2", "2", "2");
-  m_req_tree->add_sibling (req1, req2);
+  m_req_tree->add_new_sibling (req1, req2);
   auto req3 = m_req_factory->create ("2.1", "2.1", "2.1");
-  m_req_tree->add_child (req2, req3);
+  m_req_tree->add_new_child (req2, req3);
   auto req4 = m_req_factory->create ("2.2", "2.2", "2.2");
-  m_req_tree->add_child (req2, req4);
+  m_req_tree->add_new_child (req2, req4);
   EXPECT_TRUE (m_req_tree->is_first_child (req1));
   EXPECT_TRUE (m_req_tree->is_last_child (req2));
   EXPECT_TRUE (m_req_tree->is_first_child (req3));
@@ -96,17 +96,17 @@ TEST_F (ReqTreeTest, Siblings)
 TEST_F (ReqTreeTest, UpChild)
 {
   auto req1 = m_req_factory->create ("1", "1", "1");
-  m_req_tree->add_child (nullptr, req1);
+  m_req_tree->add_new_child (nullptr, req1);
   auto req2 = m_req_factory->create ("2", "2", "2");
-  m_req_tree->add_sibling (req1, req2);
+  m_req_tree->add_new_sibling (req1, req2);
   auto req3 = m_req_factory->create ("2.1", "2.1", "2.1");
-  m_req_tree->add_child (req2, req3);
+  m_req_tree->add_new_child (req2, req3);
   auto req4 = m_req_factory->create ("2.2", "2.2", "2.2");
-  m_req_tree->add_child (req2, req4);
+  m_req_tree->add_new_child (req2, req4);
   m_req_tree->up_child (req4);
   EXPECT_TRUE (m_req_tree->is_first_child (req4));
   auto req5 = m_req_factory->create ("3", "3", "3");
-  m_req_tree->add_child (nullptr, req5);
+  m_req_tree->add_new_child (nullptr, req5);
   EXPECT_TRUE (m_req_tree->is_last_child (req5));
   m_req_tree->up_child (req5);
   EXPECT_FALSE (m_req_tree->is_last_child (req5));
@@ -115,15 +115,15 @@ TEST_F (ReqTreeTest, UpChild)
 TEST_F (ReqTreeTest, DownChild)
 {
   auto req1 = m_req_factory->create ("1", "1", "1");
-  m_req_tree->add_child (nullptr, req1);
+  m_req_tree->add_new_child (nullptr, req1);
   auto req2 = m_req_factory->create ("2", "2", "2");
-  m_req_tree->add_sibling (req1, req2);
+  m_req_tree->add_new_sibling (req1, req2);
   auto req5 = m_req_factory->create ("3", "3", "3");
-  m_req_tree->add_child (nullptr, req5);
+  m_req_tree->add_new_child (nullptr, req5);
   auto req3 = m_req_factory->create ("2.1", "2.1", "2.1");
-  m_req_tree->add_child (req2, req3);
+  m_req_tree->add_new_child (req2, req3);
   auto req4 = m_req_factory->create ("2.2", "2.2", "2.2");
-  m_req_tree->add_child (req2, req4);
+  m_req_tree->add_new_child (req2, req4);
   m_req_tree->down_child (req3);
   EXPECT_TRUE (m_req_tree->is_last_child (req3));
   EXPECT_TRUE (m_req_tree->is_last_child (req5));
@@ -135,13 +135,13 @@ TEST_F (ReqTreeTest, DownChild)
 TEST_F (ReqTreeTest, UpLevel)
 {
   auto req1 = m_req_factory->create ("1", "1", "1");
-  m_req_tree->add_child (nullptr, req1);
+  m_req_tree->add_new_child (nullptr, req1);
   auto req2 = m_req_factory->create ("2", "2", "2");
-  m_req_tree->add_sibling (req1, req2);
+  m_req_tree->add_new_sibling (req1, req2);
   auto req3 = m_req_factory->create ("2.1", "2.1", "2.1");
-  m_req_tree->add_child (req2, req3);
+  m_req_tree->add_new_child (req2, req3);
   auto req4 = m_req_factory->create ("2.2", "2.2", "2.2");
-  m_req_tree->add_child (req2, req4);
+  m_req_tree->add_new_child (req2, req4);
   m_req_tree->up_level (req3);
   EXPECT_TRUE (m_req_tree->is_first_child (req4));
   EXPECT_TRUE (m_req_tree->is_last_child (req4));
@@ -151,13 +151,13 @@ TEST_F (ReqTreeTest, UpLevel)
 TEST_F (ReqTreeTest, DownLevel)
 {
  auto req1 = m_req_factory->create ("1", "1", "1");
-  m_req_tree->add_child (nullptr, req1);
+  m_req_tree->add_new_child (nullptr, req1);
   auto req2 = m_req_factory->create ("2", "2", "2");
-  m_req_tree->add_sibling (req1, req2);
+  m_req_tree->add_new_sibling (req1, req2);
   auto req3 = m_req_factory->create ("2.1", "2.1", "2.1");
-  m_req_tree->add_child (req2, req3);
+  m_req_tree->add_new_child (req2, req3);
   auto req4 = m_req_factory->create ("2.2", "2.2", "2.2");
-  m_req_tree->add_child (req2, req4);
+  m_req_tree->add_new_child (req2, req4);
   m_req_tree->down_level (req4);
   m_req_tree->down_level (req2);
   EXPECT_TRUE (m_req_tree->is_first_child (req4));

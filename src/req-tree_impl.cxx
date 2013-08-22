@@ -20,29 +20,17 @@ ReqTreeImpl::ReqTreeImpl (HLogPtr logger,
 }
 
 std::string
-ReqTreeImpl::add_child (std::shared_ptr<Requirement> parent,
-                        std::shared_ptr<Requirement> child)
+ReqTreeImpl::add_new_child (std::shared_ptr<Requirement> parent,
+                            std::shared_ptr<Requirement> child)
 {
   /* Here we assume that the child will not have children */
   child->set_id (next_id ());
-  add_to_req_id_map (child);
-
-  std::shared_ptr<Requirement> real_parent (parent);
-  if (!real_parent)
-    {
-      real_parent = m_root;
-    }
-
-  auto children = real_parent->children ();
-  child->set_parent (real_parent);
-  children->push_back (child);
-  set_dirty_noisily ();
-  return child->id ();
+  return add_child (parent, child);
 }
 
 std::string
-ReqTreeImpl::add_sibling (std::shared_ptr<Requirement> sibling,
-                          std::shared_ptr<Requirement> new_sibling)
+ReqTreeImpl::add_new_sibling (std::shared_ptr<Requirement> sibling,
+                              std::shared_ptr<Requirement> new_sibling)
 {
   auto parent = sibling->parent ();
   /* Here we assume that the new_sibling will not have children */
@@ -58,6 +46,25 @@ ReqTreeImpl::add_sibling (std::shared_ptr<Requirement> sibling,
   children->insert (pos, new_sibling);
   set_dirty_noisily ();
   return new_sibling->id ();
+}
+
+std::string
+ReqTreeImpl::add_child (std::shared_ptr<Requirement> parent,
+                        std::shared_ptr<Requirement> child)
+{
+  add_to_req_id_map (child);
+
+  std::shared_ptr<Requirement> real_parent (parent);
+  if (!real_parent)
+    {
+      real_parent = m_root;
+    }
+
+  auto children = real_parent->children ();
+  child->set_parent (real_parent);
+  children->push_back (child);
+  set_dirty_noisily ();
+  return child->id ();
 }
 
 std::shared_ptr<Requirement>
@@ -249,6 +256,9 @@ ReqTreeImpl::duplicate_tree (std::shared_ptr<const Requirement> node)
 void
 ReqTreeImpl::add_to_req_id_map (std::shared_ptr<Requirement> req)
 {
+  /* The req should have a valid reqid */
+  ASSERT ((!req->id ().empty ()), "Requirement::id is empty");
+
   m_req_id_map[req->id ()] = req;
   auto end = req->children_cend ();
   for (auto it = req->children_cbegin (); it != end; ++it)

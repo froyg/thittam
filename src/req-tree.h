@@ -29,13 +29,21 @@ public:
   virtual signal_tree_dirty_t & signal_tree_dirty (void) = 0;
 
   /* Add the given child to the parent node. If parent node is nullptr
-   * then add it to the root node. */
-  virtual std::string add_child (
+   * then add it to the root node. These methods generate a new reqid
+   * and set it in the 'new_req'. */
+  virtual std::string add_new_child (
     std::shared_ptr<Requirement> parent,
     std::shared_ptr<Requirement> new_req) = 0;
-  virtual std::string add_sibling (
+  virtual std::string add_new_sibling (
     std::shared_ptr<Requirement> sibling,
     std::shared_ptr<Requirement> new_req) = 0;
+
+  /* Add the given child to the parent node. If parent node is nullptr
+   * then add it to the root node. This method assumes that the given
+   * Requirement object has a valid reqid. */
+  virtual std::string add_child (
+    std::shared_ptr<Requirement> parent,
+    std::shared_ptr<Requirement> req) = 0;
 
   /* Renumber ID's of child requirement recursively and it to the
    * given parent and return the newly created child requirement's

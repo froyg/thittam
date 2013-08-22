@@ -211,7 +211,7 @@ ReqTreeViewImpl::cb_on_add_child (void)
     {
       row = *(m_tree_store->append ());
     }
-  row.set_value (0, m_req_tree->add_child (sel_req, new_req));
+  row.set_value (0, m_req_tree->add_new_child (sel_req, new_req));
   row.set_value (1, new_req->title ());
 }
 
@@ -237,7 +237,7 @@ ReqTreeViewImpl::cb_on_add_sibling (void)
     {
       row = *(m_tree_store->append ());
     }
-  row.set_value (0, m_req_tree->add_sibling (sel_req, new_req));
+  row.set_value (0, m_req_tree->add_new_sibling (sel_req, new_req));
   row.set_value (1, new_req->title ());
 }
 
