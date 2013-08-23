@@ -14,6 +14,7 @@
 #include <string>
 
 #include <boost/signals2.hpp>
+#include <boost/property_tree/ptree.hpp>
 
 #include "common.h"
 #include "req-tree.h"
@@ -83,6 +84,8 @@ private:
   void add_to_req_id_map (std::shared_ptr<Requirement> req);
   void remove_from_req_id_map (std::shared_ptr<Requirement> req);
   void set_dirty_noisily (void);
+  void serialize_tree (std::shared_ptr<Requirement> node,
+                       boost::property_tree::ptree * req_ptree);
 
 private:
   HLogPtr m_logger;

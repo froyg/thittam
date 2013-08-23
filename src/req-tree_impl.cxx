@@ -7,6 +7,8 @@
  * distribution or for further clarifications, please contact
  * legal@hipro.co.in. */
 
+#include <boost/property_tree/json_parser.hpp>
+
 #include "req-tree_impl.h"
 
 ReqTreeImpl::ReqTreeImpl (HLogPtr logger,
@@ -304,8 +306,26 @@ ReqTreeImpl::load (const std::ifstream & file)
 std::string
 ReqTreeImpl::serialize (void)
 {
-  ASSERT ((false), "not implemented");
-  return "";
+  boost::property_tree::ptree pt;
+  pt.put ("last-id", m_last_id);
+  boost::property_tree::ptree req_array;
+  serialize_tree (m_root, &req_array);
+  pt.put_child ("requirements", req_array);
+  std::stringstream ss;
+  boost::property_tree::write_json (ss, pt);
+  return ss.str();
+}
+
+void
+ReqTreeImpl::serialize_tree (std::shared_ptr<Requirement> node,
+                             boost::property_tree::ptree * req_array)
+{
+  req_array->push_back (std::make_pair ("", node->dump ()));
+  auto end = node->children_cend ();
+  for (auto it = node->children_cbegin (); it != end; ++it)
+    {
+      serialize_tree (*it, req_array);
+    }
 }
 
 /*
