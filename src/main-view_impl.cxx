@@ -11,6 +11,7 @@
 
 #include "main-view_impl.h"
 
+namespace bofs = ::boost::filesystem;
 
 MainViewImpl::MainViewImpl (HLogPtr logger,
                             Glib::RefPtr<Gtk::Builder> builder,
@@ -105,20 +106,67 @@ MainViewImpl::cb_on_file_open (void)
   if (ret == Gtk::RESPONSE_OK)
     {
       m_file_name = dlg.get_filename ();
-      /* todo: continue here */
+      std::ifstream fs (m_file_name);
+      m_req_tree->load (fs);
+      update_title ();
     }
 }
 
 void
 MainViewImpl::cb_on_file_save (void)
 {
-
+  std::ofstream fs;
+  if (!m_file_name.empty ())
+    {
+      Gtk::FileChooserDialog dlg
+        (*m_window, "Open file", Gtk::FILE_CHOOSER_ACTION_OPEN);
+      dlg.add_button (Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+      dlg.add_button (Gtk::Stock::OPEN, Gtk::RESPONSE_OK);
+      dlg.set_current_name("Untitled");
+      auto ret = dlg.run ();
+      if (ret == Gtk::RESPONSE_OK)
+        {
+          bofs::path fp (dlg.get_filename ());
+          fp.replace_extension (".thm");
+          m_file_name = fp.c_str ();
+        }
+      else
+        {
+          return;
+        }
+    }
+  fs.open (m_file_name);
+  auto data = m_req_tree->serialize ();
+  fs.write (data.c_str (), data.size ());
+  m_req_tree->clear_dirty ();
+  update_title ();
 }
 
 void
 MainViewImpl::cb_on_file_save_as (void)
 {
-
+  Gtk::FileChooserDialog dlg
+    (*m_window, "Open file", Gtk::FILE_CHOOSER_ACTION_OPEN);
+  dlg.add_button (Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+  dlg.add_button (Gtk::Stock::OPEN, Gtk::RESPONSE_OK);
+  auto file_name = m_file_name;
+  if (file_name.empty ())
+    {
+      file_name = "Untitled";
+    }
+  dlg.set_filename (file_name);
+  auto ret = dlg.run ();
+  if (ret == Gtk::RESPONSE_OK)
+    {
+      bofs::path fp (dlg.get_filename ());
+      fp.replace_extension (".thm");
+      m_file_name = fp.c_str ();
+      std::ofstream fs (m_file_name);
+      auto data = m_req_tree->serialize ();
+      fs.write (data.c_str (), data.size ());
+      m_req_tree->clear_dirty ();
+      update_title ();
+    }
 }
 
 void
