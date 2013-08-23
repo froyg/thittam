@@ -57,6 +57,7 @@ MainViewImpl::MainViewImpl (HLogPtr logger,
   m_req_tree = m_req_tree_factory->create ();
   m_req_tree_view->load (m_req_tree);
 
+  update_title ();
   m_window->show ();
 }
 
@@ -116,7 +117,7 @@ void
 MainViewImpl::cb_on_file_save (void)
 {
   std::ofstream fs;
-  if (!m_file_name.empty ())
+  if (m_file_name.empty ())
     {
       Gtk::FileChooserDialog dlg
         (*m_window, "Open file", Gtk::FILE_CHOOSER_ACTION_OPEN);
