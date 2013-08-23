@@ -76,6 +76,23 @@ public:
     return m_depends.cend ();
   }
 
+  boost::property_tree::ptree dump (void)
+  {
+    boost::property_tree::ptree pt;
+    pt.put ("reqid", m_id);
+    pt.put ("title", m_title);
+    pt.put ("description", m_description);
+    for (auto req : m_children)
+      {
+        pt.add ("children", req->id ());
+      }
+    for (auto req : m_depends)
+      {
+        pt.add ("depends", req->id ());
+      }
+    return pt;
+  }
+
   void set_id (const std::string & id)
   {
     m_id = id;

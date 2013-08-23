@@ -13,6 +13,8 @@
 #include <memory>
 #include <string>
 
+#include <boost/property_tree/ptree.hpp>
+
 class Requirement
 {
 public:
@@ -32,6 +34,8 @@ public:
   virtual requirement_list_t::const_iterator children_cend (void) const = 0;
   virtual requirement_list_t::const_iterator depends_cbegin (void) const = 0;
   virtual requirement_list_t::const_iterator depends_cend (void) const = 0;
+
+  virtual boost::property_tree::ptree dump (void) = 0;
 
   /*--- Interface for ReqTree ---*/
   virtual void set_id (const std::string & id) = 0;
