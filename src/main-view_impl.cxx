@@ -207,7 +207,21 @@ MainViewImpl::confirm_data_discard (void)
 void
 MainViewImpl::update_title (void)
 {
-
+  std::string file_name = "Untitled";;
+  if (!m_file_name.empty ())
+    {
+      file_name = bofs::path (m_file_name).stem ().c_str ();
+    }
+  std::stringstream ss;
+  if (m_req_tree->is_dirty ())
+    {
+      ss << "Thittam [*" << file_name << "]";
+    }
+  else
+    {
+      ss << "Thittam [" << file_name << "]";
+    }
+  m_window->set_title (ss.str ());
 }
 
 
