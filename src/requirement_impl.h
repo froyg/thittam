@@ -82,14 +82,21 @@ public:
     pt.put ("reqid", m_id);
     pt.put ("title", m_title);
     pt.put ("description", m_description);
+    boost::property_tree::ptree child_array;
     for (auto req : m_children)
       {
-        pt.add ("children", req->id ());
+        child_array.push_back
+          (std::make_pair ("", boost::property_tree::ptree(req->id ())));
       }
+    pt.put_child ("children", child_array);
+
+    boost::property_tree::ptree depend_array;
     for (auto req : m_depends)
       {
-        pt.add ("depends", req->id ());
+        depend_array.push_back
+          (std::make_pair ("", boost::property_tree::ptree(req->id ())));
       }
+    pt.put_child ("depends", depend_array);
     return pt;
   }
 
