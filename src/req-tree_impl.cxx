@@ -294,13 +294,74 @@ ReqTreeImpl::set_dirty_noisily (void)
 void
 ReqTreeImpl::load (const std::string & data)
 {
-  ASSERT ((false), "not implemented");
+  /* Clear/overwrite the old values */
+  m_root = m_req_factory->create ("root", "root", "root");
+  m_req_id_map.clear ();
+  m_dirty = false;
+
+  boost::property_tree::ptree pt;
+  std::stringstream ss (data);
+  boost::property_tree::read_json (ss, pt);
+  m_last_id = pt.get<int> ("last-id");
+  auto req_array = pt.get_child ("requirements");
+  auto root_ptree = get_req_ptree (req_array, "root");
+  load_children (m_root, root_ptree, req_array);
 }
 
 void
-ReqTreeImpl::load (const std::ifstream & file)
+ReqTreeImpl::load (std::ifstream & file)
 {
-  ASSERT ((false), "not implemented");
+  std::string data, line;
+  while (std::getline (file, line))
+    {
+      data += line;
+    }
+  load (data);
+}
+
+boost::property_tree::ptree
+ReqTreeImpl::get_req_ptree (boost::property_tree::ptree & req_ptree_array,
+                            const std::string & reqid)
+{
+  auto end = req_ptree_array.end ();
+  for (auto it = req_ptree_array.begin (); it != end; ++it)
+    {
+      /* req_ptree_array is an array containing of std::pair so, in
+       * order to access the req ptree element we get the second item
+       * of the pair */
+      auto req = it->second;
+      if (req.get<std::string> ("reqid") == reqid)
+        {
+          return req;
+        }
+    }
+  ASSERT ((false), "Requirement=%s not found", reqid.c_str ());
+}
+
+void
+ReqTreeImpl::load_children (std::shared_ptr<Requirement> parent,
+                            boost::property_tree::ptree & parent_data,
+                            boost::property_tree::ptree & req_ptree_array)
+{
+  auto child_array = parent_data.get_child ("children");
+
+  auto end = child_array.end ();
+  for (auto it = child_array.begin (); it != end; ++it)
+    {
+      /* access the second element (which is a ptree) from std::pair
+         and get its value referenced by an empty string */
+      auto reqid = it->second.get <std::string> ("");
+      auto child_data = get_req_ptree (req_ptree_array, reqid);
+      auto child = m_req_factory->create (
+        child_data.get <std::string> ("reqid"),
+        child_data.get <std::string> ("title"),
+        child_data.get <std::string> ("description"));
+      auto children = parent->children ();
+      children->push_back (child);
+      child->set_parent (parent);
+      add_to_req_id_map (child);
+      load_children (child, child_data, req_ptree_array);
+    }
 }
 
 std::string

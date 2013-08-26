@@ -73,7 +73,7 @@ public:
   }
 
   void load (const std::string & data);
-  void load (const std::ifstream & file);
+  void load (std::ifstream & file);
   std::string serialize (void);
 
 private:
@@ -86,6 +86,13 @@ private:
   void set_dirty_noisily (void);
   void serialize_tree (std::shared_ptr<Requirement> node,
                        boost::property_tree::ptree * req_ptree);
+  boost::property_tree::ptree get_req_ptree (
+    boost::property_tree::ptree & req_ptree_array, const std::string & reqid);
+  void load_children (
+    std::shared_ptr<Requirement> parent,
+    boost::property_tree::ptree  & parent_data,
+    boost::property_tree::ptree & req_ptree_array);
+
 
 private:
   HLogPtr m_logger;

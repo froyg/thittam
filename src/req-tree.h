@@ -86,7 +86,7 @@ public:
   /* populate the json string data */
   virtual void load (const std::string & data) = 0;
   /* populate the json data from the file handle */
-  virtual void load (const std::ifstream & file) = 0;
+  virtual void load (std::ifstream & file) = 0;
   /* serialize the req-tree into json string */
   virtual std::string serialize (void) = 0;
 

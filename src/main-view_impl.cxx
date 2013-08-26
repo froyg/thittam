@@ -109,6 +109,7 @@ MainViewImpl::cb_on_file_open (void)
       m_file_name = dlg.get_filename ();
       std::ifstream fs (m_file_name);
       m_req_tree->load (fs);
+      m_req_tree_view->load (m_req_tree);
       update_title ();
     }
 }
