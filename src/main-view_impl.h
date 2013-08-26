@@ -50,6 +50,7 @@ private:
   void cb_on_file_save_as (void);
   void cb_on_file_export_all (void);
   void cb_on_file_export_topics (void);
+  void cb_on_tree_dirty (void);
 
   void cb_on_close (void)
   {

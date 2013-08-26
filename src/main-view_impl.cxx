@@ -55,10 +55,18 @@ MainViewImpl::MainViewImpl (HLogPtr logger,
     (sigc::mem_fun (this, &MainViewImpl::cb_on_close));
 
   m_req_tree = m_req_tree_factory->create ();
+  m_req_tree->signal_tree_dirty ().connect
+    (std::bind (std::mem_fn (&MainViewImpl::cb_on_tree_dirty), this));
   m_req_tree_view->load (m_req_tree);
 
   update_title ();
   m_window->show ();
+}
+
+void
+MainViewImpl::cb_on_tree_dirty (void)
+{
+  update_title ();
 }
 
 void
