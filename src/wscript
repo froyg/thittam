@@ -36,6 +36,7 @@ _plib_src_files = [
     "req-tree-view_impl.cxx",
     "req-view_impl.cxx",
     "req-tree_impl.cxx",
+    "latex_impl.cxx",
     ]
 
 _prg_src_files = [

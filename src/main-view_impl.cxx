@@ -10,6 +10,7 @@
 #include <boost/filesystem.hpp>
 
 #include "main-view_impl.h"
+#include "latex_impl.h"
 
 namespace bofs = ::boost::filesystem;
 
@@ -58,6 +59,8 @@ MainViewImpl::MainViewImpl (HLogPtr logger,
   m_req_tree->signal_tree_dirty ().connect
     (std::bind (std::mem_fn (&MainViewImpl::cb_on_tree_dirty), this));
   m_req_tree_view->load (m_req_tree);
+
+  m_latex_generator = std::make_shared<LatexImpl> (m_logger);
 
   update_title ();
   m_window->show ();
@@ -182,7 +185,26 @@ MainViewImpl::cb_on_file_save_as (void)
 void
 MainViewImpl::cb_on_file_export_all (void)
 {
-
+  Gtk::FileChooserDialog dlg
+    (*m_window, "Export all", Gtk::FILE_CHOOSER_ACTION_SAVE);
+  dlg.add_button (Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+  dlg.add_button (Gtk::Stock::OPEN, Gtk::RESPONSE_OK);
+  auto file_name = m_file_name;
+  if (file_name.empty ())
+    {
+      file_name = "Untitled.tex";
+    }
+  dlg.set_filename (file_name);
+  auto ret = dlg.run ();
+  if (ret == Gtk::RESPONSE_OK)
+    {
+      bofs::path fp (dlg.get_filename ());
+      fp.replace_extension (".tex");
+      file_name = fp.c_str ();
+      std::ofstream fs (file_name);
+      m_latex_generator->generate_flat
+        (m_req_tree->root (), "subsubsection", &fs);
+    }
 }
 
 void

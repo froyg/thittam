@@ -20,6 +20,7 @@
 #include "main-view.h"
 #include "req-tree.h"
 #include "req-tree-view.h"
+#include "latex.h"
 
 class MainViewImpl : public MainView
 {
@@ -66,7 +67,7 @@ private:
   std::shared_ptr<ReqTreeFactory> m_req_tree_factory;
   std::shared_ptr<ReqTree> m_req_tree;
   std::shared_ptr<ReqTreeView> m_req_tree_view;
-
+  std::shared_ptr<Latex> m_latex_generator;
   std::string m_file_name;
 
   signal_close_t m_signal_close;
