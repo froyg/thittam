@@ -210,7 +210,25 @@ MainViewImpl::cb_on_file_export_all (void)
 void
 MainViewImpl::cb_on_file_export_topics (void)
 {
-
+  Gtk::FileChooserDialog dlg
+    (*m_window, "Export topics", Gtk::FILE_CHOOSER_ACTION_SAVE);
+  dlg.add_button (Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+  dlg.add_button (Gtk::Stock::OPEN, Gtk::RESPONSE_OK);
+  auto file_name = m_file_name;
+  if (file_name.empty ())
+    {
+      file_name = "Untitled.tex";
+    }
+  dlg.set_filename (file_name);
+  auto ret = dlg.run ();
+  if (ret == Gtk::RESPONSE_OK)
+    {
+      bofs::path fp (dlg.get_filename ());
+      fp.replace_extension (".tex");
+      file_name = fp.c_str ();
+      std::ofstream fs (file_name);
+      m_latex_generator->generate_topic_hierarchy (m_req_tree->root (), &fs);
+    }
 }
 
 bool

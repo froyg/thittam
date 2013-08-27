@@ -22,6 +22,9 @@ const char * REQ_ENTRY_TEMPLATE = \
   "  Depends: & %(depends_links_list) \\\\\n"
   "\\end{tabular}\n\n";
 
+const char * ENUM_ITEM_TEMPLATE = \
+  "  \\item \\hyperref[req:%(reqid)]{%(reqid)}: %(title)\n";
+
 LatexImpl::LatexImpl (HLogPtr logger) :
   m_logger (logger)
 {
@@ -44,7 +47,27 @@ void
 LatexImpl::generate_topic_hierarchy (std::shared_ptr<Requirement> req,
                                      std::ofstream * ofile)
 {
+  std::map<std::string, std::string> params;
+  params["reqid"] = req->id ();
+  params["title"] = req->title ();
+  if (req->id () != "root")
+    {
+      auto data = expand_template (ENUM_ITEM_TEMPLATE, params);
+      ofile->write (data.c_str (), data.size ());
+    }
 
+  std::string be ("\\begin{enumerate}\n");
+  std::string ee ("\\end{enumerate}\n");
+  if (req->children ()->size () > 0)
+    {
+      ofile->write (be.c_str (), be.size ());
+      auto end = req->children_cend ();
+      for (auto it = req->children_cbegin (); it != end; ++it)
+        {
+          generate_topic_hierarchy (*it, ofile);
+        }
+      ofile->write (ee.c_str (), ee.size ());
+    }
 }
 
 void
