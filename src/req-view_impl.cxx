@@ -42,6 +42,7 @@ ReqViewImpl::show (void)
   m_lbl_reqid->set_label ("New");
   m_ent_title->set_text ("");
   m_tb_description->set_text ("");
+  m_ent_title->grab_focus ();
   return m_dlg_main->run ();
 }
 
