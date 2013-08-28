@@ -49,7 +49,7 @@ LatexImpl::generate_topic_hierarchy (std::shared_ptr<Requirement> req,
 {
   std::map<std::string, std::string> params;
   params["reqid"] = req->id ();
-  params["title"] = req->title ();
+  params["title"] = escape_symbols (req->title ());
   if (req->id () != "root")
     {
       auto data = expand_template (ENUM_ITEM_TEMPLATE, params);
@@ -80,8 +80,8 @@ LatexImpl::generator (std::shared_ptr<Requirement> req,
     }
   std::map<std::string, std::string> params;
   params["reqid"] = req->id ();
-  params["title"] = req->title ();
-  params["description"] = req->description ();
+  params["title"] = escape_symbols (req->title ());
+  params["description"] = escape_symbols (req->description ());
 
   auto parent = req->parent ();
   std::string str_plink ("None");
@@ -185,6 +185,40 @@ LatexImpl::expand_template (const std::string & tmpl_str,
       ++it;
     }
   return ss_data.str ();
+}
+
+std::string
+LatexImpl::escape_symbols (const std::string & raw_string)
+{
+  std::stringstream ss;
+  auto it = raw_string.cbegin ();
+  auto end = raw_string.cend ();
+  while (it != end)
+    {
+      if ((*it == '#') || (*it == '$') || (*it == '%') || (*it == '&') ||
+          (*it == '_') || (*it == '{') || (*it == '}'))
+        {
+          ss << '\\' << *it;
+        }
+      else if (*it == '\\')
+        {
+          ss << "\\textbackslash{}";
+        }
+      else if (*it == '^')
+        {
+          ss << "\\textasciicircum{}";
+        }
+      else if (*it == '~')
+        {
+          ss << "\\textasciitilde{}";
+        }
+      else
+        {
+          ss << *it;
+        }
+      ++it;
+    }
+  return ss.str ();
 }
 
 /*

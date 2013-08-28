@@ -45,6 +45,10 @@ private:
     const std::string & templ_str,
     const std::map<std::string, std::string> & params);
 
+  /* Given a string this function escapes all the special characters
+   * which have meaning in LaTex */
+  std::string escape_symbols (const std::string & raw_string);
+
   /* Python equivalent join operation
    * Courtesy: http://stackoverflow.com/a/6098417 */
   template <typename Iter>
