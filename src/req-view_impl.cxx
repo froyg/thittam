@@ -52,6 +52,7 @@ ReqViewImpl::show (std::shared_ptr<Requirement> req)
   m_lbl_reqid->set_label (req->id ());
   m_ent_title->set_text (req->title ());
   m_tb_description->set_text (req->description ());
+  m_ent_title->grab_focus ();
   return m_dlg_main->run ();
 }
 
