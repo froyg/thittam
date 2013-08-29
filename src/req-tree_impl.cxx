@@ -7,6 +7,9 @@
  * distribution or for further clarifications, please contact
  * legal@hipro.co.in. */
 
+#include <boost/uuid/uuid.hpp>
+#include <boost/uuid/uuid_io.hpp>
+#include <boost/uuid/uuid_generators.hpp>
 #include <boost/property_tree/json_parser.hpp>
 
 #include "req-tree_impl.h"
@@ -17,6 +20,9 @@ ReqTreeImpl::ReqTreeImpl (HLogPtr logger,
     m_req_factory (req_factory)
 {
   m_last_id = 0;
+  std::stringstream ss;
+  ss << boost::uuids::random_generator ()();
+  m_uuid = ss.str ();
   m_dirty = false;
   m_root = m_req_factory->create ("root", "root", "root");
 }
@@ -303,6 +309,7 @@ ReqTreeImpl::load (const std::string & data)
   std::stringstream ss (data);
   boost::property_tree::read_json (ss, pt);
   m_last_id = pt.get<int> ("last-id");
+  m_uuid = pt.get<std::string> ("uuid");
   auto req_array = pt.get_child ("requirements");
   auto root_ptree = get_req_ptree (req_array, "root");
   load_children (m_root, root_ptree, req_array);
@@ -369,6 +376,7 @@ ReqTreeImpl::serialize (void)
 {
   boost::property_tree::ptree pt;
   pt.put ("last-id", m_last_id);
+  pt.put ("uuid", m_uuid);
   boost::property_tree::ptree req_array;
   serialize_tree (m_root, &req_array);
   pt.put_child ("requirements", req_array);

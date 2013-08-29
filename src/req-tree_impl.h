@@ -100,6 +100,7 @@ private:
 
   signal_tree_dirty_t m_signal_tree_dirty;
   int m_last_id;
+  std::string m_uuid;
   bool m_dirty;
   std::shared_ptr<Requirement> m_root;
 
