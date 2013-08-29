@@ -35,7 +35,7 @@ public:
 private:
   /* Gtk signal callback handlers */
   void cb_on_row_selected (void);
-  bool cb_on_button_pressed (GdkEventButton * event);
+  void cb_on_button_pressed (GdkEventButton * event);
   void cb_on_row_activated (const Gtk::TreeModel::Path & path,
                             Gtk::TreeViewColumn * column);
   void cb_on_cursor_changed (void);

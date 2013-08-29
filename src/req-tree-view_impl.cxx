@@ -35,7 +35,7 @@ ReqTreeViewImpl::ReqTreeViewImpl (HLogPtr logger,
   builder->get_widget ("lbl-description", m_lbl_node_info_description);
 
   /* signals related to TreeView */
-  m_tree_view->signal_button_press_event ().connect
+  m_tree_view->signal_button_press_event ().connect_notify
     (sigc::mem_fun (this, &ReqTreeViewImpl::cb_on_button_pressed));
   m_tree_view->signal_row_activated ().connect
     (sigc::mem_fun (this, &ReqTreeViewImpl::cb_on_row_activated));
@@ -155,7 +155,7 @@ ReqTreeViewImpl::cb_on_row_selected (void)
   enable_node_manipulation (req);
 }
 
-bool
+void
 ReqTreeViewImpl::cb_on_button_pressed (GdkEventButton * event)
 {
   if (((int)event->type == (int)Gdk::BUTTON_PRESS) && (event->button == 3))
@@ -166,10 +166,8 @@ ReqTreeViewImpl::cb_on_button_pressed (GdkEventButton * event)
           m_tree_view->grab_focus ();
           m_tree_view->set_cursor (path);
           m_menu_node->popup (event->button, event->time);
-          return true;
         }
     }
-  return false;
 }
 
 void
