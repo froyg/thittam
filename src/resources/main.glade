@@ -11,14 +11,6 @@
     <property name="can_focus">False</property>
     <property name="stock">gtk-add</property>
   </object>
-  <object class="GtkTreeStore" id="req-tree-store">
-    <columns>
-      <!-- column-name ID -->
-      <column type="gchararray"/>
-      <!-- column-name Title -->
-      <column type="gchararray"/>
-    </columns>
-  </object>
   <object class="GtkWindow" id="main-window">
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">Thittam</property>
@@ -371,20 +363,20 @@
                         <property name="can_focus">True</property>
                         <property name="model">req-tree-store</property>
                         <property name="headers_clickable">False</property>
-                        <property name="expander_column">treeviewcolumn2</property>
+                        <property name="expander_column">tv-col-title</property>
                         <property name="rules_hint">True</property>
                         <property name="search_column">0</property>
                         <child internal-child="selection">
                           <object class="GtkTreeSelection" id="treeview-selection"/>
                         </child>
                         <child>
-                          <object class="GtkTreeViewColumn" id="treeviewcolumn1">
+                          <object class="GtkTreeViewColumn" id="tv-col-id">
                             <property name="resizable">True</property>
                             <property name="spacing">2</property>
                             <property name="min_width">75</property>
                             <property name="title" translatable="yes">ID</property>
                             <child>
-                              <object class="GtkCellRendererText" id="cellrenderertext1"/>
+                              <object class="GtkCellRendererText" id="tv-cell-id"/>
                               <attributes>
                                 <attribute name="text">0</attribute>
                               </attributes>
@@ -392,12 +384,14 @@
                           </object>
                         </child>
                         <child>
-                          <object class="GtkTreeViewColumn" id="treeviewcolumn2">
+                          <object class="GtkTreeViewColumn" id="tv-col-title">
                             <property name="resizable">True</property>
                             <property name="min_width">200</property>
                             <property name="title" translatable="yes">Title</property>
                             <child>
-                              <object class="GtkCellRendererText" id="cellrenderertext2"/>
+                              <object class="GtkCellRendererText" id="tv-cell-title">
+                                <property name="editable">True</property>
+                              </object>
                               <attributes>
                                 <attribute name="text">1</attribute>
                               </attributes>
@@ -564,5 +558,13 @@
         </child>
       </object>
     </child>
+  </object>
+  <object class="GtkTreeStore" id="req-tree-store">
+    <columns>
+      <!-- column-name ID -->
+      <column type="gchararray"/>
+      <!-- column-name Title -->
+      <column type="gchararray"/>
+    </columns>
   </object>
 </interface>

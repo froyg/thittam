@@ -49,6 +49,8 @@ private:
   void cb_on_unindent (void);
   void cb_on_move_up (void);
   void cb_on_move_down (void);
+  void cb_on_title_edit (const Glib::ustring & path,
+                         const Glib::ustring & new_text);
 
   /* Other convenience methods */
   std::shared_ptr<Requirement> get_req_from_iter (Gtk::TreeModel::iterator it);

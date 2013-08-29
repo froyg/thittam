@@ -42,6 +42,14 @@ ReqTreeViewImpl::ReqTreeViewImpl (HLogPtr logger,
   m_tree_view->signal_cursor_changed ().connect
     (sigc::mem_fun (this, &ReqTreeViewImpl::cb_on_cursor_changed));
 
+  /* signal related to TreeView CellRenderer */
+  Glib::RefPtr<Gtk::CellRendererText> crt;
+  crt = Glib::RefPtr<Gtk::CellRendererText>::cast_static
+    (builder->get_object ("tv-cell-title"));
+
+  crt->signal_edited ().connect
+    (sigc::mem_fun (this, &ReqTreeViewImpl::cb_on_title_edit));
+
   /* signals related to TreeSelection */
   m_tree_selection = m_tree_view->get_selection ();
   m_tree_selection->signal_changed ().connect
@@ -420,6 +428,21 @@ ReqTreeViewImpl::cb_on_move_down (void)
   m_tree_store->erase (it);
   /* Set the selection to the newly added node */
   m_tree_selection->select (new_it);
+}
+
+void
+ReqTreeViewImpl::cb_on_title_edit (const Glib::ustring & path,
+                                   const Glib::ustring & new_text)
+{
+  auto it = m_tree_store->get_iter (path);
+  auto req = get_req_from_iter (it);
+  /* Update the backend */
+  req->set_title (new_text);
+  display (req);
+  /* Update the UI */
+  Gtk::TreeModel::Row row = *it;
+  row.set_value (1, new_text);
+  m_req_tree->set_dirty ();
 }
 
 std::shared_ptr<Requirement>

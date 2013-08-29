@@ -52,7 +52,7 @@ ReqTreeImpl::add_new_sibling (std::shared_ptr<Requirement> sibling,
   pos ++;
   new_sibling->set_parent (parent);
   children->insert (pos, new_sibling);
-  set_dirty_noisily ();
+  set_dirty ();
   return new_sibling->id ();
 }
 
@@ -71,7 +71,7 @@ ReqTreeImpl::add_child (std::shared_ptr<Requirement> parent,
   auto children = real_parent->children ();
   child->set_parent (real_parent);
   children->push_back (child);
-  set_dirty_noisily ();
+  set_dirty ();
   return child->id ();
 }
 
@@ -86,7 +86,7 @@ ReqTreeImpl::add_duplicate_child (std::shared_ptr<Requirement> parent,
   auto children = parent->children ();
   duplicate_child->set_parent (parent);
   children->push_back (duplicate_child);
-  set_dirty_noisily ();
+  set_dirty ();
   return duplicate_child;
 }
 
@@ -139,7 +139,7 @@ ReqTreeImpl::up_child (std::shared_ptr<Requirement> node)
 
   *(pos) = *(pos - 1);
   *(pos - 1) = node;
-  set_dirty_noisily ();
+  set_dirty ();
 }
 
 void
@@ -155,7 +155,7 @@ ReqTreeImpl::down_child (std::shared_ptr<Requirement> node)
 
   *(pos) = *(pos + 1);
   *(pos + 1) = node;
-  set_dirty_noisily ();
+  set_dirty ();
 }
 
 void
@@ -181,7 +181,7 @@ ReqTreeImpl::up_level (std::shared_ptr<Requirement> node)
   parent_pos ++;
   node->set_parent (grand_parent);
   grand_parent_children->insert (parent_pos, node);
-  set_dirty_noisily ();
+  set_dirty ();
 }
 
 void
@@ -204,7 +204,7 @@ ReqTreeImpl::down_level (std::shared_ptr<Requirement> node)
   parent_children->erase (node_pos);
   node->set_parent (sibling);
   sibling_children->push_back (node);
-  set_dirty_noisily ();
+  set_dirty ();
 }
 
 size_t
@@ -287,14 +287,6 @@ ReqTreeImpl::remove_from_req_id_map (std::shared_ptr<Requirement> req)
       auto child = *it;
       remove_from_req_id_map (child);
     }
-}
-
-
-void
-ReqTreeImpl::set_dirty_noisily (void)
-{
-  m_dirty = true;
-  m_signal_tree_dirty ();
 }
 
 void

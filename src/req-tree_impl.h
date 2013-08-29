@@ -70,6 +70,7 @@ public:
   void set_dirty (void)
   {
     m_dirty = true;
+    m_signal_tree_dirty ();
   }
 
   void load (const std::string & data);
@@ -83,7 +84,6 @@ private:
     std::shared_ptr<const Requirement> node);
   void add_to_req_id_map (std::shared_ptr<Requirement> req);
   void remove_from_req_id_map (std::shared_ptr<Requirement> req);
-  void set_dirty_noisily (void);
   void serialize_tree (std::shared_ptr<Requirement> node,
                        boost::property_tree::ptree * req_ptree);
   boost::property_tree::ptree get_req_ptree (
