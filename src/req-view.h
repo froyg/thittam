@@ -26,7 +26,7 @@ public:
   virtual void hide (void) = 0;
   virtual std::string title (void) = 0;
   virtual std::string description (void) = 0;
-
+  virtual std::string work (void) = 0;
 };
 
 #endif // HIPRO_THITTAM__050997e8_ff51_11e2_a1fa_68a3c42125fd

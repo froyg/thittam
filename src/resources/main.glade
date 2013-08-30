@@ -11,6 +11,16 @@
     <property name="can_focus">False</property>
     <property name="stock">gtk-add</property>
   </object>
+  <object class="GtkTreeStore" id="req-tree-store">
+    <columns>
+      <!-- column-name ID -->
+      <column type="gchararray"/>
+      <!-- column-name Title -->
+      <column type="gchararray"/>
+      <!-- column-name Work -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
   <object class="GtkWindow" id="main-window">
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">Thittam</property>
@@ -398,6 +408,16 @@
                             </child>
                           </object>
                         </child>
+                        <child>
+                          <object class="GtkTreeViewColumn" id="treeviewcolumn1">
+                            <property name="resizable">True</property>
+                            <property name="min_width">75</property>
+                            <property name="title" translatable="yes">Work</property>
+                            <child>
+                              <object class="GtkCellRendererText" id="tv-cell-work"/>
+                            </child>
+                          </object>
+                        </child>
                       </object>
                     </child>
                   </object>
@@ -558,13 +578,5 @@
         </child>
       </object>
     </child>
-  </object>
-  <object class="GtkTreeStore" id="req-tree-store">
-    <columns>
-      <!-- column-name ID -->
-      <column type="gchararray"/>
-      <!-- column-name Title -->
-      <column type="gchararray"/>
-    </columns>
   </object>
 </interface>

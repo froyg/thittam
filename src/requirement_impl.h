@@ -41,9 +41,24 @@ public:
     return m_description;
   }
 
+  const std::string & work (void) const
+  {
+    return m_work;
+  }
+
+  int work_in_minutes (void) const
+  {
+    return m_work_minutes;
+  }
+
   std::shared_ptr<Requirement> parent (void) const
   {
     return m_parent.lock ();
+  }
+
+  bool has_children (void) const
+  {
+    return m_children.size () > 0;
   }
 
   void set_title (const std::string & title)
@@ -54,6 +69,12 @@ public:
   void set_description (const std::string & description)
   {
     m_description = description;
+  }
+
+  void set_work (const std::string & work)
+  {
+    /* TBD: Calaculate work in minutes and save it */
+    m_work = work;
   }
 
   requirement_list_t::const_iterator children_cbegin (void) const
@@ -82,6 +103,7 @@ public:
     pt.put ("reqid", m_id);
     pt.put ("title", m_title);
     pt.put ("description", m_description);
+    pt.put ("work", m_work);
     boost::property_tree::ptree child_array;
     for (auto req : m_children)
       {
@@ -126,6 +148,8 @@ private:
   std::string m_id;
   std::string m_title;
   std::string m_description;
+  std::string m_work;
+  int m_work_minutes;
 
   std::weak_ptr<Requirement> m_parent;
   std::vector<std::shared_ptr<Requirement>> m_children;
@@ -146,22 +170,25 @@ public:
   }
 
   std::shared_ptr<Requirement>
-  create (const std::string & title, const std::string & description)
+  create (const std::string & title, const std::string & description,
+          const std::string & work)
   {
     auto obj = std::make_shared<RequirementImpl> (m_logger);
     obj->set_title (title);
     obj->set_description (description);
+    obj->set_work (work);
     return obj;
   }
 
   std::shared_ptr<Requirement>
   create (const std::string & id, const std::string & title,
-          const std::string & description)
+          const std::string & description, const std::string & work)
   {
     auto obj = std::make_shared<RequirementImpl> (m_logger);
     obj->set_id (id);
     obj->set_title (title);
     obj->set_description (description);
+    obj->set_work (work);
     return obj;
   }
 

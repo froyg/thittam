@@ -25,10 +25,14 @@ public:
   virtual const std::string & id (void) const = 0;
   virtual const std::string & title (void) const = 0;
   virtual const std::string & description (void) const = 0;
+  virtual const std::string & work (void) const = 0;
+  virtual int work_in_minutes (void) const = 0;
   virtual std::shared_ptr<Requirement> parent (void) const = 0;
+  virtual bool has_children (void) const = 0;
 
   virtual void set_title (const std::string & title) = 0;
   virtual void set_description (const std::string & description) = 0;
+  virtual void set_work (const std::string & work) = 0;
 
   virtual requirement_list_t::const_iterator children_cbegin (void) const = 0;
   virtual requirement_list_t::const_iterator children_cend (void) const = 0;
@@ -56,11 +60,13 @@ public:
   virtual std::shared_ptr<Requirement> create (void) = 0;
 
   virtual std::shared_ptr<Requirement>
-  create (const std::string & title, const std::string & description) = 0;
+  create (const std::string & title, const std::string & description,
+          const std::string & work) = 0;
 
   virtual std::shared_ptr<Requirement>
   create (const std::string & id, const std::string & title,
-          const std::string & description) = 0;
+          const std::string & description, const std::string & work) = 0;
+
 };
 
 #endif // HIPRO_THITTAM__7c81bf88_fe59_11e2_934c_68a3c42125fd

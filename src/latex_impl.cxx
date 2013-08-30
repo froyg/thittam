@@ -58,7 +58,7 @@ LatexImpl::generate_topic_hierarchy (std::shared_ptr<Requirement> req,
 
   std::string be ("\\begin{enumerate}\n");
   std::string ee ("\\end{enumerate}\n");
-  if (req->children ()->size () > 0)
+  if (req->has_children ())
     {
       ofile->write (be.c_str (), be.size ());
       auto end = req->children_cend ();

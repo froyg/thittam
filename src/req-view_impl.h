@@ -30,6 +30,7 @@ public:
   void hide (void);
   std::string title (void);
   std::string description (void);
+  std::string work (void);
 
 private:
   HLogPtr m_logger;
@@ -37,6 +38,7 @@ private:
 
   Gtk::Label * m_lbl_reqid;
   Gtk::Entry * m_ent_title;
+  Gtk::Entry * m_ent_work;
   Glib::RefPtr<Gtk::TextBuffer> m_tb_description;
 };
 

@@ -24,7 +24,7 @@ ReqTreeImpl::ReqTreeImpl (HLogPtr logger,
   ss << boost::uuids::random_generator ()();
   m_uuid = ss.str ();
   m_dirty = false;
-  m_root = m_req_factory->create ("root", "root", "root");
+  m_root = m_req_factory->create ("root", "root", "root", "1d");
 }
 
 std::string
@@ -249,7 +249,7 @@ std::shared_ptr<Requirement>
 ReqTreeImpl::duplicate_tree (std::shared_ptr<const Requirement> node)
 {
   auto new_node = m_req_factory->create
-    (next_id (), node->title (), node->description ());
+    (next_id (), node->title (), node->description (), node->work ());
   auto children = new_node->children ();
   auto end = node->children_cend ();
   for (auto it = node->children_cbegin (); it != end; ++it)
@@ -293,7 +293,7 @@ void
 ReqTreeImpl::load (const std::string & data)
 {
   /* Clear/overwrite the old values */
-  m_root = m_req_factory->create ("root", "root", "root");
+  m_root = m_req_factory->create ("root", "root", "root", "1d");
   m_req_id_map.clear ();
   m_dirty = false;
 
@@ -354,7 +354,8 @@ ReqTreeImpl::load_children (std::shared_ptr<Requirement> parent,
       auto child = m_req_factory->create (
         child_data.get <std::string> ("reqid"),
         child_data.get <std::string> ("title"),
-        child_data.get <std::string> ("description"));
+        child_data.get <std::string> ("description"),
+        child_data.get <std::string> ("work"));
       auto children = parent->children ();
       children->push_back (child);
       child->set_parent (parent);

@@ -510,7 +510,7 @@ ReqTreeViewImpl::get_new (void)
   /* Create the requirement from the form ui entered fields and add it
      to the local treestore */
   auto req = m_req_factory->create (m_req_view->title (),
-                                    m_req_view->description ());
+                                    m_req_view->description (), "1d");
   m_req_view->hide ();
   return req; /* Has to be fixed */
 }
