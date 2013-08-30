@@ -32,6 +32,8 @@ public:
 
   virtual void set_title (const std::string & title) = 0;
   virtual void set_description (const std::string & description) = 0;
+  /* If the given string format can't be converted successfully,
+   * default value of 1d is fixed */
   virtual void set_work (const std::string & work) = 0;
 
   virtual requirement_list_t::const_iterator children_cbegin (void) const = 0;

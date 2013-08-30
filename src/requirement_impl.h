@@ -11,6 +11,9 @@
 #define HIPRO_THITTAM__5dd9f5ac_00e6_11e3_beb6_68a3c42125fd
 
 #include <vector>
+#include <cmath>
+
+#include <boost/algorithm/string.hpp>
 
 #include "common.h"
 #include "requirement.h"
@@ -73,8 +76,110 @@ public:
 
   void set_work (const std::string & work)
   {
-    /* TBD: Calaculate work in minutes and save it */
-    m_work = work;
+    /* Parse the string and calaculate work in minutes and save
+     * it. Fix the string if the string has some fixable errors. Else
+     * set the work string as 1d */
+    std::stringstream ss;
+    auto it = work.cbegin ();
+    auto end = work.cend ();
+    int minutes = 0;
+    bool fix_work_string = false;
+    try
+      {
+        while (it != end)
+          {
+            float val = 0;
+            if (*it == 'd')
+              {
+                /* Days: 8 hours per day */
+                val = std::stof (ss.str ());
+                ss.str ("");
+                if (val <= 0)
+                  {
+                    fix_work_string = true;
+                  }
+                else
+                  {
+                    minutes += val * 8 * 60;
+                  }
+              }
+            else if (*it == 'w')
+              {
+                /* Week: 5 days per week */
+                val = std::stof (ss.str ());
+                ss.str ("");
+                if (val <= 0)
+                  {
+                    fix_work_string = true;
+                  }
+                else
+                  {
+                    minutes += val * 5 * 8 * 60;
+                  }
+              }
+            else if (*it == 'm')
+              {
+                /* Month: 22 days per month */
+                val = std::stof (ss.str ());
+                ss.str ("");
+                if (val <= 0)
+                  {
+                    fix_work_string = true;
+                  }
+                else
+                  {
+                    minutes += val * 22 * 8 * 60;
+                  }
+              }
+            else if (*it == 'h')
+              {
+                /* Hours: 1 hour is standard 60 minutes */
+                val = std::stof (ss.str ());
+                ss.str ("");
+                if (val <= 0)
+                  {
+                    fix_work_string = true;
+                  }
+                else
+                  {
+                    minutes +=  val * 60;
+                  }
+              }
+            else
+              {
+                ss << *it;
+              }
+            ++it;
+          }
+        m_work = work;
+      }
+    catch ( ... )
+      {
+        /* std::stof will throw two exceptions namely
+         * std::invalid_argument, std::out_of_range. So we catch all
+         * exceptions here. For this condition we set the value to 1
+         * day */
+        minutes = 1 * 8 * 60;
+        m_work = "1d";
+      }
+    if (minutes == 0)
+      {
+        /* This can occur when the user gives just spaces, stof will
+           not fail rather it will give zero */
+        minutes = 1 * 8 * 60;
+        m_work = "1d";
+      }
+    else
+      {
+        if (fix_work_string)
+          {
+            /* minutes calculated is not zero but there are some empty
+               parts in the string we have to fix it. Eg: " m 5d" */
+            m_work = fix_string (work);
+          }
+      }
+
+    m_work_minutes = minutes;
   }
 
   requirement_list_t::const_iterator children_cbegin (void) const
@@ -140,6 +245,42 @@ public:
   requirement_list_t * depends (void)
   {
     return &m_depends;
+  }
+
+private:
+  std::string fix_string (const std::string & work_str)
+  {
+    std::stringstream ss_part, ss_full;
+    auto it = work_str.cbegin ();
+    auto end = work_str.cend ();
+    /* If the conversion fails this method will die */
+    while (it != end)
+      {
+        float val = 0;
+        if ((*it == 'd') || (*it == 'w') || (*it == 'm') || (*it == 'h'))
+          {
+            auto val_str = ss_part.str ();
+            ss_part.str ("");
+            ss_part.clear ();
+            val = std::stof (val_str);
+            if (val > 0)
+              {
+                ss_full << val_str << *it;
+              }
+            else
+              {
+                ss_full << " ";
+              }
+          }
+        else
+          {
+            ss_part << *it;
+          }
+        ++it;
+      }
+    auto work = ss_full.str ();
+    boost::algorithm::trim (work);
+    return work;
   }
 
 private:
