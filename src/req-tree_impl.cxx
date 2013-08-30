@@ -390,6 +390,43 @@ ReqTreeImpl::serialize_tree (std::shared_ptr<Requirement> node,
     }
 }
 
+void
+ReqTreeImpl::recompute_work (std::shared_ptr<Requirement> req)
+{
+  recalculate_and_set_work (req);
+}
+
+int
+ReqTreeImpl::recalculate_and_set_work (std::shared_ptr<Requirement> req)
+{
+  if (!req->has_children ())
+    {
+      return req->work_in_minutes ();
+    }
+  auto end = req->children_cend ();
+  int minutes = 0;
+  for (auto it = req->children_cbegin (); it != end; ++it)
+    {
+      int min = recalculate_and_set_work (*it);
+      if (min != (*it)->work_in_minutes ())
+        {
+          /* Set the work string only if there was a change */
+          (*it)->set_work (compute_work_string (min));
+        }
+      minutes += min;
+    }
+  return minutes;
+}
+
+std::string
+ReqTreeImpl::compute_work_string (int work)
+{
+  float days = (float) work / (8 * 60);
+  std::stringstream ss;
+  ss << days << "d";
+  return ss.str ();
+}
+
 /*
   Local Variables:
   mode: c++

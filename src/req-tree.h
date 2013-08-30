@@ -72,6 +72,10 @@ public:
   virtual void up_level (std::shared_ptr<Requirement> req) = 0;
   virtual void down_level (std::shared_ptr<Requirement> req) = 0;
 
+  /* This method calculates the work estimate of its children and then
+     sets the value on to itself */
+  virtual void recompute_work (std::shared_ptr<Requirement> req) = 0;
+
   /* Methods to walk the tree */
   virtual size_t height (void) const = 0;
   virtual std::shared_ptr<Requirement> get (

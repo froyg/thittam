@@ -52,6 +52,8 @@ public:
   void up_level (std::shared_ptr<Requirement> req);
   void down_level (std::shared_ptr<Requirement> req);
 
+  void recompute_work (std::shared_ptr<Requirement> req);
+
   size_t height (void) const;
   std::shared_ptr<Requirement> get (const std::string & reqid) const;
   std::shared_ptr<Requirement> root (void) const
@@ -92,7 +94,8 @@ private:
     std::shared_ptr<Requirement> parent,
     boost::property_tree::ptree  & parent_data,
     boost::property_tree::ptree & req_ptree_array);
-
+  int recalculate_and_set_work (std::shared_ptr<Requirement> req);
+  std::string compute_work_string (int work);
 
 private:
   HLogPtr m_logger;
