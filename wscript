@@ -31,7 +31,8 @@ def configure(conf):
         resource_dir = path.join (conf.srcnode.abspath(), "src", "resources")
     conf.env.RESOURCE_DIR = resource_dir
 
-    conf.env.prepend_value('CXXFLAGS', ['-std=gnu++11', '-Wall', '-Werror'])
+    conf.env.prepend_value('CXXFLAGS', ['-std=gnu++11', '-Wall', '-Werror',
+                                        '-Wno-error=unused-local-typedefs'])
 
     boost_opts = { 'lib' : ['date_time', 'program_options', 'thread',
                             'filesystem', 'system'] }
