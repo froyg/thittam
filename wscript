@@ -34,16 +34,17 @@ def configure(conf):
     # configure the resource-directory
     resource_dir = ""
     if conf.options.release_build:
-        resource_dir = path.join (conf.options.prefix, "share", conf.env.APP_NAME)
+        resource_dir = path.join(
+            conf.options.prefix, "share", conf.env.APP_NAME)
     else:
-        resource_dir = path.join (conf.srcnode.abspath(), "src", "resources")
+        resource_dir = path.join(conf.srcnode.abspath(), "src", "resources")
     conf.env.RESOURCE_DIR = resource_dir
 
     conf.env.prepend_value('CXXFLAGS', ['-std=gnu++11', '-Wall', '-Werror',
                                         '-Wno-error=unused-local-typedefs'])
 
     boost_opts = { 'lib' : ['date_time', 'program_options', 'thread',
-                            'filesystem', 'system'] }
+                            'filesystem', 'system'], }
     if 'BOOST_ROOT' in os.environ:
         boost_opts['includes'] = os.environ['BOOST_ROOT'] + '/include'
         boost_opts['libs'] = os.environ['BOOST_ROOT'] + '/lib'
