@@ -19,7 +19,7 @@ ReqViewImpl::ReqViewImpl (hipro::log::Logger* logger) :
   logger (logger)
 {
   auto builder =
-    Gtk::Builder::create_from_resource ("resource:///ui/main.glade");
+    Gtk::Builder::create_from_resource ("/ui/req-form.glade");
   Gtk::Dialog * dlg;
   builder->get_widget ("dlg-requirement-form", dlg);
   m_dlg_main = std::unique_ptr<Gtk::Dialog> (dlg);

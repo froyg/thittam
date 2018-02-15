@@ -20,7 +20,6 @@ add_library (app
   req-tree_impl.cxx
   req-tree-view_impl.cxx
   req-view_impl.cxx
-  interfaces.gresources.c
   )
 
 target_include_directories(app
@@ -35,6 +34,7 @@ target_link_libraries (app
 
 add_executable (thittam
   main.cxx
+  interfaces.gresources.c  
   )
 
 target_link_libraries (thittam
