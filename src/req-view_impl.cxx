@@ -15,12 +15,11 @@
 
 namespace bofs = ::boost::filesystem;
 
-ReqViewImpl::ReqViewImpl (HLogPtr logger) :
-  m_logger (logger)
+ReqViewImpl::ReqViewImpl (hipro::log::Logger* logger) :
+  logger (logger)
 {
-  bofs::path builder_file (bofs::path (RESOURCE_DIR) /
-                           bofs::path ("req-form.glade"));
-  auto builder = Gtk::Builder::create_from_file (builder_file.c_str ());
+  auto builder =
+    Gtk::Builder::create_from_resource ("resource:///ui/main.glade");
   Gtk::Dialog * dlg;
   builder->get_widget ("dlg-requirement-form", dlg);
   m_dlg_main = std::unique_ptr<Gtk::Dialog> (dlg);

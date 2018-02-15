@@ -16,9 +16,9 @@
 
 /*---- class FileConfigSource ----*/
 
-FileConfigSource::FileConfigSource (HLogPtr & logger,
+FileConfigSource::FileConfigSource (hipro::log::Logger* logger,
                                     const bofs::path & config_file)
-  : m_logger (logger),
+  : logger (logger),
     m_config_file (config_file)
 {
   if (bofs::exists (m_config_file) == false)
@@ -73,9 +73,9 @@ FileConfigSource::write (const std::string & data)
 
 /*---- class PersistentConfig ----*/
 
-PersistentConfig::PersistentConfig (HLogPtr & logger,
+PersistentConfig::PersistentConfig (hipro::log::Logger* logger,
                                     ConfigSource::ptr_t & config_source)
-  : m_logger (logger),
+  : logger (logger),
     m_config_source (config_source)
 {
   const std::string & config_str = m_config_source->read ();

@@ -17,14 +17,15 @@
 
 #include "common.h"
 #include "requirement.h"
+#include "log.h"
 
 class RequirementImpl : public std::enable_shared_from_this<RequirementImpl>,
                         public Requirement
 {
 public:
   /* ------- ctor/dtor ----------- */
-  RequirementImpl (HLogPtr logger)
-  : m_logger (logger)
+  RequirementImpl (hipro::log::Logger* logger)
+  : logger (logger)
   { }
   ~RequirementImpl () {}
 
@@ -284,7 +285,7 @@ private:
   }
 
 private:
-  HLogPtr m_logger;
+  hipro::log::Logger* logger;
 
   std::string m_id;
   std::string m_title;
@@ -300,21 +301,21 @@ private:
 class RequirementFactoryImpl : public RequirementFactory
 {
 public:
-  RequirementFactoryImpl (HLogPtr logger)
-  : m_logger (logger)
+  RequirementFactoryImpl (hipro::log::Logger* logger)
+  : logger (logger)
   {
   }
 
   std::shared_ptr<Requirement> create (void)
   {
-    return std::make_shared<RequirementImpl> (m_logger);
+    return std::make_shared<RequirementImpl> (logger);
   }
 
   std::shared_ptr<Requirement>
   create (const std::string & title, const std::string & description,
           const std::string & work)
   {
-    auto obj = std::make_shared<RequirementImpl> (m_logger);
+    auto obj = std::make_shared<RequirementImpl> (logger);
     obj->set_title (title);
     obj->set_description (description);
     obj->set_work (work);
@@ -325,7 +326,7 @@ public:
   create (const std::string & id, const std::string & title,
           const std::string & description, const std::string & work)
   {
-    auto obj = std::make_shared<RequirementImpl> (m_logger);
+    auto obj = std::make_shared<RequirementImpl> (logger);
     obj->set_id (id);
     obj->set_title (title);
     obj->set_description (description);
@@ -334,7 +335,7 @@ public:
   }
 
 private:
-  HLogPtr m_logger;
+  hipro::log::Logger* logger;
 };
 
 #endif // HIPRO_THITTAM__5dd9f5ac_00e6_11e3_beb6_68a3c42125fd

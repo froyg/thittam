@@ -18,12 +18,13 @@
 
 #include "common.h"
 #include "req-tree.h"
+#include "log.h"
 
 class ReqTreeImpl : public ReqTree
 {
 public:
   /*--- ctor/dtor ---*/
-  ReqTreeImpl (HLogPtr logger, std::shared_ptr<RequirementFactory> req_factory);
+  ReqTreeImpl (hipro::log::Logger* logger, std::shared_ptr<RequirementFactory> req_factory);
   ~ReqTreeImpl () {}
 
   /*--- methods required by the ReqTree interface ---*/
@@ -98,7 +99,7 @@ private:
   std::string compute_work_string (int work);
 
 private:
-  HLogPtr m_logger;
+  hipro::log::Logger* logger;
   std::shared_ptr<RequirementFactory> m_req_factory;
 
   signal_tree_dirty_t m_signal_tree_dirty;
@@ -114,20 +115,20 @@ private:
 class ReqTreeFactoryImpl : public ReqTreeFactory
 {
 public:
-  ReqTreeFactoryImpl (HLogPtr logger,
+  ReqTreeFactoryImpl (hipro::log::Logger* logger,
                       std::shared_ptr<RequirementFactory> req_factory)
-    : m_logger (logger),
+    : logger (logger),
       m_req_factory (req_factory)
   {
   }
 
   std::shared_ptr<ReqTree> create (void)
   {
-    return std::make_shared<ReqTreeImpl> (m_logger, m_req_factory);
+    return std::make_shared<ReqTreeImpl> (logger, m_req_factory);
   }
 
 private:
-  HLogPtr m_logger;
+  hipro::log::Logger* logger;
   std::shared_ptr<RequirementFactory> m_req_factory;
 };
 

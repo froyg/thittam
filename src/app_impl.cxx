@@ -29,8 +29,8 @@
 
 AppImpl::AppImpl ()
 {
-  m_logger = HLog::get ("thittam");
-  m_logger->set_level (HLogLevel::DEBUG3);
+  logger = m_logger_manager.get ("thittam");
+  hipro::log::set_logging_severity (hipro::log::LEVEL_DEBUG3);
 }
 
 int
@@ -96,9 +96,9 @@ AppImpl::load_options (int argc, char ** argv, int * error_number)
   Log_D1 << "Using config-file: " << config_file;
 
   ConfigSource::ptr_t config_source =
-    FileConfigSource::create (m_logger, config_file);
-  m_config = InMemoryConfig::create (m_logger);
-  m_persistent_config = PersistentConfig::create (m_logger, config_source);
+    FileConfigSource::create (logger, config_file);
+  m_config = InMemoryConfig::create (logger);
+  m_persistent_config = PersistentConfig::create (logger, config_source);
 
   /* Commandline options will override the persistent-config
    * options. So, we keep the effective runtime-config in a
@@ -173,17 +173,15 @@ AppImpl::locate_home_directory_posix (void)
 void
 AppImpl::create_app_stage1 (void)
 {
-  bofs::path builder_file (bofs::path (RESOURCE_DIR) /
-                           bofs::path ("main.glade"));
-
-  auto req_factory = std::make_shared<RequirementFactoryImpl> (m_logger);
+  auto req_factory = std::make_shared<RequirementFactoryImpl> (logger);
   auto req_tree_factory =
-    std::make_shared<ReqTreeFactoryImpl> (m_logger, req_factory);
+    std::make_shared<ReqTreeFactoryImpl> (logger, req_factory);
 
-  m_ui_builder = Gtk::Builder::create_from_file (builder_file.c_str ());
-  auto tree_view = std::make_shared<ReqTreeViewImpl> (m_logger, m_ui_builder);
+  m_ui_builder =
+    Gtk::Builder::create_from_resource ("gresource:///ui/main.glade");
+  auto tree_view = std::make_shared<ReqTreeViewImpl> (logger, m_ui_builder);
   m_view_main = std::make_shared<MainViewImpl>
-    (m_logger, m_ui_builder, req_tree_factory, tree_view);
+    (logger, m_ui_builder, req_tree_factory, tree_view);
 
   m_view_main->signal_close ().connect
     (std::bind (std::mem_fn (&AppImpl::quit), shared_from_this ()));

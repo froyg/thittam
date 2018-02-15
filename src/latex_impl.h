@@ -16,12 +16,13 @@
 #include "common.h"
 #include "latex.h"
 #include "requirement.h"
+#include "log.h"
 
 class LatexImpl : public Latex
 {
 public:
   /*--- ctor/dtor ---*/
-  LatexImpl (HLogPtr logger);
+  LatexImpl (hipro::log::Logger* logger);
   ~LatexImpl () {}
 
   /*--- methods required by the Latex interface ---*/
@@ -67,7 +68,7 @@ private:
   }
 
 private:
-  HLogPtr m_logger;
+  hipro::log::Logger* logger;
 };
 
 #endif // HIPRO_THITTAM__9e1f695c_0ed9_11e3_a8a9_68a3c42125fd

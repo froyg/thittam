@@ -13,9 +13,9 @@
 #include "requirement_impl.h"
 #include "req-view_impl.h"
 
-ReqTreeViewImpl::ReqTreeViewImpl (HLogPtr logger,
+ReqTreeViewImpl::ReqTreeViewImpl (hipro::log::Logger* logger,
                                   Glib::RefPtr<Gtk::Builder> builder) :
-  m_logger (logger),
+  logger (logger),
   m_clipboard_duplicate (false)
 {
   /* create the requirement form UI in order to be used later */

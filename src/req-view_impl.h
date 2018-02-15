@@ -16,12 +16,13 @@
 
 #include "common.h"
 #include "req-view.h"
+#include "log.h"
 
 class ReqViewImpl : public ReqView
 {
 public:
   /* ------- ctor/dtor ------- */
-  ReqViewImpl (HLogPtr logger);
+  ReqViewImpl (hipro::log::Logger* logger);
   ~ReqViewImpl () {}
 
   /* ------- Methods required by interface ------- */
@@ -33,7 +34,7 @@ public:
   std::string work (void);
 
 private:
-  HLogPtr m_logger;
+  hipro::log::Logger* logger;
   std::unique_ptr<Gtk::Dialog> m_dlg_main;
 
   Gtk::Label * m_lbl_reqid;

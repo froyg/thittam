@@ -14,9 +14,9 @@
 
 #include "req-tree_impl.h"
 
-ReqTreeImpl::ReqTreeImpl (HLogPtr logger,
+ReqTreeImpl::ReqTreeImpl (hipro::log::Logger* logger,
                           std::shared_ptr<RequirementFactory> req_factory)
-  : m_logger (logger),
+  : logger (logger),
     m_req_factory (req_factory)
 {
   m_last_id = 0;

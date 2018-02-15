@@ -19,7 +19,7 @@
 
 #include "common.h"
 #include "config.h"
-
+#include "log.h"
 
 class FileConfigSource : public ConfigSource
 {
@@ -28,14 +28,14 @@ public:
 
 public:
   /*--- ctor/dtor/factory ---*/
-  static ptr_t create (HLogPtr & logger,
+  static ptr_t create (hipro::log::Logger* logger,
                        const bofs::path & config_file)
   {
     ptr_t object (new FileConfigSource (logger, config_file));
     return object;
   }
 
-  FileConfigSource (HLogPtr & logger,
+  FileConfigSource (hipro::log::Logger* logger,
                     const bofs::path & config_file);
   ~FileConfigSource () {}
 
@@ -44,7 +44,7 @@ public:
   void write (const std::string & data);
 
   /*--- Data members ---*/
-  HLogPtr m_logger;
+  hipro::log::Logger* logger;
   const bofs::path m_config_file;
   std::string m_data;
 };
@@ -57,14 +57,14 @@ public:
 
 public:
   /*--- ctor/dtor/factory ---*/
-  static ptr_t create (HLogPtr & logger,
+  static ptr_t create (hipro::log::Logger* logger,
                        ConfigSource::ptr_t & config_source)
   {
     ptr_t object (new PersistentConfig (logger, config_source));
     return object;
   }
 
-  PersistentConfig (HLogPtr & logger,
+  PersistentConfig (hipro::log::Logger* logger,
                     ConfigSource::ptr_t & config_source);
   ~PersistentConfig () {}
 
@@ -77,7 +77,7 @@ public:
   void save (void);
 
   /*--- Data members ---*/
-  HLogPtr m_logger;
+  hipro::log::Logger* logger;
   ConfigSource::ptr_t m_config_source;
 
   std::string m_server_address;
@@ -91,14 +91,14 @@ public:
 
 public:
   /*--- ctor/dtor/factory ---*/
-  static ptr_t create (HLogPtr logger)
+  static ptr_t create (hipro::log::Logger* logger)
   {
     ptr_t object (new InMemoryConfig (logger));
     return object;
   }
 
-  InMemoryConfig (HLogPtr logger)
-    : m_logger (logger) {}
+  InMemoryConfig (hipro::log::Logger* logger)
+    : logger (logger) {}
   ~InMemoryConfig () {}
 
   /*--- Methods required by the Config interface ---*/
@@ -118,7 +118,7 @@ public:
   }
 
   /*--- Data members ---*/
-  HLogPtr m_logger;
+  hipro::log::Logger* logger;
   std::string m_server_address;
 };
 

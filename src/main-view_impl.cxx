@@ -14,11 +14,11 @@
 
 namespace bofs = ::boost::filesystem;
 
-MainViewImpl::MainViewImpl (HLogPtr logger,
+MainViewImpl::MainViewImpl (hipro::log::Logger* logger,
                             Glib::RefPtr<Gtk::Builder> builder,
                             std::shared_ptr<ReqTreeFactory> req_tree_factory,
                             std::shared_ptr<ReqTreeView> req_tree_view)
-  : m_logger (logger),
+  : logger (logger),
     m_req_tree_factory (req_tree_factory),
     m_req_tree_view (req_tree_view)
 {
@@ -60,7 +60,7 @@ MainViewImpl::MainViewImpl (HLogPtr logger,
     (std::bind (std::mem_fn (&MainViewImpl::cb_on_tree_dirty), this));
   m_req_tree_view->load (m_req_tree);
 
-  m_latex_generator = std::make_shared<LatexImpl> (m_logger);
+  m_latex_generator = std::make_shared<LatexImpl> (logger);
 
   update_title ();
   m_window->show ();

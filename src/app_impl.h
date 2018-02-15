@@ -13,11 +13,9 @@
 #include <memory>
 #include <boost/filesystem.hpp>
 
-#include <hdb/log.h>
-
+#include "log.h"
 #include "common.h"
 #include "app.h"
-
 #include "config.h"
 #include "main-view.h"
 
@@ -54,7 +52,8 @@ public:
   void on_sub_app_closed (SubApp::weak_ptr_t sub_app);
 
   /*--- Data members ---*/
-  HLogPtr m_logger;
+  hipro::log::Logger* logger;
+  hipro::log::LoggerManager m_logger_manager;
   bofs::path m_home_directory;
   bofs::path m_config_file;
   Config::ptr_t m_config;

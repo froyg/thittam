@@ -25,8 +25,8 @@ const char * REQ_ENTRY_TEMPLATE = \
 const char * ENUM_ITEM_TEMPLATE = \
   "  \\item \\hyperref[req:%(reqid)]{%(reqid)}: %(title)\n";
 
-LatexImpl::LatexImpl (HLogPtr logger) :
-  m_logger (logger)
+LatexImpl::LatexImpl (hipro::log::Logger* logger) :
+  logger (logger)
 {
 
 }

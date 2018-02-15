@@ -21,12 +21,13 @@
 #include "requirement.h"
 #include "req-tree-view.h"
 #include "req-view.h"
+#include "log.h"
 
 class ReqTreeViewImpl : public ReqTreeView
 {
 public:
   /* -------- ctor/dtor ------------ */
-  ReqTreeViewImpl (HLogPtr logger, Glib::RefPtr<Gtk::Builder> builder);
+  ReqTreeViewImpl (hipro::log::Logger* logger, Glib::RefPtr<Gtk::Builder> builder);
   ~ReqTreeViewImpl () {}
 
   /* -------- methods needed by interface -------- */
@@ -62,7 +63,7 @@ private:
                          Gtk::TreeModel::iterator parent_iter);
 
 private:
-  HLogPtr m_logger;
+  hipro::log::Logger* logger;
   std::shared_ptr<ReqTree> m_req_tree;
   std::shared_ptr<ReqView> m_req_view;
   std::shared_ptr<Requirement> m_clipboard_req;

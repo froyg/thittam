@@ -21,6 +21,7 @@
 #include "req-tree.h"
 #include "req-tree-view.h"
 #include "latex.h"
+#include "log.h"
 
 class MainViewImpl : public MainView
 {
@@ -29,7 +30,7 @@ public:
 
 public:
   /*--- ctor/dtor ---*/
-  MainViewImpl (HLogPtr logger,
+  MainViewImpl (hipro::log::Logger* logger,
                 Glib::RefPtr<Gtk::Builder> builder,
                 std::shared_ptr<ReqTreeFactory> req_tree_factory,
                 std::shared_ptr<ReqTreeView> req_tree_view);
@@ -63,7 +64,7 @@ private:
 
 private:
   /*--- Data members ---*/
-  HLogPtr m_logger;
+  hipro::log::Logger* logger;
   std::shared_ptr<ReqTreeFactory> m_req_tree_factory;
   std::shared_ptr<ReqTree> m_req_tree;
   std::shared_ptr<ReqTreeView> m_req_tree_view;

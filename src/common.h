@@ -14,10 +14,6 @@
 
 #include <boost/date_time.hpp>
 
-#include <hdb/log.h>
-
-#include "error.h"
-
 /*--- A class to safely delete a shared_ptr ---*/
 template< class T >
 class SafeDeleter { public: void operator()(T * m) { delete m; } };
@@ -31,10 +27,6 @@ namespace boost {
   namespace property_tree { }
   namespace program_options { }
 }
-
-typedef ::hdb::log::Level HLogLevel;
-typedef ::hdb::log::Logger HLog;
-typedef ::hdb::log::Logger::ptr_type HLogPtr;
 
 namespace bsig = ::boost::signals2;
 namespace bofs = ::boost::filesystem;
