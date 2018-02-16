@@ -27,14 +27,14 @@ target_include_directories(app
   )
 
 target_link_libraries (app
-  ${Threads}
+  ${CMAKE_THREAD_LIBS_INIT}
   ${Boost_LIBRARIES}
-  ${GTKMM_LIBRARIES}  
+  ${GTKMM_LIBRARIES}
   )
 
 add_executable (thittam
   main.cxx
-  interfaces.gresources.c  
+  interfaces.gresources.c
   )
 
 target_link_libraries (thittam
