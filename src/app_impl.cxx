@@ -95,15 +95,15 @@ AppImpl::load_options (int argc, char ** argv, int * error_number)
     }
   Log_D1 << "Using config-file: " << config_file;
 
-  ConfigSource::ptr_t config_source =
-    FileConfigSource::create (logger, config_file);
-  m_config = InMemoryConfig::create (logger);
-  m_persistent_config = PersistentConfig::create (logger, config_source);
+  auto config_source = std::make_unique<FileConfigSource> (logger, config_file);
+  m_config = std::make_unique<InMemoryConfig> (logger);
+  m_persistent_config =
+    std::make_unique<PersistentConfig> (logger, std::move (config_source));
 
   /* Commandline options will override the persistent-config
    * options. So, we keep the effective runtime-config in a
    * InMemoryConfig object */
-  m_config = m_persistent_config;
+  *m_config = *m_persistent_config;
 
   if (vm.count ("server-address"))
     {

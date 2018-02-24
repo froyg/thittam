@@ -18,9 +18,6 @@
 class ConfigSource
 {
 public:
-  typedef ::std::shared_ptr<ConfigSource> ptr_t;
-
-public:
   /* Method to read the entire configuration */
   virtual const std::string & read (void) = 0;
 
@@ -36,15 +33,12 @@ public:
 class Config
 {
 public:
-  typedef ::std::shared_ptr<Config> ptr_t;
-
-public:
   /* Methods to set and retrieve the serial-port */
   virtual void set_server_address (const std::string & server_address) = 0;
-  virtual const std::string & server_address (void) = 0;
+  virtual const std::string & server_address (void) const = 0;
 
   /* Copy operator */
-  virtual void operator= (const Config::ptr_t & other) = 0;
+  virtual void operator= (const Config & other) = 0;
 
   /* dtor */
   virtual ~Config () {}

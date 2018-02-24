@@ -73,10 +73,11 @@ FileConfigSource::write (const std::string & data)
 
 /*---- class PersistentConfig ----*/
 
-PersistentConfig::PersistentConfig (hipro::log::Logger* logger,
-                                    ConfigSource::ptr_t & config_source)
+PersistentConfig::PersistentConfig (
+  hipro::log::Logger* logger,
+  std::unique_ptr<ConfigSource> && config_source)
   : logger (logger),
-    m_config_source (config_source)
+    m_config_source (std::move (config_source))
 {
   const std::string & config_str = m_config_source->read ();
   if (!config_str.empty ())
@@ -97,9 +98,9 @@ PersistentConfig::set_server_address (const std::string & server_address)
 }
 
 void
-PersistentConfig::operator= (const Config::ptr_t & other)
+PersistentConfig::operator= (const Config & other)
 {
-  m_server_address = other->server_address ();
+  m_server_address = other.server_address ();
   save ();
 }
 

@@ -24,61 +24,41 @@
 class FileConfigSource : public ConfigSource
 {
 public:
-  typedef ::std::shared_ptr<FileConfigSource> ptr_t;
-
-public:
-  /*--- ctor/dtor/factory ---*/
-  static ptr_t create (hipro::log::Logger* logger,
-                       const bofs::path & config_file)
-  {
-    ptr_t object (new FileConfigSource (logger, config_file));
-    return object;
-  }
-
   FileConfigSource (hipro::log::Logger* logger,
                     const bofs::path & config_file);
   ~FileConfigSource () {}
 
-  /*--- Methods required by the ConfigSource interface ---*/
+  /*--- ConfigSource interface ---*/
   const std::string & read (void);
   void write (const std::string & data);
 
-  /*--- Data members ---*/
+private:
   hipro::log::Logger* logger;
   const bofs::path m_config_file;
   std::string m_data;
 };
 
-
 class PersistentConfig : public Config
 {
 public:
-  typedef ::std::shared_ptr<PersistentConfig> ptr_t;
-
-public:
-  /*--- ctor/dtor/factory ---*/
-  static ptr_t create (hipro::log::Logger* logger,
-                       ConfigSource::ptr_t & config_source)
-  {
-    ptr_t object (new PersistentConfig (logger, config_source));
-    return object;
-  }
-
   PersistentConfig (hipro::log::Logger* logger,
-                    ConfigSource::ptr_t & config_source);
+                    std::unique_ptr<ConfigSource> && config_source);
   ~PersistentConfig () {}
 
-  /*--- Methods required by the Config interface ---*/
+  /*--- Config interface ---*/
   void set_server_address (const std::string & server_address);
-  const std::string & server_address (void) { return m_server_address; }
-  void operator= (const Config::ptr_t & other);
+  const std::string & server_address (void) const
+  {
+    return m_server_address;
+  }
+  void operator= (const Config & other);
 
-  /*--- Other convenience methods ---*/
+private:
   void save (void);
 
-  /*--- Data members ---*/
+private:
   hipro::log::Logger* logger;
-  ConfigSource::ptr_t m_config_source;
+  std::unique_ptr<ConfigSource> m_config_source;
 
   std::string m_server_address;
 };
@@ -87,37 +67,27 @@ public:
 class InMemoryConfig : public Config
 {
 public:
-  typedef ::std::shared_ptr<InMemoryConfig> ptr_t;
-
-public:
-  /*--- ctor/dtor/factory ---*/
-  static ptr_t create (hipro::log::Logger* logger)
-  {
-    ptr_t object (new InMemoryConfig (logger));
-    return object;
-  }
-
   InMemoryConfig (hipro::log::Logger* logger)
     : logger (logger) {}
   ~InMemoryConfig () {}
 
-  /*--- Methods required by the Config interface ---*/
+  /*--- Config interface ---*/
   void set_server_address (const std::string & server_address)
   {
     m_server_address = server_address;
   }
 
-  const std::string & server_address (void)
+  const std::string & server_address (void) const
   {
     return m_server_address;
   }
 
-  void operator= (const Config::ptr_t & other)
+  void operator= (const Config & other)
   {
-    set_server_address (other->server_address ());
+    m_server_address = other.server_address ();
   }
 
-  /*--- Data members ---*/
+private:
   hipro::log::Logger* logger;
   std::string m_server_address;
 };

@@ -56,8 +56,8 @@ public:
   hipro::log::LoggerManager m_logger_manager;
   bofs::path m_home_directory;
   bofs::path m_config_file;
-  Config::ptr_t m_config;
-  Config::ptr_t m_persistent_config;
+  std::unique_ptr<Config> m_config;
+  std::unique_ptr<Config> m_persistent_config;
 
   Glib::RefPtr<Gtk::Builder> m_ui_builder;
   MainView::ptr_t m_view_main;
