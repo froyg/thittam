@@ -22,8 +22,5 @@ main (int argc, char ** argv)
 /*
   Local Variables:
   mode: c++
-  indent-tabs-mode: nil
-  tab-width: 4
-  c-file-style: "gnu"
   End:
 */

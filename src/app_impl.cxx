@@ -202,8 +202,5 @@ AppImpl::on_sub_app_closed (SubApp::weak_ptr_t weak_sub_app)
 /*
   Local Variables:
   mode: c++
-  indent-tabs-mode: nil
-  tab-width: 4
-  c-file-style: "gnu"
   End:
 */

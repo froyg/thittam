@@ -55,8 +55,5 @@ public:
 /*
   Local Variables:
   mode: c++
-  indent-tabs-mode: nil
-  tab-width: 4
-  c-file-style: "gnu"
   End:
 */
