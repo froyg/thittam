@@ -60,7 +60,7 @@ public:
   std::unique_ptr<Config> m_persistent_config;
 
   Glib::RefPtr<Gtk::Builder> m_ui_builder;
-  MainView::ptr_t m_view_main;
+  std::unique_ptr<MainView> m_view_main;
 
   typedef std::vector<SubApp::ptr_t> sub_app_list_t;
   sub_app_list_t m_sub_app_list;

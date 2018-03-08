@@ -180,7 +180,7 @@ AppImpl::create_app_stage1 (void)
   m_ui_builder =
     Gtk::Builder::create_from_resource ("/ui/main.glade");
   auto tree_view = std::make_shared<ReqTreeViewImpl> (logger, m_ui_builder);
-  m_view_main = std::make_shared<MainViewImpl>
+  m_view_main = std::make_unique<MainViewImpl>
     (logger, m_ui_builder, req_tree_factory, tree_view);
 
   m_view_main->signal_close ().connect
