@@ -20,6 +20,8 @@ add_library (app
   req-tree_impl.cxx
   req-tree-view_impl.cxx
   req-view_impl.cxx
+  util.cxx
+  task.cxx
   )
 
 target_include_directories(app
