@@ -4,7 +4,7 @@ import argparse, uuid
 from os import path
 
 copyright_tmpl = \
-"""/* Copyright (C) 2012-2018 HiPro IT Solutions Private Limited,
+"""/* Copyright (C) 2008-2018 HiPro IT Solutions Private Limited,
  * Chennai. All rights reserved.
  *
  * This program and the accompanying materials are made available
@@ -16,16 +16,15 @@ copyright_tmpl = \
 
 header_incl_tmpl = \
 """
-#ifndef HIPRO_THITTAM__%(uuid)s
-#define HIPRO_THITTAM__%(uuid)s
+#ifndef HIPRO__%(uuid)s
+#define HIPRO__%(uuid)s
 
 
-#endif // HIPRO_THITTAM__%(uuid)s
+#endif // HIPRO__%(uuid)s
 """
 
 editor_var_tmpl = """\n/*\n  Local Variables:
   mode: c++
-  indent-tabs-mode: nil
   End:
 */
 """
@@ -45,12 +44,12 @@ def src_create (file_handle):
 def main():
     parser = argparse.ArgumentParser (
         prog="stool", description="C++ source and header file generation tool")
-    parser.add_argument ("-f", "--file-name",
-                         help="C++ header/source file name",
-                         type=argparse.FileType('w'), required=True)
+    parser.add_argument ("file",
+                         help="Name of the source file",
+                         type=argparse.FileType('w'))
     args = vars(parser.parse_args ())
 
-    _file = args['file_name']
+    _file = args['file']
     file_name, extn = path.splitext(_file.name)
     if extn in ('.h', '.hpp'):
         h_create (_file)
