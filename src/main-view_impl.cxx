@@ -132,9 +132,9 @@ MainViewImpl::cb_on_file_save (void)
   if (m_file_name.empty ())
     {
       Gtk::FileChooserDialog dlg
-        (*m_window, "Open file", Gtk::FILE_CHOOSER_ACTION_OPEN);
+        (*m_window, "Save file", Gtk::FILE_CHOOSER_ACTION_SAVE);
       dlg.add_button (Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
-      dlg.add_button (Gtk::Stock::OPEN, Gtk::RESPONSE_OK);
+      dlg.add_button (Gtk::Stock::SAVE, Gtk::RESPONSE_OK);
       dlg.set_current_name("Untitled");
       auto ret = dlg.run ();
       if (ret == Gtk::RESPONSE_OK)
@@ -159,9 +159,9 @@ void
 MainViewImpl::cb_on_file_save_as (void)
 {
   Gtk::FileChooserDialog dlg
-    (*m_window, "Open file", Gtk::FILE_CHOOSER_ACTION_OPEN);
+    (*m_window, "Save as", Gtk::FILE_CHOOSER_ACTION_SAVE);
   dlg.add_button (Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
-  dlg.add_button (Gtk::Stock::OPEN, Gtk::RESPONSE_OK);
+  dlg.add_button (Gtk::Stock::SAVE, Gtk::RESPONSE_OK);
   auto file_name = m_file_name;
   if (file_name.empty ())
     {
