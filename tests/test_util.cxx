@@ -135,6 +135,23 @@ TEST (EffortStrToMinutesTest, Second)
           }
 }
 
+TEST (EffortStrToMinutesTest, Mixed)
+{
+  std::string effort[] =
+    {
+     "1d 2w 3h", "3hr 4weeks", "2.5 weeks 9 hrs", "5ds 6 hours", "32 wks 4days",
+     "1mins 30 secs", "3 month 9days", "3.5 years 10 days", "3d 4hrs 2 mins"
+    };
+  int minutes[] = {21780, 40500, 25740, 7560, 328320, 2, 142560, 1855260, 4562};
+  short hours = 24;
+  short weekDays = 7;
+  for (unsigned i = 0; i < sizeof(minutes)/sizeof(int); ++i)
+  {
+    int returnValue = effort_str_to_minutes(effort[i], weekDays, hours);
+    ASSERT_EQ(returnValue, minutes[i]);
+  }
+}
+
 
 /*
   Local Variables:
