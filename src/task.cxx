@@ -42,12 +42,14 @@ Task::add_child (Task * task)
 void
 Task::add_child_after (
   size_t index, Task * task,
-  std::function<void (const Task::Path &)> & change_notification)
+  std::function<void (const Task::Path &)> insert_notification,
+  std::function<void (const Task::Path &)> change_notification)
 {
   auto add_it = m_children.begin () + index + 1;
   m_children.insert (add_it, task);
 
   recompute_path_and_id_of_children (index + 1);
+  insert_notification (task->path ());
 
   auto changed_it = m_children.begin () + index + 1;
   for (auto it = changed_it; it != m_children.end (); ++it)
@@ -59,10 +61,15 @@ Task::add_child_after (
 void
 Task::remove_child (
   size_t index,
-  std::function<void (const Task::Path&)> & change_notification)
+  std::function<void (const Task::Path&)> remove_notification,
+  std::function<void (const Task::Path&)> change_notification)
 {
   auto remove_it = m_children.begin () + index;
+  auto child = *remove_it;
+  auto child_path = child->path ();
+
   m_children.erase (remove_it);
+  remove_notification (child_path);
 
   recompute_path_and_id_of_children (index);
 
@@ -158,7 +165,7 @@ Task::compute_child_path (int number)
 void
 Task::notify_change_in_tree (
   Task * task,
-  std::function<void (const Task::Path &)> & change_notification)
+  std::function<void (const Task::Path &)> change_notification)
 {
   change_notification (task->path ());
   for (auto child : task->m_children)

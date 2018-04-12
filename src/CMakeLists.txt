@@ -22,6 +22,7 @@ add_library (app
   req-view_impl.cxx
   util.cxx
   task.cxx
+  wbs_impl.cxx
   )
 
 target_include_directories(app

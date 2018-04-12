@@ -141,11 +141,13 @@ public:
 
   void add_child_after (
     size_t index, Task * task,
-    std::function<void (const Task::Path &)> & change_notification);
+    std::function<void (const Task::Path &)> insert_notification,
+    std::function<void (const Task::Path &)> change_notification);
 
   void remove_child (
     size_t index,
-    std::function<void (const Task::Path &)> & change_notification);
+    std::function<void (const Task::Path&)> remove_notification,
+    std::function<void (const Task::Path &)> change_notification);
 
   boost::property_tree::ptree dump (void);
 
@@ -156,7 +158,7 @@ private:
   Path && compute_child_path (int number);
   void notify_change_in_tree (
     Task * task,
-    std::function<void (const Task::Path &)> & change_notification);
+    std::function<void (const Task::Path &)> change_notification);
 
 private:
   Path m_path;
