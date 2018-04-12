@@ -26,6 +26,8 @@ public:
     const Gtk::TreeModel::iterator & it) = 0;
 };
 
+NAMESPACE__THITTAM__END
+
 #endif // HIPRO__a3803906_3e1a_11e8_a2ad_448500dfb04c
 
 /*

@@ -34,37 +34,38 @@ WBSGtkTreeModel::convert_gtk_tree_iter_to_wbs_path (
 {
   auto gobj = it.gobj ();
   auto glue = reinterpret_cast<GlueItem *> (gobj->user_data);
-  return glue.path ();
+  return glue->path ();
 }
 
 void
 WBSGtkTreeModel::wbs_observer_node_inserted (const WBS::Path & path)
 {
-  auto path = convert_wbs_path_to_gtk_tree_path (child);
-  auto iter = convert_wbs_path_to_gtk_tree_iter (child);
-  row_inserted (path, iter);
+  auto gtk_path = convert_wbs_path_to_gtk_tree_path (path);
+  auto gtk_iter = convert_wbs_path_to_gtk_tree_iter (path);
+  row_inserted (gtk_path, gtk_iter);
 }
 
 void
 WBSGtkTreeModel::wbs_observer_node_changed (const WBS::Path & path)
 {
-  auto path = convert_wbs_path_to_gtk_tree_path (child);
-  auto iter = convert_wbs_path_to_gtk_tree_iter (child);
-  row_changed (path, iter);
+  auto gtk_path = convert_wbs_path_to_gtk_tree_path (path);
+  auto gtk_iter = convert_wbs_path_to_gtk_tree_iter (path);
+  row_changed (gtk_path, gtk_iter);
 }
 
 void
 WBSGtkTreeModel::wbs_observer_node_deleted (const WBS::Path & path)
 {
-  auto path = convert_wbs_path_to_gtk_tree_path (child);
-  row_deleted (path);
+  auto gtk_path = convert_wbs_path_to_gtk_tree_path (path);
+  row_deleted (gtk_path);
 }
 
 void
 WBSGtkTreeModel::wbs_observer_node_reordered (
   const WBS::Path & path, const std::vector<int> & new_order)
 {
-
+  auto gtk_path = convert_wbs_path_to_gtk_tree_path (path);
+  rows_reordered (gtk_path, new_order);
 }
 
 Gtk::TreeModel::Path
@@ -95,8 +96,8 @@ WBSGtkTreeModel::convert_wbs_path_to_gtk_tree_iter (const WBS::Path & path)
   }
 
   GlueItem glue (path);
-  m_glue_list.push_back (path);
-  gobj->user_data = & m_glue_list.back ();
+  m_glue_item_list.push_back (path);
+  gobj->user_data = & m_glue_item_list.back ();
   return iter;
 }
 

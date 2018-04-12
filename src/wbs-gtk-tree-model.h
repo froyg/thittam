@@ -10,17 +10,20 @@
 #ifndef HIPRO__e2abab08_286a_11e8_9b53_448500dfb04c
 #define HIPRO__e2abab08_286a_11e8_9b53_448500dfb04c
 
+#include <list>
+
 #include <gtkmm.h>
 
 #include "_namespace.h"
 #include "wbs-tree-model.h"
+#include "wbs.h"
 
 NAMESPACE__THITTAM__START
 
-class WBSGtkTreeModel::GlueItem
+class WBSGtkTreeModelGlueItem
 {
 public:
-  GlueItem (const WBS::Path & path)
+  WBSGtkTreeModelGlueItem (const WBS::Path & path)
     : m_path (path)
   {
   }
@@ -34,10 +37,14 @@ private:
   WBS::Path m_path;
 };
 
+
 class WBSGtkTreeModel : public WBSTreeModel,
                         public WBSObserver,
                         public Gtk::TreeModel
 {
+public:
+  typedef WBSGtkTreeModelGlueItem GlueItem;
+
 public:
   WBSGtkTreeModel ();
   ~WBSGtkTreeModel () {}
@@ -86,6 +93,9 @@ private:
     const WBS::Path & path);
   Gtk::TreeModel::iterator convert_wbs_path_to_gtk_tree_iter (
     const WBS::Path & path);
+
+private:
+  std::list<GlueItem> m_glue_item_list;
 };
 
 NAMESPACE__THITTAM__END

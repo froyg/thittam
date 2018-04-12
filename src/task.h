@@ -58,6 +58,11 @@ private:
   std::vector<int> m_parts;
 };
 
+bool operator== (const TaskPath & left, const TaskPath & right)
+{
+  return left.parts () == right.parts ();
+}
+
 
 class Task
 {

@@ -23,6 +23,7 @@ add_library (app
   util.cxx
   task.cxx
   wbs_impl.cxx
+  wbs-gtk-tree-model.cxx
   )
 
 target_include_directories(app
