@@ -18,6 +18,9 @@
 #include "app.h"
 #include "config.h"
 #include "main-view.h"
+#include "main-controller.h"
+
+NAMESPACE__THITTAM__START
 
 namespace bofs = ::boost::filesystem;
 
@@ -60,11 +63,14 @@ public:
   std::unique_ptr<Config> m_persistent_config;
 
   Glib::RefPtr<Gtk::Builder> m_ui_builder;
-  std::unique_ptr<MainView> m_view_main;
+  std::unique_ptr<MainView> m_main_view;
+  std::unique_ptr<MainController> m_main_controller;
 
   typedef std::vector<SubApp::ptr_t> sub_app_list_t;
   sub_app_list_t m_sub_app_list;
 };
+
+NAMESPACE__THITTAM__END
 
 #endif // HIPRO_THITTAM__3ee00958_fd93_11e2_b7e5_001f3c9e2082
 

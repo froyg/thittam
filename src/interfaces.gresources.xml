@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
   <gresource prefix="/ui">
-    <file preprocess="xml-stripblanks">main.glade</file>
-    <file preprocess="xml-stripblanks">req-form.glade</file>
+    <file preprocess="xml-stripblanks">main-view.glade</file>
+    <file preprocess="xml-stripblanks">wbs-tree-view.glade</file>
   </gresource>
 </gresources>

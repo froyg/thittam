@@ -22,10 +22,9 @@
 #include "app_impl.h"
 #include "config_impl.h"
 #include "main-view_impl.h"
-#include "req-tree-view_impl.h"
-#include "requirement_impl.h"
-#include "req-tree_impl.h"
+#include "main-controller_impl.h"
 
+NAMESPACE__THITTAM__START
 
 AppImpl::AppImpl ()
 {
@@ -173,18 +172,19 @@ AppImpl::locate_home_directory_posix (void)
 void
 AppImpl::create_app_stage1 (void)
 {
-  auto req_factory = std::make_shared<RequirementFactoryImpl> (logger);
-  auto req_tree_factory =
-    std::make_shared<ReqTreeFactoryImpl> (logger, req_factory);
-
   m_ui_builder =
-    Gtk::Builder::create_from_resource ("/ui/main.glade");
-  auto tree_view = std::make_shared<ReqTreeViewImpl> (logger, m_ui_builder);
-  m_view_main = std::make_unique<MainViewImpl>
-    (logger, m_ui_builder, req_tree_factory, tree_view);
+    Gtk::Builder::create_from_resource ("/ui/main-view.glade");
 
-  m_view_main->signal_close ().connect
-    (std::bind (std::mem_fn (&AppImpl::quit), shared_from_this ()));
+  auto main_view = std::make_unique<MainViewImpl> (logger, m_ui_builder);
+  auto main_controller = std::make_unique<MainControllerImpl> (logger);
+
+  main_controller->set_view (main_view.get ());
+  main_controller->set_app (this);
+  main_view->set_handler (main_controller.get ());
+  main_controller->start ();
+
+  m_main_view = std::move (main_view);
+  m_main_controller = std::move (main_controller);
 }
 
 void
@@ -195,9 +195,10 @@ AppImpl::on_sub_app_closed (SubApp::weak_ptr_t weak_sub_app)
     std::find (m_sub_app_list.begin (), m_sub_app_list.end (), sub_app);
   ASSERT ((it != m_sub_app_list.end ()), "sub-app not in list");
 
-
   m_sub_app_list.erase (it);
 }
+
+NAMESPACE__THITTAM__END
 
 /*
   Local Variables:

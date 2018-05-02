@@ -15,15 +15,13 @@ add_library (app
   log.cxx
   common.cxx
   config_impl.cxx
-  latex_impl.cxx
   main-view_impl.cxx
-  req-tree_impl.cxx
-  req-tree-view_impl.cxx
-  req-view_impl.cxx
   util.cxx
   task.cxx
   wbs_impl.cxx
   wbs-gtk-tree-model.cxx
+  main-controller_impl.cxx
+  project-manager_impl.cxx
   )
 
 target_include_directories(app

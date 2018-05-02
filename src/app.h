@@ -14,6 +14,10 @@
 
 #include <boost/signals2.hpp>
 
+#include "_namespace.h"
+
+NAMESPACE__THITTAM__START
+
 class App
 {
 public:
@@ -57,6 +61,8 @@ public:
   /* dtor */
   virtual ~SubApp () {}
 };
+
+NAMESPACE__THITTAM__END
 
 #endif // HIPRO_THITTAM__3d643ed2_fd93_11e2_a635_001f3c9e2082
 

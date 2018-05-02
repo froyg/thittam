@@ -1,4 +1,4 @@
-/* Copyright (C) 2012,2013 HiPro IT Solutions Private Limited,
+/* Copyright (C) 2008-2018 HiPro IT Solutions Private Limited,
  * Chennai. All rights reserved.
  *
  * This program and the accompanying materials are made available
@@ -7,17 +7,29 @@
  * distribution or for further clarifications, please contact
  * legal@hipro.co.in. */
 
-#include <memory>
+#include "project_impl.h"
 
-#include "app_impl.h"
+NAMESPACE__THITTAM__START
 
-int
-main (int argc, char ** argv)
+bool
+ProjectImpl::check (const boost::property_tree::ptree & data) const
 {
-  auto app = std::make_shared<thittam::AppImpl> ();
-  int ret = app->run (argc, argv);
-  return ret;
+
 }
+
+void
+ProjectImpl::load (const boost::property_tree::ptree & data) const
+{
+
+}
+
+boost::property_tree::ptree
+ProjectImpl::save (void)
+{
+
+}
+
+NAMESPACE__THITTAM__END
 
 /*
   Local Variables:
