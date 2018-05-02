@@ -21,26 +21,12 @@ class Project
 public:
   virtual ~Project () {}
 
-  virtual void save (const std::string & file) = 0;
-
   virtual bool dirty (void) const = 0;
   virtual void clear_dirty (void) = 0;
 
-
   virtual bool check (const boost::property_tree::ptree & data) const = 0;
   virtual void load (const boost::property_tree::ptree & data) const = 0;
-  virtual boost::property_tree::ptree save (void) = 0;
-};
-
-class ProjectFactory
-{
-public:
-  virtual ~ProjectFactory () {}
-
-  virtual bool verify (const std::string & file) const = 0;
-  virtual std::unique_ptr<Project> create (void) const = 0;
-  virtual std::unique_ptr<Project> create (
-    const std::string & file_name) const = 0;
+  virtual boost::property_tree::ptree serialize (void) = 0;
 };
 
 NAMESPACE__THITTAM__END

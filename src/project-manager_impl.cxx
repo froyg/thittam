@@ -7,14 +7,20 @@
  * distribution or for further clarifications, please contact
  * legal@hipro.co.in. */
 
+#include <fstream>
+
+#include <boost/property_tree/json_parser.hpp>
+
 #include "project-manager_impl.h"
+
+namespace bpt = boost::property_tree;
 
 NAMESPACE__THITTAM__START
 
 bool
 ProjectManagerImpl::dirty (void) const
 {
-  return true;
+  return m_project->dirty ();
 }
 
 bool
@@ -56,7 +62,14 @@ ProjectManagerImpl::load (const std::string & file)
 void
 ProjectManagerImpl::save (const std::string & file)
 {
-  m_project->save (file);
+  auto root = m_project->serialize ();
+
+  {
+    std::ofstream ofile (file, std::ios::binary);
+    bpt::write_json (ofile, root);
+  }
+
+  m_project->clear_dirty ();
 }
 
 NAMESPACE__THITTAM__END

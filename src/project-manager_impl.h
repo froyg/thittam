@@ -17,6 +17,7 @@
 #include "project.h"
 #include "project-controller.h"
 #include "project-ui-factory.h"
+#include "project-factory.h"
 
 NAMESPACE__THITTAM__START
 
