@@ -22,6 +22,8 @@ add_library (app
   wbs-gtk-tree-model.cxx
   main-controller_impl.cxx
   project-manager_impl.cxx
+  project_impl.cxx
+  project-factory_impl.cxx
   )
 
 target_include_directories(app

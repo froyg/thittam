@@ -54,6 +54,16 @@ public:
   void add_child (const Path & parent_path);
   void add_sibling (const Path & path);
 
+  bool dirty (void) const
+  {
+    return m_dirty;
+  }
+
+  void clear_dirty (void)
+  {
+    m_dirty = false;
+  }
+
 private:
   void notify_observers_node_inserted (const WBS::Path & path);
   void notify_observers_node_changed (const WBS::Path & path);
@@ -63,6 +73,7 @@ private:
 
 private:
   hipro::log::Logger* logger = nullptr;
+  bool m_dirty = false;
 
   Task m_root;
   typedef WBSEntry Entry;

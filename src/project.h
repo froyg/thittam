@@ -13,6 +13,7 @@
 #include <boost/property_tree/ptree.hpp>
 
 #include "_namespace.h"
+#include "wbs.h"
 
 NAMESPACE__THITTAM__START
 
@@ -20,6 +21,9 @@ class Project
 {
 public:
   virtual ~Project () {}
+
+  virtual const std::string & name (void) const = 0;
+  virtual WBS* wbs (void) const = 0;
 
   virtual bool dirty (void) const = 0;
   virtual void clear_dirty (void) = 0;

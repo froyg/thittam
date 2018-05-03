@@ -10,42 +10,48 @@
 #ifndef HIPRO__cf54ac8c_4195_11e8_be66_448500dfb04c
 #define HIPRO__cf54ac8c_4195_11e8_be66_448500dfb04c
 
+#include <memory>
+
 #include "log.h"
 #include "project.h"
 #include "wbs.h"
 
 NAMESPACE__THITTAM__START
 
-class ProjectImpl
+class ProjectImpl : public Project
 {
 public:
   ~ProjectImpl () {}
-  ProjectImpl (hipro::log::Logger* logger)
-    : logger (logger)
-  {
+  ProjectImpl (hipro::log::Logger* logger);
 
+  /*--- DI ---*/
+  void set_wbs (std::unique_ptr<WBS> wbs)
+  {
+    m_wbs = std::move (wbs);
   }
 
   /*--- Project interface ---*/
-  bool dirty (void) const
+  const std::string & name (void) const
   {
-    return m_dirty;
+    return m_name;
   }
 
-  void clear_dirty (void)
+  WBS* wbs (void) const
   {
-    m_dirty = false;
+    return m_wbs.get ();
   }
 
+  bool dirty (void) const;
+  void clear_dirty (void);
   bool check (const boost::property_tree::ptree & data) const;
   void load (const boost::property_tree::ptree & data) const;
-  boost::property_tree::ptree save (void);
+  boost::property_tree::ptree serialize (void);
 
 private:
   hipro::log::Logger* logger = nullptr;
-  bool m_dirty = false;
+  std::string m_name;
 
-
+  std::unique_ptr<WBS> m_wbs;
 };
 
 NAMESPACE__THITTAM__END
