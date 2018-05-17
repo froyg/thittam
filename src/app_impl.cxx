@@ -23,6 +23,9 @@
 #include "config_impl.h"
 #include "main-view_impl.h"
 #include "main-controller_impl.h"
+#include "project-factory_impl.h"
+#include "project-ui-factory_impl.h"
+
 
 NAMESPACE__THITTAM__START
 
@@ -174,6 +177,9 @@ AppImpl::create_app_stage1 (void)
 {
   m_ui_builder =
     Gtk::Builder::create_from_resource ("/ui/main-view.glade");
+
+  m_project_factory = std::make_unique<ProjectFactoryImpl> (logger);
+  m_project_ui_factory = std::make_unique<ProjectUIFactoryImpl> (logger);
 
   auto main_view = std::make_unique<MainViewImpl> (logger, m_ui_builder);
   auto main_controller = std::make_unique<MainControllerImpl> (logger);

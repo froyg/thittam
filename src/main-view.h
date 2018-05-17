@@ -38,6 +38,8 @@ public:
 
   /* Accessor for the main application window */
   virtual Gtk::Window * window (void) = 0;
+  virtual void attach_content (Gtk::Widget* widget) = 0;
+
   virtual void show (void) = 0;
   virtual bool get_file_to_open (std::string * file_name) = 0;
   virtual bool get_file_to_save (std::string * file_name) = 0;

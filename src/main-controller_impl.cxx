@@ -7,7 +7,13 @@
  * distribution or for further clarifications, please contact
  * legal@hipro.co.in. */
 
+#include <fstream>
+
+#include <boost/property_tree/json_parser.hpp>
+
 #include "main-controller_impl.h"
+
+namespace bpt = boost::property_tree;
 
 NAMESPACE__THITTAM__START
 
@@ -20,14 +26,17 @@ MainControllerImpl::MainControllerImpl (hipro::log::Logger* logger)
 void
 MainControllerImpl::start (void)
 {
-  m_project_manager->create_new ();
+  m_project = m_project_factory->create ();
+  m_project_controller = m_project_ui_factory->create (m_project.get ());
+  m_view->attach_content (m_project_controller->view_widget ());
+
   m_view->show ();
 }
 
 void
 MainControllerImpl::view_close_pressed (void)
 {
-  if (m_project_manager->dirty ())
+  if (m_project->dirty ())
     {
       if (!confirm_data_discard ())
         {
@@ -41,7 +50,7 @@ MainControllerImpl::view_close_pressed (void)
 void
 MainControllerImpl::view_file_new_pressed (void)
 {
-  if (m_project_manager->dirty ())
+  if (m_project->dirty ())
     {
       if (!confirm_data_discard ())
         {
@@ -50,13 +59,18 @@ MainControllerImpl::view_file_new_pressed (void)
     }
 
   m_file_name.clear ();
-  m_project_manager->create_new ();
+  m_project_controller.reset ();
+  m_project.reset ();
+
+  m_project = m_project_factory->create ();
+  m_project_controller = m_project_ui_factory->create (m_project.get ());
+  m_view->attach_content (m_project_controller->view_widget ());
 }
 
 void
 MainControllerImpl::view_file_open_pressed (void)
 {
-  if (m_project_manager->dirty ())
+  if (m_project->dirty ())
     {
       if (!confirm_data_discard ())
         {
@@ -73,7 +87,7 @@ MainControllerImpl::view_file_open_pressed (void)
 
   // todo: Check if we have proper access permissions to read the file.
 
-  if (! m_project_manager->verify (file_name))
+  if (! m_project_factory->verify (file_name))
   {
     std::ostringstream os;
     os << "File " << file_name << " is not a valid thittam file.";
@@ -81,8 +95,13 @@ MainControllerImpl::view_file_open_pressed (void)
     return;
   }
 
+  m_project_controller.reset ();
+  m_project.reset ();
+
   m_file_name = file_name;
-  m_project_manager->load (file_name);
+  m_project = m_project_factory->create (file_name);
+  m_project_controller = m_project_ui_factory->create (m_project.get ());
+  m_view->attach_content (m_project_controller->view_widget ());
 }
 
 void
@@ -108,7 +127,7 @@ MainControllerImpl::view_file_save_pressed (void)
     m_file_name = file_name;
   }
 
-  m_project_manager->save (m_file_name);
+  do_save ();
 }
 
 void
@@ -130,7 +149,7 @@ MainControllerImpl::view_file_save_as_pressed (void)
   }
 
   m_file_name = file_name;
-  m_project_manager->save (m_file_name);
+  do_save ();
 }
 
 bool
@@ -155,6 +174,17 @@ MainControllerImpl::can_save_to (const std::string & file_name)
 {
   // todo: Check if we have write permissions to the given file
   return true;
+}
+
+void
+MainControllerImpl::do_save (void)
+{
+  auto root = m_project->serialize ();
+  {
+    std::ofstream ofile (m_file_name, std::ios::binary);
+    bpt::write_json (ofile, root);
+  }
+  m_project->clear_dirty ();
 }
 
 NAMESPACE__THITTAM__END

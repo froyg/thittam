@@ -39,6 +39,7 @@ public:
   {
     return m_window;
   }
+  void attach_content (Gtk::Widget* widget);
 
   void show (void);
   bool get_file_to_open (std::string * file_name);
@@ -58,9 +59,10 @@ private:
 private:
   hipro::log::Logger* logger = nullptr;
 
-  MainViewCallbacks * m_handler = nullptr;
+  MainViewCallbacks* m_handler = nullptr;
 
-  Gtk::Window * m_window = nullptr;
+  Gtk::Window* m_window = nullptr;
+  Gtk::Box* m_container = nullptr;
 };
 
 NAMESPACE__THITTAM__END

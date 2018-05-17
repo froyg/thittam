@@ -17,7 +17,7 @@
 
 NAMESPACE__THITTAM__START
 
-class ProjectFactoryImpl
+class ProjectFactoryImpl : public ProjectFactory
 {
 public:
   ProjectFactoryImpl (hipro::log::Logger* logger);

@@ -16,15 +16,21 @@ add_library (app
   common.cxx
   config_impl.cxx
   main-view_impl.cxx
+  main-controller_impl.cxx
+  project_impl.cxx
+  project-factory_impl.cxx
+  project-ui-factory_impl.cxx
+  project-view_impl.cxx
+  project-controller_impl.cxx
+  wbs-view_impl.cxx
+  wbs-controller_impl.cxx
+
   util.cxx
   task.cxx
   wbs_impl.cxx
   wbs-gtk-tree-model.cxx
-  main-controller_impl.cxx
-  project-manager_impl.cxx
-  project_impl.cxx
-  project-factory_impl.cxx
   )
+
 
 target_include_directories(app
   PUBLIC ${GTKMM_INCLUDE_DIRS}

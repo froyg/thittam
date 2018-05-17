@@ -7,8 +7,8 @@
  * distribution or for further clarifications, please contact
  * legal@hipro.co.in. */
 
-#ifndef HIPRO__f43a3a02_438f_11e8_97cc_448500dfb04c
-#define HIPRO__f43a3a02_438f_11e8_97cc_448500dfb04c
+#ifndef HIPRO__09fb1f80_2ac4_11e8_8457_448500dfb04c
+#define HIPRO__09fb1f80_2ac4_11e8_8457_448500dfb04c
 
 #include <gtkmm.h>
 
@@ -16,17 +16,17 @@
 
 NAMESPACE__THITTAM__START
 
-class ProjectController
+class WBSController
 {
 public:
-  virtual ~ProjectController () {}
+  virtual ~WBSController() {}
 
   virtual Gtk::Widget * view_widget (void) = 0;
 };
 
 NAMESPACE__THITTAM__END
 
-#endif // HIPRO__f43a3a02_438f_11e8_97cc_448500dfb04c
+#endif // HIPRO__09fb1f80_2ac4_11e8_8457_448500dfb04c
 
 /*
   Local Variables:

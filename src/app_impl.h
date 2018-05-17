@@ -19,6 +19,8 @@
 #include "config.h"
 #include "main-view.h"
 #include "main-controller.h"
+#include "project-factory.h"
+#include "project-ui-factory.h"
 
 NAMESPACE__THITTAM__START
 
@@ -65,6 +67,8 @@ public:
   Glib::RefPtr<Gtk::Builder> m_ui_builder;
   std::unique_ptr<MainView> m_main_view;
   std::unique_ptr<MainController> m_main_controller;
+  std::unique_ptr<ProjectFactory> m_project_factory;
+  std::unique_ptr<ProjectUIFactory> m_project_ui_factory;
 
   typedef std::vector<SubApp::ptr_t> sub_app_list_t;
   sub_app_list_t m_sub_app_list;

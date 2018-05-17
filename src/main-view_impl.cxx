@@ -20,6 +20,8 @@ MainViewImpl::MainViewImpl (
   Glib::RefPtr<Gtk::Builder> builder)
   : logger (logger)
 {
+  builder->get_widget ("project-container", m_container);
+
   builder->get_widget ("main-window", m_window);
   m_window->signal_hide ().connect
     (sigc::mem_fun (this, &MainViewImpl::cb_on_close));
@@ -46,6 +48,18 @@ MainViewImpl::MainViewImpl (
     (sigc::mem_fun (this, &MainViewImpl::cb_on_close));
 
   m_window->set_title ("Untitled");
+}
+
+void
+MainViewImpl::attach_content (Gtk::Widget* widget)
+{
+  auto children = m_container->get_children ();
+  for (auto child : children)
+  {
+    m_container->remove (*child);
+  }
+
+  m_container->add (*widget);
 }
 
 void

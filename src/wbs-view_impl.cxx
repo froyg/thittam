@@ -7,27 +7,19 @@
  * distribution or for further clarifications, please contact
  * legal@hipro.co.in. */
 
-#ifndef HIPRO__f43a3a02_438f_11e8_97cc_448500dfb04c
-#define HIPRO__f43a3a02_438f_11e8_97cc_448500dfb04c
-
-#include <gtkmm.h>
-
-#include "_namespace.h"
+#include "wbs-view_impl.h"
 
 NAMESPACE__THITTAM__START
 
-class ProjectController
+WBSViewImpl::WBSViewImpl (
+  hipro::log::Logger* logger,
+  Glib::RefPtr<Gtk::Builder> builder)
+  : logger (logger)
 {
-public:
-  virtual ~ProjectController () {}
-
-  virtual Gtk::Widget * view_widget (void) = 0;
-};
+  builder->get_widget ("main-window", m_main_window);
+}
 
 NAMESPACE__THITTAM__END
-
-#endif // HIPRO__f43a3a02_438f_11e8_97cc_448500dfb04c
-
 /*
   Local Variables:
   mode: c++

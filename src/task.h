@@ -37,7 +37,10 @@ public:
     m_parts = std::move (other.m_parts);
   }
 
-  const std::vector<int> & parts (void) const;
+  const std::vector<int> & parts (void) const
+  {
+    return m_parts;
+  }
 
   void push_back (int index)
   {
@@ -54,14 +57,14 @@ public:
     m_parts = other.parts ();
   }
 
+  bool operator== (const TaskPath & right) const
+  {
+    return m_parts == right.parts ();
+  }
+
 private:
   std::vector<int> m_parts;
 };
-
-bool operator== (const TaskPath & left, const TaskPath & right)
-{
-  return left.parts () == right.parts ();
-}
 
 
 class Task
