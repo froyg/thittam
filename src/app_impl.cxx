@@ -186,6 +186,9 @@ AppImpl::create_app_stage1 (void)
 
   main_controller->set_view (main_view.get ());
   main_controller->set_app (this);
+  main_controller->set_project_factory (m_project_factory.get ());
+  main_controller->set_project_ui_factory (m_project_ui_factory.get ());
+
   main_view->set_handler (main_controller.get ());
   main_controller->start ();
 
