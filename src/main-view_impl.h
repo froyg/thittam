@@ -14,66 +14,58 @@
 
 #include <gtkmm.h>
 
-#include <boost/signals2.hpp>
-
 #include "common.h"
 #include "main-view.h"
-#include "req-tree.h"
-#include "req-tree-view.h"
-#include "latex.h"
 #include "log.h"
+
+NAMESPACE__THITTAM__START
 
 class MainViewImpl : public MainView
 {
 public:
-  typedef std::shared_ptr<MainViewImpl> ptr_t;
-
-public:
-  /*--- ctor/dtor ---*/
-  MainViewImpl (hipro::log::Logger* logger,
-                Glib::RefPtr<Gtk::Builder> builder,
-                std::shared_ptr<ReqTreeFactory> req_tree_factory,
-                std::shared_ptr<ReqTreeView> req_tree_view);
+  MainViewImpl (
+    hipro::log::Logger* logger,
+    Glib::RefPtr<Gtk::Builder> builder);
   ~MainViewImpl () { }
 
-  /*--- Methods required by the MainView interface ---*/
-  signal_close_t & signal_close (void)
+  /*--- DI ---*/
+  void set_handler (MainViewCallbacks * handler)
   {
-    return m_signal_close;
+    m_handler = handler;
   }
 
-  Gtk::Window * window (void) { return m_window; }
+  /*--- MainView interface ---*/
+  Gtk::Window * window (void)
+  {
+    return m_window;
+  }
+  void attach_content (Gtk::Widget* widget);
+
+  void show (void);
+  bool get_file_to_open (std::string * file_name);
+  bool get_file_to_save (std::string * file_name);
+  bool get_file_to_save_as (std::string * file_name);
+  bool confirm_data_discard (
+    const std::string & title, const std::string & description);
+  void show_error (const std::string & msg);
 
 private:
-  /*--- Other convenience functions ---*/
   void cb_on_file_new (void);
   void cb_on_file_open (void);
   void cb_on_file_save (void);
   void cb_on_file_save_as (void);
-  void cb_on_file_export_all (void);
-  void cb_on_file_export_topics (void);
-  void cb_on_tree_dirty (void);
-
-  void cb_on_close (void)
-  {
-    m_signal_close ();
-  }
-
-  bool confirm_data_discard (void);
-  void update_title (void);
+  void cb_on_close (void);
 
 private:
-  /*--- Data members ---*/
-  hipro::log::Logger* logger;
-  std::shared_ptr<ReqTreeFactory> m_req_tree_factory;
-  std::shared_ptr<ReqTree> m_req_tree;
-  std::shared_ptr<ReqTreeView> m_req_tree_view;
-  std::shared_ptr<Latex> m_latex_generator;
-  std::string m_file_name;
+  hipro::log::Logger* logger = nullptr;
 
-  signal_close_t m_signal_close;
-  Gtk::Window * m_window;
+  MainViewCallbacks* m_handler = nullptr;
+
+  Gtk::Window* m_window = nullptr;
+  Gtk::Box* m_container = nullptr;
 };
+
+NAMESPACE__THITTAM__END
 
 #endif // HIPRO_THITTAM__db56ba7c_fd96_11e2_806c_001f3c9e2082
 

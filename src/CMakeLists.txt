@@ -15,14 +15,28 @@ add_library (app
   log.cxx
   common.cxx
   config_impl.cxx
-  latex_impl.cxx
   main-view_impl.cxx
-  req-tree_impl.cxx
-  req-tree-view_impl.cxx
-  req-view_impl.cxx
+  main-controller_impl.cxx
+  project_impl.cxx
+  project-factory_impl.cxx
+  project-ui-factory_impl.cxx
+  project-view_impl.cxx
+  project-controller_impl.cxx
+  wbs-view_impl.cxx
+  wbs-controller_impl.cxx
+  resources-view_impl.cxx
+  resources-controller_impl.cxx
+  gantt-view_impl.cxx
+  gantt-controller_impl.cxx
+  resource-usage-view_impl.cxx
+  resource-usage-controller_impl.cxx
+
   util.cxx
   task.cxx
+  wbs_impl.cxx
+  wbs-gtk-tree-model.cxx
   )
+
 
 target_include_directories(app
   PUBLIC ${GTKMM_INCLUDE_DIRS}

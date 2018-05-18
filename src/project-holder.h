@@ -1,4 +1,4 @@
-/* Copyright (C) 2012,2013 HiPro IT Solutions Private Limited,
+/* Copyright (C) 2008-2018 HiPro IT Solutions Private Limited,
  * Chennai. All rights reserved.
  *
  * This program and the accompanying materials are made available
@@ -7,17 +7,22 @@
  * distribution or for further clarifications, please contact
  * legal@hipro.co.in. */
 
-#include <memory>
+#ifndef HIPRO__33ca4956_59c9_11e8_8f6d_448500dfb04c
+#define HIPRO__33ca4956_59c9_11e8_8f6d_448500dfb04c
 
-#include "app_impl.h"
+NAMESPACE__THITTAM__START
 
-int
-main (int argc, char ** argv)
+class ProjectHolder
 {
-  auto app = std::make_shared<thittam::AppImpl> ();
-  int ret = app->run (argc, argv);
-  return ret;
-}
+public:
+  virtual ~ProjectHolder () {}
+
+
+};
+
+NAMESPACE__THITTAM__END
+
+#endif // HIPRO__33ca4956_59c9_11e8_8f6d_448500dfb04c
 
 /*
   Local Variables:
