@@ -7,24 +7,35 @@
  * distribution or for further clarifications, please contact
  * legal@hipro.co.in. */
 
-#include "wbs-view_impl.h"
+#ifndef HIPRO__303570ea_5a91_11e8_b125_448500dfb04c
+#define HIPRO__303570ea_5a91_11e8_b125_448500dfb04c
+
+#include <gtkmm.h>
+
+#include "_namespace.h"
 
 NAMESPACE__THITTAM__START
 
-WBSViewImpl::WBSViewImpl (
-  hipro::log::Logger* logger,
-  Glib::RefPtr<Gtk::Builder> builder)
-  : logger (logger)
+class GANTTViewCallbacks
 {
-  builder->get_widget ("top-widget", m_top_widget);
-  auto parent = m_top_widget->get_parent ();
-  if (parent)
-  {
-    parent->remove (*m_top_widget);
-  }
-}
+public:
+  virtual ~GANTTViewCallbacks () {}
+
+};
+
+class GANTTView
+{
+public:
+  virtual ~GANTTView () {}
+
+  virtual Gtk::Widget* widget (void) = 0;
+
+  virtual void set_handler (GANTTViewCallbacks* handler) = 0;
+};
 
 NAMESPACE__THITTAM__END
+
+#endif // HIPRO__303570ea_5a91_11e8_b125_448500dfb04c
 
 /*
   Local Variables:

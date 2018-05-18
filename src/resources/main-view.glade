@@ -145,5 +145,4 @@
       </object>
     </child>
   </object>
-  <object class="GtkListStore" id="project-parts-store"/>
 </interface>

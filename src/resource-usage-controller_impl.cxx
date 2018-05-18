@@ -7,21 +7,15 @@
  * distribution or for further clarifications, please contact
  * legal@hipro.co.in. */
 
-#include "wbs-view_impl.h"
+#include "resource-usage-controller_impl.h"
 
 NAMESPACE__THITTAM__START
 
-WBSViewImpl::WBSViewImpl (
-  hipro::log::Logger* logger,
-  Glib::RefPtr<Gtk::Builder> builder)
+ResourceUsageControllerImpl::ResourceUsageControllerImpl (
+  hipro::log::Logger* logger)
   : logger (logger)
 {
-  builder->get_widget ("top-widget", m_top_widget);
-  auto parent = m_top_widget->get_parent ();
-  if (parent)
-  {
-    parent->remove (*m_top_widget);
-  }
+
 }
 
 NAMESPACE__THITTAM__END

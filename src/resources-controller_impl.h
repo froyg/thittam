@@ -7,28 +7,29 @@
  * distribution or for further clarifications, please contact
  * legal@hipro.co.in. */
 
-#ifndef HIPRO__0bd01c5c_2ac4_11e8_ab38_448500dfb04c
-#define HIPRO__0bd01c5c_2ac4_11e8_ab38_448500dfb04c
+#ifndef HIPRO__123e5b40_5a93_11e8_a7b6_448500dfb04c
+#define HIPRO__123e5b40_5a93_11e8_a7b6_448500dfb04c
 
-#include "wbs-controller.h"
-#include "wbs-view.h"
+#include "resources-controller.h"
+#include "resources-view.h"
 #include "log.h"
 
 NAMESPACE__THITTAM__START
 
-class WBSControllerImpl : public WBSController, public WBSViewCallbacks
+class ResourcesControllerImpl
+  : public ResourcesController, public ResourcesViewCallbacks
 {
 public:
-  WBSControllerImpl (hipro::log::Logger* logger);
-  ~WBSControllerImpl () {}
+  ResourcesControllerImpl (hipro::log::Logger* logger);
+  ~ResourcesControllerImpl () {}
 
   /*--- DI ---*/
-  void set_view (std::unique_ptr<WBSView> view)
+  void set_view (std::unique_ptr<ResourcesView> view)
   {
     m_view = std::move (view);
   }
 
-  /*--- WBSController interface ---*/
+  /*--- ResourcesController interface ---*/
   Gtk::Widget * view_widget (void)
   {
     return m_view->widget ();
@@ -37,12 +38,12 @@ public:
 private:
   hipro::log::Logger* logger = nullptr;
 
-  std::unique_ptr<WBSView> m_view;
+  std::unique_ptr<ResourcesView> m_view;
 };
 
 NAMESPACE__THITTAM__END
 
-#endif // HIPRO__0bd01c5c_2ac4_11e8_ab38_448500dfb04c
+#endif // HIPRO__123e5b40_5a93_11e8_a7b6_448500dfb04c
 
 /*
   Local Variables:

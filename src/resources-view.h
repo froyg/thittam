@@ -7,24 +7,35 @@
  * distribution or for further clarifications, please contact
  * legal@hipro.co.in. */
 
-#include "wbs-view_impl.h"
+#ifndef HIPRO__0bc8374a_5a93_11e8_af85_448500dfb04c
+#define HIPRO__0bc8374a_5a93_11e8_af85_448500dfb04c
+
+#include <gtkmm.h>
+
+#include "_namespace.h"
 
 NAMESPACE__THITTAM__START
 
-WBSViewImpl::WBSViewImpl (
-  hipro::log::Logger* logger,
-  Glib::RefPtr<Gtk::Builder> builder)
-  : logger (logger)
+class ResourcesViewCallbacks
 {
-  builder->get_widget ("top-widget", m_top_widget);
-  auto parent = m_top_widget->get_parent ();
-  if (parent)
-  {
-    parent->remove (*m_top_widget);
-  }
-}
+public:
+  virtual ~ResourcesViewCallbacks () {}
+
+};
+
+class ResourcesView
+{
+public:
+  virtual ~ResourcesView () {}
+
+  virtual Gtk::Widget* widget (void) = 0;
+
+  virtual void set_handler (ResourcesViewCallbacks* handler) = 0;
+};
 
 NAMESPACE__THITTAM__END
+
+#endif // HIPRO__0bc8374a_5a93_11e8_af85_448500dfb04c
 
 /*
   Local Variables:

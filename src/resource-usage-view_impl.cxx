@@ -7,11 +7,11 @@
  * distribution or for further clarifications, please contact
  * legal@hipro.co.in. */
 
-#include "wbs-view_impl.h"
+#include "resource-usage-view_impl.h"
 
 NAMESPACE__THITTAM__START
 
-WBSViewImpl::WBSViewImpl (
+ResourceUsageViewImpl::ResourceUsageViewImpl (
   hipro::log::Logger* logger,
   Glib::RefPtr<Gtk::Builder> builder)
   : logger (logger)

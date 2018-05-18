@@ -27,7 +27,7 @@ public:
   /*--- ProjectView interface ---*/
   Gtk::Widget* widget (void)
   {
-    return m_main_window;
+    return m_top_widget;
   }
 
   void set_handler (ProjectViewCallbacks* handler)
@@ -47,7 +47,7 @@ private:
 
   ProjectViewCallbacks* m_handler = nullptr;
 
-  Gtk::Window* m_main_window = nullptr;
+  Gtk::Widget* m_top_widget = nullptr;
   Gtk::Box* m_container = nullptr;
 };
 

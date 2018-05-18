@@ -24,6 +24,12 @@ add_library (app
   project-controller_impl.cxx
   wbs-view_impl.cxx
   wbs-controller_impl.cxx
+  resources-view_impl.cxx
+  resources-controller_impl.cxx
+  gantt-view_impl.cxx
+  gantt-controller_impl.cxx
+  resource-usage-view_impl.cxx
+  resource-usage-controller_impl.cxx
 
   util.cxx
   task.cxx

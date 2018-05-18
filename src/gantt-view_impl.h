@@ -7,28 +7,28 @@
  * distribution or for further clarifications, please contact
  * legal@hipro.co.in. */
 
-#ifndef HIPRO__ea1bea38_59c5_11e8_892c_448500dfb04c
-#define HIPRO__ea1bea38_59c5_11e8_892c_448500dfb04c
+#ifndef HIPRO__31be810e_5a91_11e8_9b51_448500dfb04c
+#define HIPRO__31be810e_5a91_11e8_9b51_448500dfb04c
 
 #include <gtkmm.h>
 
-#include "wbs-view.h"
+#include "gantt-view.h"
 #include "log.h"
 
 NAMESPACE__THITTAM__START
 
-class WBSViewImpl : public WBSView
+class GANTTViewImpl : public GANTTView
 {
 public:
-  WBSViewImpl (hipro::log::Logger* logger, Glib::RefPtr<Gtk::Builder> builder);
+  GANTTViewImpl (hipro::log::Logger* logger, Glib::RefPtr<Gtk::Builder> builder);
 
-  /*--- WBSView interface ---*/
+  /*--- GANTTView interface ---*/
   Gtk::Widget* widget (void)
   {
     return m_top_widget;
   }
 
-  void set_handler (WBSViewCallbacks* handler)
+  void set_handler (GANTTViewCallbacks* handler)
   {
     m_handler = handler;
   }
@@ -37,12 +37,12 @@ private:
   hipro::log::Logger* logger = nullptr;
 
   Gtk::Widget* m_top_widget = nullptr;
-  WBSViewCallbacks* m_handler = nullptr;
+  GANTTViewCallbacks* m_handler = nullptr;
 };
 
 NAMESPACE__THITTAM__END
 
-#endif // HIPRO__ea1bea38_59c5_11e8_892c_448500dfb04c
+#endif // HIPRO__31be810e_5a91_11e8_9b51_448500dfb04c
 
 /*
   Local Variables:

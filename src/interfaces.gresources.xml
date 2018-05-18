@@ -4,5 +4,8 @@
     <file preprocess="xml-stripblanks">main-view.glade</file>
     <file preprocess="xml-stripblanks">project-view.glade</file>
     <file preprocess="xml-stripblanks">wbs-view.glade</file>
+    <file preprocess="xml-stripblanks">resources-view.glade</file>
+    <file preprocess="xml-stripblanks">gantt-view.glade</file>
+    <file preprocess="xml-stripblanks">resource-usage-view.glade</file>
   </gresource>
 </gresources>
