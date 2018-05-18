@@ -14,28 +14,43 @@
 
 #include <gtkmm.h>
 
-#include <boost/signals2.hpp>
+#include "_namespace.h"
+
+NAMESPACE__THITTAM__START
+
+class MainViewCallbacks
+{
+public:
+  virtual ~MainViewCallbacks () {}
+
+  virtual void view_close_pressed (void) = 0;
+  virtual void view_file_new_pressed (void) = 0;
+  virtual void view_file_open_pressed (void) = 0;
+  virtual void view_file_save_pressed (void) = 0;
+  virtual void view_file_save_as_pressed (void) = 0;
+
+};
 
 class MainView
 {
 public:
-  typedef std::shared_ptr<MainView> ptr_t;
-
-  /* Signal raised when the user wants to close the application */
-  typedef ::boost::signals2::signal <
-    void (void)
-    > signal_close_t;
-
-public:
-  /* Methods to access the signals */
-  virtual signal_close_t & signal_close (void) = 0;
+  virtual ~MainView () {}
 
   /* Accessor for the main application window */
   virtual Gtk::Window * window (void) = 0;
+  virtual void attach_content (Gtk::Widget* widget) = 0;
 
-  /* virtual dtor */
-  virtual ~MainView () {}
+  virtual void show (void) = 0;
+  virtual bool get_file_to_open (std::string * file_name) = 0;
+  virtual bool get_file_to_save (std::string * file_name) = 0;
+  virtual bool get_file_to_save_as (std::string * file_name) = 0;
+  virtual bool confirm_data_discard (
+    const std::string & title,
+    const std::string & description) = 0;
+  virtual void show_error (const std::string & msg) = 0;
 };
+
+NAMESPACE__THITTAM__END
 
 #endif // HIPRO_THITTAM__c992faf8_fd96_11e2_9900_001f3c9e2082
 
