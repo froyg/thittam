@@ -8,7 +8,18 @@
 # legal@hipro.co.in.
 
 set (CMAKE_CXX_FLAGS
-  "${CMAKE_CXX_FLAGS} -std=gnu++1y -Wall -Werror")
+  "${CMAKE_CXX_FLAGS} -std=gnu++1y -Wall")
+
+set (RESOURCE_DIR ${CMAKE_SOURCE_DIR}/src/resources)
+set (GRESOURCE_XML ${RESOURCE_DIR}/interfaces.gresources.xml)
+set (GRESOURCE_C interfaces.gresources.c)
+
+add_custom_command(OUTPUT ${GRESOURCE_C}
+  COMMAND glib-compile-resources --target ${GRESOURCE_C} --generate-source --sourcedir ${RESOURCE_DIR} ${GRESOURCE_XML}
+  MAIN_DEPENDENCY ${GRESOURCE_XML}
+  COMMENT "Generating ${GRESOURCE_C}")
+
+#glib-compile-resources --target interfaces.gresources.c --generate-source --sourcedir resources/ interfaces.gresources.xml
 
 add_library (app
   app_impl.cxx
@@ -36,7 +47,7 @@ target_link_libraries (app
 
 add_executable (thittam
   main.cxx
-  interfaces.gresources.c
+  ${GRESOURCE_C}
   )
 
 target_link_libraries (thittam
