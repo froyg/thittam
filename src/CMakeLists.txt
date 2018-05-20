@@ -7,8 +7,15 @@
 # distribution or for further clarifications, please contact
 # legal@hipro.co.in.
 
-set (CMAKE_CXX_FLAGS
-  "${CMAKE_CXX_FLAGS} -std=gnu++1y -Wall")
+if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+  string(REGEX REPLACE "\\..*$" "" GCC_MAJOR_VERSION ${CMAKE_CXX_COMPILER_VERSION})
+  if ("${GCC_MAJOR_VERSION}" STREQUAL "8")
+    set (CMAKE_CXX_FLAGS
+      "${CMAKE_CXX_FLAGS} -std=gnu++1y -Wall -Werror -Wno-parentheses")
+  endif()
+else()
+  set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++1y -Wall -Werror")
+endif()
 
 set (RESOURCE_DIR ${CMAKE_SOURCE_DIR}/src/resources)
 set (GRESOURCE_XML ${RESOURCE_DIR}/interfaces.gresources.xml)
