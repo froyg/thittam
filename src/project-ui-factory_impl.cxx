@@ -81,6 +81,8 @@ ProjectUIFactoryImpl::create (Project * project)
   project_controller->set_resource_usage_controller (
     std::move (resource_usage_controller));
 
+  project_controller->show_wbs ();
+
   return project_controller;
 }
 

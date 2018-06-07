@@ -63,6 +63,11 @@ public:
     return m_view->widget ();
   }
 
+  void show_wbs (void)
+  {
+    view_wbs_selected ();
+  }
+
   /*--- ProjectViewCallbacks interface ---*/
   void view_wbs_selected (void);
   void view_resources_selected (void);
