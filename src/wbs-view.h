@@ -21,6 +21,15 @@ class WBSViewCallbacks
 public:
   virtual ~WBSViewCallbacks () {}
 
+  virtual void view_add_clicked (void) = 0;
+  virtual void view_cut_clicked (void) = 0;
+  virtual void view_copy_clicked (void) = 0;
+  virtual void view_paste_clicked (void) = 0;
+  virtual void view_delete_clicked (void) = 0;
+  virtual void view_indent_clicked (void) = 0;
+  virtual void view_unindent_clicked (void) = 0;
+  virtual void view_up_clicked (void) = 0;
+  virtual void view_down_clicked (void) = 0;
 };
 
 class WBSView

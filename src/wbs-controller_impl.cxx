@@ -17,6 +17,60 @@ WBSControllerImpl::WBSControllerImpl (hipro::log::Logger* logger)
 
 }
 
+void
+WBSControllerImpl::view_add_clicked (void)
+{
+
+}
+
+void
+WBSControllerImpl::view_cut_clicked (void)
+{
+
+}
+
+void
+WBSControllerImpl::view_copy_clicked (void)
+{
+
+}
+
+void
+WBSControllerImpl::view_paste_clicked (void)
+{
+
+}
+
+void
+WBSControllerImpl::view_delete_clicked (void)
+{
+
+}
+
+void
+WBSControllerImpl::view_indent_clicked (void)
+{
+
+}
+
+void
+WBSControllerImpl::view_unindent_clicked (void)
+{
+
+}
+
+void
+WBSControllerImpl::view_up_clicked (void)
+{
+
+}
+
+void
+WBSControllerImpl::view_down_clicked (void)
+{
+
+}
+
 NAMESPACE__THITTAM__END
 
 /*

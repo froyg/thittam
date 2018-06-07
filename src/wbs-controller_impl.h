@@ -34,6 +34,17 @@ public:
     return m_view->widget ();
   }
 
+  /*--- WBSViewCallbacks interface ---*/
+  void view_add_clicked (void);
+  void view_cut_clicked (void);
+  void view_copy_clicked (void);
+  void view_paste_clicked (void);
+  void view_delete_clicked (void);
+  void view_indent_clicked (void);
+  void view_unindent_clicked (void);
+  void view_up_clicked (void);
+  void view_down_clicked (void);
+
 private:
   hipro::log::Logger* logger = nullptr;
 
