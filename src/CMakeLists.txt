@@ -21,12 +21,23 @@ set (RESOURCE_DIR ${CMAKE_SOURCE_DIR}/src/resources)
 set (GRESOURCE_XML ${RESOURCE_DIR}/interfaces.gresources.xml)
 set (GRESOURCE_C interfaces.gresources.c)
 
+# Target: interfaces.gresources.c
+# Depends: All .glade files and .xml configuration
+# Command: glib-compile-resources
+# Directory: /src/resources
 add_custom_command(OUTPUT ${GRESOURCE_C}
   COMMAND glib-compile-resources --target ${GRESOURCE_C} --generate-source --sourcedir ${RESOURCE_DIR} ${GRESOURCE_XML}
   MAIN_DEPENDENCY ${GRESOURCE_XML}
+  DEPENDS
+  ${RESOURCE_DIR}/gantt-view.glade
+  ${RESOURCE_DIR}/main.glade
+  ${RESOURCE_DIR}/main-view.glade
+  ${RESOURCE_DIR}/project-view.glade
+  ${RESOURCE_DIR}/req-form.glade
+  ${RESOURCE_DIR}/resources-view.glade
+  ${RESOURCE_DIR}/resource-usage-view.glade
+  ${RESOURCE_DIR}/wbs-view.glade
   COMMENT "Generating ${GRESOURCE_C}")
-
-#glib-compile-resources --target interfaces.gresources.c --generate-source --sourcedir resources/ interfaces.gresources.xml
 
 add_library (app
   app_impl.cxx
