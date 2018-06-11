@@ -22,7 +22,99 @@ ResourcesViewImpl::ResourcesViewImpl (
   {
     parent->remove (*m_top_widget);
   }
+
+  Gtk::ToolButton* btn;
+  builder->get_widget ("tb-add", btn);
+  btn->signal_clicked ().connect (
+    sigc::mem_fun (*this, &ResourcesViewImpl::cb_on_add_clicked));
+
+  builder->get_widget ("tb-cut", btn);
+  btn->signal_clicked ().connect (
+    sigc::mem_fun (*this, &ResourcesViewImpl::cb_on_cut_clicked));
+
+  builder->get_widget ("tb-copy", btn);
+  btn->signal_clicked ().connect (
+    sigc::mem_fun (*this, &ResourcesViewImpl::cb_on_copy_clicked));
+
+  builder->get_widget ("tb-paste", btn);
+  btn->signal_clicked ().connect (
+    sigc::mem_fun (*this, &ResourcesViewImpl::cb_on_paste_clicked));
+
+  builder->get_widget ("tb-delete", btn);
+  btn->signal_clicked ().connect (
+    sigc::mem_fun (*this, &ResourcesViewImpl::cb_on_delete_clicked));
+
+  builder->get_widget ("tb-indent", btn);
+  btn->signal_clicked ().connect (
+    sigc::mem_fun (*this, &ResourcesViewImpl::cb_on_indent_clicked));
+
+  builder->get_widget ("tb-unindent", btn);
+  btn->signal_clicked ().connect (
+    sigc::mem_fun (*this, &ResourcesViewImpl::cb_on_unindent_clicked));
+
+  builder->get_widget ("tb-up", btn);
+  btn->signal_clicked ().connect (
+    sigc::mem_fun (*this, &ResourcesViewImpl::cb_on_up_clicked));
+
+  builder->get_widget ("tb-down", btn);
+  btn->signal_clicked ().connect (
+    sigc::mem_fun (*this, &ResourcesViewImpl::cb_on_down_clicked));
 }
+
+void
+ResourcesViewImpl::cb_on_add_clicked (void)
+{
+
+}
+
+void
+ResourcesViewImpl::cb_on_cut_clicked (void)
+{
+
+}
+
+void
+ResourcesViewImpl::cb_on_copy_clicked (void)
+{
+
+}
+
+void
+ResourcesViewImpl::cb_on_paste_clicked (void)
+{
+
+}
+
+void
+ResourcesViewImpl::cb_on_delete_clicked (void)
+{
+
+}
+
+void
+ResourcesViewImpl::cb_on_indent_clicked (void)
+{
+
+}
+
+void
+ResourcesViewImpl::cb_on_unindent_clicked (void)
+{
+
+}
+
+void
+ResourcesViewImpl::cb_on_up_clicked (void)
+{
+
+}
+
+void
+ResourcesViewImpl::cb_on_down_clicked (void)
+{
+
+}
+
 
 NAMESPACE__THITTAM__END
 
