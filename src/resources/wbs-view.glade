@@ -31,6 +31,7 @@
               <object class="GtkToolButton" id="tb-cut">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="tooltip_text" translatable="yes">Cut</property>
                 <property name="label" translatable="yes">Cut</property>
                 <property name="use_underline">True</property>
                 <property name="stock_id">gtk-cut</property>
@@ -44,6 +45,7 @@
               <object class="GtkToolButton" id="tb-copy">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="tooltip_text" translatable="yes">Copy</property>
                 <property name="label" translatable="yes">Copy</property>
                 <property name="use_underline">True</property>
                 <property name="stock_id">gtk-copy</property>
@@ -57,6 +59,7 @@
               <object class="GtkToolButton" id="tb-paste">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="tooltip_text" translatable="yes">Paste</property>
                 <property name="label" translatable="yes">Paste</property>
                 <property name="use_underline">True</property>
                 <property name="stock_id">gtk-paste</property>
@@ -70,6 +73,7 @@
               <object class="GtkToolButton" id="tb-delete">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="tooltip_text" translatable="yes">Delete</property>
                 <property name="label" translatable="yes">Delete</property>
                 <property name="use_underline">True</property>
                 <property name="stock_id">gtk-delete</property>

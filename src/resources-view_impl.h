@@ -35,6 +35,17 @@ public:
   }
 
 private:
+  void cb_on_add_clicked (void);
+  void cb_on_cut_clicked (void);
+  void cb_on_copy_clicked (void);
+  void cb_on_paste_clicked (void);
+  void cb_on_delete_clicked (void);
+  void cb_on_indent_clicked (void);
+  void cb_on_unindent_clicked (void);
+  void cb_on_up_clicked (void);
+  void cb_on_down_clicked (void);
+
+private:
   hipro::log::Logger* logger = nullptr;
 
   Gtk::Widget* m_top_widget = nullptr;
