@@ -1,2 +1,0 @@
-# Hashes of file build rules.
-ade40d4bfd50a87642dfec15922bf852 src/interfaces.gresources.c
