@@ -40,8 +40,6 @@ private:
   void cb_on_copy_clicked (void);
   void cb_on_paste_clicked (void);
   void cb_on_delete_clicked (void);
-  void cb_on_indent_clicked (void);
-  void cb_on_unindent_clicked (void);
   void cb_on_up_clicked (void);
   void cb_on_down_clicked (void);
 

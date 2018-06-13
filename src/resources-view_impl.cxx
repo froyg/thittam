@@ -44,14 +44,6 @@ ResourcesViewImpl::ResourcesViewImpl (
   btn->signal_clicked ().connect (
     sigc::mem_fun (*this, &ResourcesViewImpl::cb_on_delete_clicked));
 
-  builder->get_widget ("tb-indent", btn);
-  btn->signal_clicked ().connect (
-    sigc::mem_fun (*this, &ResourcesViewImpl::cb_on_indent_clicked));
-
-  builder->get_widget ("tb-unindent", btn);
-  btn->signal_clicked ().connect (
-    sigc::mem_fun (*this, &ResourcesViewImpl::cb_on_unindent_clicked));
-
   builder->get_widget ("tb-up", btn);
   btn->signal_clicked ().connect (
     sigc::mem_fun (*this, &ResourcesViewImpl::cb_on_up_clicked));
@@ -87,18 +79,6 @@ ResourcesViewImpl::cb_on_paste_clicked (void)
 
 void
 ResourcesViewImpl::cb_on_delete_clicked (void)
-{
-
-}
-
-void
-ResourcesViewImpl::cb_on_indent_clicked (void)
-{
-
-}
-
-void
-ResourcesViewImpl::cb_on_unindent_clicked (void)
 {
 
 }
