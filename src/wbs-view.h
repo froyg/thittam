@@ -21,7 +21,11 @@ class WBSViewCallbacks
 public:
   virtual ~WBSViewCallbacks () {}
 
-  virtual void view_add_clicked (void) = 0;
+  virtual void view_node_selected (const std::string & id) = 0;
+  virtual void view_node_activated (const std::string & id) = 0;
+
+  virtual void view_add_child_clicked (void) = 0;
+  virtual void view_add_sibling_clicked (void) = 0;
   virtual void view_cut_clicked (void) = 0;
   virtual void view_copy_clicked (void) = 0;
   virtual void view_paste_clicked (void) = 0;
@@ -30,6 +34,9 @@ public:
   virtual void view_unindent_clicked (void) = 0;
   virtual void view_up_clicked (void) = 0;
   virtual void view_down_clicked (void) = 0;
+
+  virtual void view_title_changed (const std::string & text) = 0;
+  virtual void view_effort_changed (const std::string & text) = 0;
 };
 
 class WBSView

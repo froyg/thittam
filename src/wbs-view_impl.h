@@ -34,7 +34,13 @@ public:
   }
 
 private:
-  void cb_on_add_clicked (void);
+  void cb_on_row_selected (void);
+  void cb_on_button_pressed (GdkEventButton * event);
+  void cb_on_row_activated (
+    const Gtk::TreeModel::Path & path,
+    Gtk::TreeViewColumn * column);
+  void cb_on_add_child_clicked (void);
+  void cb_on_add_sibling_clicked (void);
   void cb_on_cut_clicked (void);
   void cb_on_copy_clicked (void);
   void cb_on_paste_clicked (void);
@@ -43,12 +49,27 @@ private:
   void cb_on_unindent_clicked (void);
   void cb_on_up_clicked (void);
   void cb_on_down_clicked (void);
+  void cb_on_title_edit (
+    const Glib::ustring & path,
+    const Glib::ustring & new_text);
+  void cb_on_effort_edit (
+    const Glib::ustring & path,
+    const Glib::ustring & new_text);
 
 private:
   hipro::log::Logger* logger = nullptr;
+  Glib::RefPtr<Gtk::Builder> m_builder;
 
   Gtk::Widget* m_top_widget = nullptr;
   WBSViewCallbacks* m_handler = nullptr;
+
+  Gtk::TreeView* m_tree_view = nullptr;
+  Glib::RefPtr<Gtk::TreeStore> m_tree_store;
+  Glib::RefPtr<Gtk::TreeSelection> m_tree_selection;
+
+  Gtk::Menu* m_menu = nullptr;
+  Gtk::MenuItem* m_menu_add_child = nullptr;
+  Gtk::MenuItem* m_menu_add_sibling = nullptr;
 };
 
 NAMESPACE__THITTAM__END
