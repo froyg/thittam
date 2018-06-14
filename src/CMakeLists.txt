@@ -41,29 +41,28 @@ add_custom_command(OUTPUT ${GRESOURCE_C}
 
 add_library (app
   app_impl.cxx
-  log.cxx
   common.cxx
   config_impl.cxx
-  main-view_impl.cxx
+  gantt-controller_impl.cxx
+  gantt-view_impl.cxx
+  log.cxx
   main-controller_impl.cxx
-  project_impl.cxx
+  main-view_impl.cxx
+  project-controller_impl.cxx
   project-factory_impl.cxx
   project-ui-factory_impl.cxx
   project-view_impl.cxx
-  project-controller_impl.cxx
-  wbs-view_impl.cxx
-  wbs-controller_impl.cxx
-  resources-view_impl.cxx
-  resources-controller_impl.cxx
-  gantt-view_impl.cxx
-  gantt-controller_impl.cxx
-  resource-usage-view_impl.cxx
+  project_impl.cxx
   resource-usage-controller_impl.cxx
-
-  util.cxx
+  resource-usage-view_impl.cxx
+  resources-controller_impl.cxx
+  resources-view_impl.cxx
   task.cxx
-  wbs_impl.cxx
+  util.cxx
+  wbs-controller_impl.cxx
   wbs-gtk-tree-model.cxx
+  wbs-view_impl.cxx
+  wbs_impl.cxx
   )
 
 
