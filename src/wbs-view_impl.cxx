@@ -64,23 +64,23 @@ WBSViewImpl::WBSViewImpl (
   builder->get_widget ("tree-view", m_tree_view);
 
   m_tree_view->signal_button_press_event ().connect_notify
-    (sigc::mem_fun (this, &WBSViewImpl::cb_on_button_pressed));
+    (sigc::mem_fun (*this, &WBSViewImpl::cb_on_button_pressed));
   m_tree_view->signal_row_activated ().connect
-    (sigc::mem_fun (this, &WBSViewImpl::cb_on_row_activated));
+    (sigc::mem_fun (*this, &WBSViewImpl::cb_on_row_activated));
 
   auto crt1 = Glib::RefPtr<Gtk::CellRendererText>::cast_static (
     builder->get_object ("tv-cell-title"));
   crt1->signal_edited ().connect
-    (sigc::mem_fun (this, &WBSViewImpl::cb_on_title_edit));
+    (sigc::mem_fun (*this, &WBSViewImpl::cb_on_title_edit));
 
   auto crt2 = Glib::RefPtr<Gtk::CellRendererText>::cast_static (
     builder->get_object ("tv-cell-effort"));
   crt2->signal_edited ().connect
-    (sigc::mem_fun (this, &WBSViewImpl::cb_on_effort_edit));
+    (sigc::mem_fun (*this, &WBSViewImpl::cb_on_effort_edit));
 
   m_tree_selection = m_tree_view->get_selection ();
   m_tree_selection->signal_changed ().connect
-    (sigc::mem_fun (this, &WBSViewImpl::cb_on_row_selected));
+    (sigc::mem_fun (*this, &WBSViewImpl::cb_on_row_selected));
 }
 
 void

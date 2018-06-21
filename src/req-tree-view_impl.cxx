@@ -36,11 +36,11 @@ ReqTreeViewImpl::ReqTreeViewImpl (hipro::log::Logger* logger,
 
   /* signals related to TreeView */
   m_tree_view->signal_button_press_event ().connect_notify
-    (sigc::mem_fun (this, &ReqTreeViewImpl::cb_on_button_pressed));
+    (sigc::mem_fun (*this, &ReqTreeViewImpl::cb_on_button_pressed));
   m_tree_view->signal_row_activated ().connect
-    (sigc::mem_fun (this, &ReqTreeViewImpl::cb_on_row_activated));
+    (sigc::mem_fun (*this, &ReqTreeViewImpl::cb_on_row_activated));
   m_tree_view->signal_cursor_changed ().connect
-    (sigc::mem_fun (this, &ReqTreeViewImpl::cb_on_cursor_changed));
+    (sigc::mem_fun (*this, &ReqTreeViewImpl::cb_on_cursor_changed));
 
   /* signal related to TreeView CellRenderer */
   Glib::RefPtr<Gtk::CellRendererText> crt;
@@ -48,72 +48,72 @@ ReqTreeViewImpl::ReqTreeViewImpl (hipro::log::Logger* logger,
     (builder->get_object ("tv-cell-title"));
 
   crt->signal_edited ().connect
-    (sigc::mem_fun (this, &ReqTreeViewImpl::cb_on_title_edit));
+    (sigc::mem_fun (*this, &ReqTreeViewImpl::cb_on_title_edit));
 
   /* signals related to TreeSelection */
   m_tree_selection = m_tree_view->get_selection ();
   m_tree_selection->signal_changed ().connect
-    (sigc::mem_fun (this, &ReqTreeViewImpl::cb_on_row_selected));
+    (sigc::mem_fun (*this, &ReqTreeViewImpl::cb_on_row_selected));
 
   /* Get menu items and listen for their signals */
   builder->get_widget ("menu-node", m_menu_node);
 
   builder->get_widget ("menu-node-add-child", m_menu_node_add_child);
   m_menu_node_add_child->signal_activate ().connect
-    (sigc::mem_fun (this, &ReqTreeViewImpl::cb_on_add_child));
+    (sigc::mem_fun (*this, &ReqTreeViewImpl::cb_on_add_child));
 
   builder->get_widget ("menu-node-add-sibling", m_menu_node_add_sibling);
   m_menu_node_add_sibling->signal_activate ().connect
-    (sigc::mem_fun (this, &ReqTreeViewImpl::cb_on_add_sibling));
+    (sigc::mem_fun (*this, &ReqTreeViewImpl::cb_on_add_sibling));
 
   builder->get_widget ("menu-node-cut", m_menu_node_cut);
   m_menu_node_cut->signal_activate ().connect
-    (sigc::mem_fun (this, &ReqTreeViewImpl::cb_on_cut));
+    (sigc::mem_fun (*this, &ReqTreeViewImpl::cb_on_cut));
 
   builder->get_widget ("menu-node-copy", m_menu_node_copy);
   m_menu_node_copy->signal_activate ().connect
-    (sigc::mem_fun (this, &ReqTreeViewImpl::cb_on_copy));
+    (sigc::mem_fun (*this, &ReqTreeViewImpl::cb_on_copy));
 
   builder->get_widget ("menu-node-paste", m_menu_node_paste);
   m_menu_node_paste->signal_activate ().connect
-    (sigc::mem_fun (this, &ReqTreeViewImpl::cb_on_paste));
+    (sigc::mem_fun (*this, &ReqTreeViewImpl::cb_on_paste));
 
   builder->get_widget ("menu-node-delete", m_menu_node_delete);
   m_menu_node_delete->signal_activate ().connect
-    (sigc::mem_fun (this, &ReqTreeViewImpl::cb_on_delete));
+    (sigc::mem_fun (*this, &ReqTreeViewImpl::cb_on_delete));
 
   /* Get toolbar items and listen for their signals */
   builder->get_widget ("tb-cut", m_tb_node_cut);
   m_tb_node_cut->signal_clicked ().connect
-    (sigc::mem_fun (this, &ReqTreeViewImpl::cb_on_cut));
+    (sigc::mem_fun (*this, &ReqTreeViewImpl::cb_on_cut));
 
   builder->get_widget ("tb-copy", m_tb_node_copy);
   m_tb_node_copy->signal_clicked ().connect
-    (sigc::mem_fun (this, &ReqTreeViewImpl::cb_on_copy));
+    (sigc::mem_fun (*this, &ReqTreeViewImpl::cb_on_copy));
 
   builder->get_widget ("tb-paste", m_tb_node_paste);
   m_tb_node_paste->signal_clicked ().connect
-    (sigc::mem_fun (this, &ReqTreeViewImpl::cb_on_paste));
+    (sigc::mem_fun (*this, &ReqTreeViewImpl::cb_on_paste));
 
   builder->get_widget ("tb-delete", m_tb_node_delete);
   m_tb_node_delete->signal_clicked ().connect
-    (sigc::mem_fun (this, &ReqTreeViewImpl::cb_on_delete));
+    (sigc::mem_fun (*this, &ReqTreeViewImpl::cb_on_delete));
 
   builder->get_widget ("tb-indent", m_tb_node_indent);
   m_tb_node_indent->signal_clicked ().connect
-    (sigc::mem_fun (this, &ReqTreeViewImpl::cb_on_indent));
+    (sigc::mem_fun (*this, &ReqTreeViewImpl::cb_on_indent));
 
   builder->get_widget ("tb-unindent", m_tb_node_unindent);
   m_tb_node_unindent->signal_clicked ().connect
-    (sigc::mem_fun (this, &ReqTreeViewImpl::cb_on_unindent));
+    (sigc::mem_fun (*this, &ReqTreeViewImpl::cb_on_unindent));
 
   builder->get_widget ("tb-up", m_tb_node_up);
   m_tb_node_up->signal_clicked ().connect
-    (sigc::mem_fun (this, &ReqTreeViewImpl::cb_on_move_up));
+    (sigc::mem_fun (*this, &ReqTreeViewImpl::cb_on_move_up));
 
   builder->get_widget ("tb-down", m_tb_node_down);
   m_tb_node_down->signal_clicked ().connect
-    (sigc::mem_fun (this, &ReqTreeViewImpl::cb_on_move_down));
+    (sigc::mem_fun (*this, &ReqTreeViewImpl::cb_on_move_down));
 
   /* Set the initial menu state */
   m_menu_node_add_child->set_sensitive (true);
