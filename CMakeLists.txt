@@ -10,6 +10,8 @@
 cmake_minimum_required (VERSION 2.8)
 project (thittam)
 
+set (CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 add_definitions (-DBOOST_LOG_DYN_LINK)
 find_package (Boost REQUIRED COMPONENTS
   log log_setup thread date_time system program_options

@@ -35,8 +35,8 @@ public:
   }
 
   /*--- WBSViewCallbacks interface ---*/
-  void view_node_selected (const std::string & id);
-  void view_node_activated (const std::string & id);
+  void view_node_selected (std::vector<Task::Path> && path_list);
+  void view_node_activated (const Task::Path & path);
   void view_add_child_clicked (void);
   void view_add_sibling_clicked (void);
   void view_cut_clicked (void);

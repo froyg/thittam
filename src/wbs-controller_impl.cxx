@@ -18,7 +18,8 @@ WBSControllerImpl::WBSControllerImpl (hipro::log::Logger* logger)
 }
 
 void
-WBSControllerImpl::view_node_selected (const std::string & text)
+WBSControllerImpl::view_node_selected (
+  std::vector<Task::Path> && path_list)
 {
   // auto path = m_model->convert_gtk_tree_iter_to_wbs_path (it);
   // m_current_selection = path;
@@ -54,7 +55,7 @@ WBSControllerImpl::view_node_selected (const std::string & text)
 }
 
 void
-WBSControllerImpl::view_node_activated (const std::string & text)
+WBSControllerImpl::view_node_activated (const Task::Path & path)
 {
 
 }

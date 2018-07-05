@@ -11,6 +11,29 @@
 
 NAMESPACE__THITTAM__START
 
+namespace
+{
+  Task::Path gtk_tree_path_to_task_path (const Gtk::TreeModel::Path & path)
+  {
+    Task::Path opath;
+    for (auto index : path)
+    {
+      opath.push_back (index);
+    }
+    return opath;
+  }
+
+  Gtk::TreeModel::Path task_path_to_gtk_tree_path (const Task::Path & path)
+  {
+    Gtk::TreeModel::Path opath;
+    for (auto index : path.parts ())
+    {
+      opath.push_back (index);
+    }
+    return opath;
+  }
+}
+
 WBSViewImpl::WBSViewImpl (
   hipro::log::Logger* logger,
   Glib::RefPtr<Gtk::Builder> builder)
@@ -61,35 +84,52 @@ WBSViewImpl::WBSViewImpl (
   builder->get_widget ("menu-add-child", m_menu_add_child);
   builder->get_widget ("menu-add-sibling", m_menu_add_sibling);
 
-  builder->get_widget ("tree-view", m_tree_view);
+  m_tree_store = Gtk::TreeStore::create (m_cols);
+  m_tree_view.set_model (m_tree_store);
+  m_tree_view.show ();
 
-  m_tree_view->signal_button_press_event ().connect_notify
+  m_tree_view.append_column ("ID", m_cols.id);
+  m_tree_view.append_column_editable ("Title", m_cols.title);
+  m_tree_view.append_column_editable ("Effort", m_cols.effort);
+
+  m_tree_view.signal_button_press_event ().connect_notify
     (sigc::mem_fun (this, &WBSViewImpl::cb_on_button_pressed));
-  m_tree_view->signal_row_activated ().connect
+  m_tree_view.signal_row_activated ().connect
     (sigc::mem_fun (this, &WBSViewImpl::cb_on_row_activated));
 
-  auto crt1 = Glib::RefPtr<Gtk::CellRendererText>::cast_static (
-    builder->get_object ("tv-cell-title"));
-  crt1->signal_edited ().connect
-    (sigc::mem_fun (this, &WBSViewImpl::cb_on_title_edit));
+  m_tree_store->signal_row_changed ().connect (
+    sigc::mem_fun (this, &WBSViewImpl::cb_on_row_changed));
 
-  auto crt2 = Glib::RefPtr<Gtk::CellRendererText>::cast_static (
-    builder->get_object ("tv-cell-effort"));
-  crt2->signal_edited ().connect
-    (sigc::mem_fun (this, &WBSViewImpl::cb_on_effort_edit));
-
-  m_tree_selection = m_tree_view->get_selection ();
+  m_tree_selection = m_tree_view.get_selection ();
   m_tree_selection->signal_changed ().connect
     (sigc::mem_fun (this, &WBSViewImpl::cb_on_row_selected));
+
+  Gtk::Box* top_box = dynamic_cast<Gtk::Box*> (m_top_widget);
+  top_box->add (m_tree_view);
+
+  m_self_change = true;
+  for (auto i = 0; i< 10; ++i)
+  {
+    auto row = *m_tree_store->append();
+    row[m_cols.id] = "1.1";
+    row[m_cols.title] = "title";
+    row[m_cols.effort] = "232";
+  }
+  m_self_change = false;
 }
 
 void
 WBSViewImpl::cb_on_row_selected (void)
 {
-  auto it = m_tree_selection->get_selected ();
-  std::string chosen_id;
-  it->get_value (0, chosen_id);
-  m_handler->view_node_selected (chosen_id);
+  auto gtk_paths = m_tree_selection->get_selected_rows ();
+  std::vector<Task::Path> task_paths;
+
+  for (auto & g_path : gtk_paths)
+  {
+    task_paths.push_back (gtk_tree_path_to_task_path (g_path));
+  }
+
+  m_handler->view_node_selected (std::move (task_paths));
 }
 
 void
@@ -98,10 +138,10 @@ WBSViewImpl::cb_on_button_pressed (GdkEventButton * event)
   if (((int)event->type == (int)Gdk::BUTTON_PRESS) && (event->button == 3))
     {
       Gtk::TreeModel::Path path;
-      if (m_tree_view->get_path_at_pos (event->x, event->y, path))
+      if (m_tree_view.get_path_at_pos (event->x, event->y, path))
         {
-          m_tree_view->grab_focus ();
-          m_tree_view->set_cursor (path);
+          m_tree_view.grab_focus ();
+          m_tree_view.set_cursor (path);
           m_menu->popup (event->button, event->time);
         }
     }
@@ -112,11 +152,11 @@ WBSViewImpl::cb_on_row_activated (
   const Gtk::TreeModel::Path & path,
   Gtk::TreeViewColumn * column)
 {
-  auto it = m_tree_selection->get_selected ();
-  std::string chosen_id;
-  it->get_value (0, chosen_id);
+  // auto it = m_tree_selection->get_selected ();
+  // std::string chosen_id;
+  // it->get_value (0, chosen_id);
 
-  m_handler->view_node_activated (chosen_id);
+  // m_handler->view_node_activated (chosen_id);
 }
 
 void
@@ -180,19 +220,16 @@ WBSViewImpl::cb_on_down_clicked (void)
 }
 
 void
-WBSViewImpl::cb_on_title_edit (
-  const Glib::ustring & path,
-  const Glib::ustring & new_text)
+WBSViewImpl::cb_on_row_changed (
+  const Gtk::TreeModel::Path& path,
+  const Gtk::TreeModel::iterator& iter)
 {
-  m_handler->view_title_changed (new_text);
-}
+  if (m_self_change)
+  {
+    return;
+  }
 
-void
-WBSViewImpl::cb_on_effort_edit (
-  const Glib::ustring & path,
-  const Glib::ustring & new_text)
-{
-  m_handler->view_effort_changed (new_text);
+  Log_D << "Path: " << path.to_string ();
 }
 
 NAMESPACE__THITTAM__END

@@ -13,6 +13,7 @@
 #include <gtkmm.h>
 
 #include "_namespace.h"
+#include "task.h"
 
 NAMESPACE__THITTAM__START
 
@@ -21,8 +22,10 @@ class WBSViewCallbacks
 public:
   virtual ~WBSViewCallbacks () {}
 
-  virtual void view_node_selected (const std::string & id) = 0;
-  virtual void view_node_activated (const std::string & id) = 0;
+  virtual void view_node_selected (
+    std::vector<Task::Path> && path_list) = 0;
+  virtual void view_node_activated (
+    const Task::Path & path) = 0;
 
   virtual void view_add_child_clicked (void) = 0;
   virtual void view_add_sibling_clicked (void) = 0;
@@ -34,9 +37,6 @@ public:
   virtual void view_unindent_clicked (void) = 0;
   virtual void view_up_clicked (void) = 0;
   virtual void view_down_clicked (void) = 0;
-
-  virtual void view_title_changed (const std::string & text) = 0;
-  virtual void view_effort_changed (const std::string & text) = 0;
 };
 
 class WBSView
@@ -47,6 +47,7 @@ public:
   virtual Gtk::Widget* widget (void) = 0;
 
   virtual void set_handler (WBSViewCallbacks* handler) = 0;
+
 };
 
 NAMESPACE__THITTAM__END
