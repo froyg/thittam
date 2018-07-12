@@ -56,6 +56,9 @@ private:
     const Gtk::TreeModel::Path& path,
     const Gtk::TreeModel::iterator& iter);
 
+  void do_renumber (
+    const Gtk::TreeRow * row, const std::string & parent_id, int index);
+
 private:
   hipro::log::Logger* logger = nullptr;
   Glib::RefPtr<Gtk::Builder> m_builder;

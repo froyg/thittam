@@ -147,7 +147,36 @@ WBSViewImpl::add_child (const Task::Path & t_path)
 void
 WBSViewImpl::renumber (void)
 {
+  auto children = m_tree_store;
+  int index = 1;
+  std::string id;
+  for (auto child : m_tree_store->children ())
+  {
+    do_renumber (&(*child), id, index);
+    index += 1;
+  }
+}
 
+void
+WBSViewImpl::do_renumber (
+  const Gtk::TreeRow * row, const std::string & parent_id, int index)
+{
+  std::ostringstream os;
+  if (! parent_id.empty ())
+  {
+    os << parent_id << ".";
+  }
+  os << index;
+  auto id = os.str ();
+  (*row)[m_cols.id] = id;
+
+  index = 1;
+  for (auto child : row->children ())
+  {
+    auto iter = &(*child);
+    do_renumber (iter, id, index);
+    index +=1;
+  }
 }
 
 void
