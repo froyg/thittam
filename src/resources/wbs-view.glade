@@ -2,16 +2,6 @@
 <!-- Generated with glade 3.20.0 -->
 <interface>
   <requires lib="gtk+" version="3.20"/>
-  <object class="GtkTreeStore" id="wbs-model">
-    <columns>
-      <!-- column-name tm-cell-title -->
-      <column type="gchararray"/>
-      <!-- column-name tm-cell-id -->
-      <column type="gchararray"/>
-      <!-- column-name tm-cell-effort -->
-      <column type="gchararray"/>
-    </columns>
-  </object>
   <object class="GtkWindow">
     <property name="can_focus">False</property>
     <child>
@@ -163,36 +153,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkTreeView" id="tree-view">
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="model">wbs-model</property>
-            <property name="search_column">0</property>
-            <property name="enable_grid_lines">horizontal</property>
-            <child internal-child="selection">
-              <object class="GtkTreeSelection"/>
-            </child>
-            <child>
-              <object class="GtkTreeViewColumn" id="tv-cell-id">
-                <property name="title" translatable="yes">ID</property>
-              </object>
-            </child>
-            <child>
-              <object class="GtkTreeViewColumn" id="tv-cell-title">
-                <property name="title" translatable="yes">Title</property>
-              </object>
-            </child>
-            <child>
-              <object class="GtkTreeViewColumn" id="tv-cell-effort">
-                <property name="title" translatable="yes">Effort</property>
-              </object>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">True</property>
-            <property name="fill">True</property>
-            <property name="position">1</property>
-          </packing>
+          <placeholder/>
         </child>
       </object>
     </child>

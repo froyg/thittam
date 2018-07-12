@@ -122,13 +122,8 @@ WBSViewImpl::WBSViewImpl (
   top_box->add (m_tree_view);
 
   m_self_change = true;
-  for (auto i = 0; i< 10; ++i)
-  {
-    auto row = *m_tree_store->append();
-    row[m_cols.id] = "1.1";
-    row[m_cols.title] = "title";
-    row[m_cols.effort] = "232";
-  }
+  auto row = *m_tree_store->append();
+  row[m_cols.id] = "1";
   m_self_change = false;
 }
 
