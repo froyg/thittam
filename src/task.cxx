@@ -12,7 +12,7 @@
 
 NAMESPACE__THITTAM__START
 
-std::ostream * operator << (std::ostream & os, const TaskPath & path)
+std::ostream& operator << (std::ostream & os, const TaskPath & path)
 {
   const auto & parts = path.parts ();
 
@@ -26,6 +26,8 @@ std::ostream * operator << (std::ostream & os, const TaskPath & path)
       os << ".";
     }
   }
+
+  return os;
 }
 
 void

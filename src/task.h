@@ -79,7 +79,7 @@ private:
 };
 
 
-std::ostream * operator << (std::ostream & os, const TaskPath & path);
+std::ostream& operator << (std::ostream & os, const TaskPath & path);
 
 
 class Task
