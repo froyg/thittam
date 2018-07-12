@@ -54,6 +54,7 @@ private:
   hipro::log::Logger* logger = nullptr;
 
   std::unique_ptr<WBSView> m_view;
+  Task::Path m_selected_path;
 };
 
 NAMESPACE__THITTAM__END

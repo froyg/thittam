@@ -13,6 +13,7 @@
 #include <string>
 #include <memory>
 #include <vector>
+#include <ostream>
 
 #include <boost/property_tree/ptree.hpp>
 
@@ -23,8 +24,9 @@ NAMESPACE__THITTAM__START
 class TaskPath
 {
 public:
-  TaskPath () : m_parts(10)
+  TaskPath ()
   {
+    m_parts.reserve (10);
   }
 
   TaskPath (const TaskPath & other)
@@ -62,9 +64,22 @@ public:
     return m_parts == right.parts ();
   }
 
+  bool empty (void) const
+  {
+    return m_parts.empty ();
+  }
+
+  void clear (void)
+  {
+    m_parts.clear ();
+  }
+
 private:
   std::vector<int> m_parts;
 };
+
+
+std::ostream * operator << (std::ostream & os, const TaskPath & path);
 
 
 class Task

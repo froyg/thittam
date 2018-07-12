@@ -2,26 +2,6 @@
 <!-- Generated with glade 3.20.0 -->
 <interface>
   <requires lib="gtk+" version="3.20"/>
-  <object class="GtkMenu" id="context-menu">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <child>
-      <object class="GtkMenuItem" id="menu-add-child">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="label" translatable="yes">Add child</property>
-        <property name="use_underline">True</property>
-      </object>
-    </child>
-    <child>
-      <object class="GtkMenuItem" id="menu-add-sibling">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="label" translatable="yes">Add sibling</property>
-        <property name="use_underline">True</property>
-      </object>
-    </child>
-  </object>
   <object class="GtkTreeStore" id="wbs-model">
     <columns>
       <!-- column-name tm-cell-title -->
@@ -214,6 +194,28 @@
             <property name="position">1</property>
           </packing>
         </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkMenu" id="wbspopup">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <child>
+      <object class="GtkMenuItem" id="menu-add-child">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="action_name">wbs.add-child</property>
+        <property name="label" translatable="yes">Add child</property>
+        <property name="use_underline">True</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="menu-add-sibling">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="action_name">wbs.add-sibling</property>
+        <property name="label" translatable="yes">Add sibling</property>
+        <property name="use_underline">True</property>
       </object>
     </child>
   </object>

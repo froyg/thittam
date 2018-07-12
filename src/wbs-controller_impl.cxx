@@ -21,37 +21,12 @@ void
 WBSControllerImpl::view_node_selected (
   std::vector<Task::Path> && path_list)
 {
-  // auto path = m_model->convert_gtk_tree_iter_to_wbs_path (it);
-  // m_current_selection = path;
+  if (path_list.empty ())
+  {
+    return;
+  }
 
-  // if (m_wbs->is_first_child (path))
-  // {
-  //   m_view->enable_indent_button (false);
-  //   m_view->enable_move_up_button (false);
-  // }
-  // else
-  // {
-  //   m_view->enable_indent_button (true);
-  //   m_view->enable_move_up_button (true);
-  // }
-
-  // if (m_wbs->is_last_child (path))
-  // {
-  //   m_view->enable_move_down_button (false);
-  // }
-  // else
-  // {
-  //   m_view->enable_move_down_button (true);
-  // }
-
-  // if (m_wbs->is_top_level (path))
-  // {
-  //   m_view->enable_unindent_button (false);
-  // }
-  // else
-  // {
-  //   m_view->enable_unindent_button (true);
-  // }
+  m_selected_path = path_list[0];
 }
 
 void
@@ -63,7 +38,12 @@ WBSControllerImpl::view_node_activated (const Task::Path & path)
 void
 WBSControllerImpl::view_add_child_clicked (void)
 {
+  Log_I << "Adding child";
+  m_view->add_child (m_selected_path);
+  m_view->renumber ();
 
+  // m_wbs->add_child (m_selected_path);
+  // m_wbs->renumber ();
 }
 
 void

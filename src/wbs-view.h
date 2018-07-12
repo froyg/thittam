@@ -48,6 +48,8 @@ public:
 
   virtual void set_handler (WBSViewCallbacks* handler) = 0;
 
+  virtual void add_child (const Task::Path & path) = 0;
+  virtual void renumber (void) = 0;
 };
 
 NAMESPACE__THITTAM__END

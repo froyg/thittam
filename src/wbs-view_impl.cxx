@@ -26,7 +26,8 @@ namespace
   Gtk::TreeModel::Path task_path_to_gtk_tree_path (const Task::Path & path)
   {
     Gtk::TreeModel::Path opath;
-    for (auto index : path.parts ())
+    const auto & parts = path.parts ();
+    for (auto index : parts)
     {
       opath.push_back (index);
     }
@@ -80,10 +81,23 @@ WBSViewImpl::WBSViewImpl (
   btn->signal_clicked ().connect (
     sigc::mem_fun (*this, &WBSViewImpl::cb_on_down_clicked));
 
-  builder->get_widget ("context-menu", m_menu);
+  m_action_group = Gio::SimpleActionGroup::create ();
+  m_action_add_child = m_action_group->add_action (
+    "add-child",
+    sigc::mem_fun (*this, &WBSViewImpl::cb_on_add_child_clicked));
+  m_action_add_child->set_enabled (true);
+  m_action_add_sibling = m_action_group->add_action (
+    "add-sibling",
+    sigc::mem_fun (*this, &WBSViewImpl::cb_on_add_sibling_clicked));
+  m_top_widget->insert_action_group ("wbs", m_action_group);
+
+  builder->get_widget ("wbspopup", m_menu);
   builder->get_widget ("menu-add-child", m_menu_add_child);
   builder->get_widget ("menu-add-sibling", m_menu_add_sibling);
+  m_menu_add_child->set_sensitive (true);
+  m_menu_add_sibling->set_sensitive (true);
 
+  /* Fix the tree-view */
   m_tree_store = Gtk::TreeStore::create (m_cols);
   m_tree_view.set_model (m_tree_store);
   m_tree_view.show ();
@@ -119,6 +133,24 @@ WBSViewImpl::WBSViewImpl (
 }
 
 void
+WBSViewImpl::add_child (const Task::Path & t_path)
+{
+  Log_I << "add_child ";
+  auto g_path = task_path_to_gtk_tree_path (t_path);
+  auto it = m_tree_store->get_iter (g_path);
+  auto child = m_tree_store->append (it->children ());
+  auto & row = *child;
+  row[m_cols.id] = "aa";
+  Log_D << "g_path " << g_path.size ();
+}
+
+void
+WBSViewImpl::renumber (void)
+{
+
+}
+
+void
 WBSViewImpl::cb_on_row_selected (void)
 {
   auto gtk_paths = m_tree_selection->get_selected_rows ();
@@ -126,7 +158,8 @@ WBSViewImpl::cb_on_row_selected (void)
 
   for (auto & g_path : gtk_paths)
   {
-    task_paths.push_back (gtk_tree_path_to_task_path (g_path));
+    auto t_path = gtk_tree_path_to_task_path (g_path);
+    task_paths.push_back (t_path);
   }
 
   m_handler->view_node_selected (std::move (task_paths));
@@ -142,6 +175,13 @@ WBSViewImpl::cb_on_button_pressed (GdkEventButton * event)
         {
           m_tree_view.grab_focus ();
           m_tree_view.set_cursor (path);
+
+          if (!m_menu->get_attach_widget ())
+          {
+            Log_I << "Attaching menu..";
+            m_menu->attach_to_widget (m_tree_view);
+          }
+
           m_menu->popup (event->button, event->time);
         }
     }

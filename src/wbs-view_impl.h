@@ -33,6 +33,9 @@ public:
     m_handler = handler;
   }
 
+  void add_child (const Task::Path & path);
+  void renumber (void);
+
 private:
   void cb_on_row_selected (void);
   void cb_on_button_pressed (GdkEventButton * event);
@@ -80,6 +83,10 @@ private:
   Glib::RefPtr<Gtk::TreeStore> m_tree_store;
   Glib::RefPtr<Gtk::TreeSelection> m_tree_selection;
   Columns m_cols;
+
+  Glib::RefPtr<Gio::SimpleActionGroup> m_action_group;
+  Glib::RefPtr<Gio::SimpleAction> m_action_add_child;
+  Glib::RefPtr<Gio::SimpleAction> m_action_add_sibling;
 
   Gtk::Menu* m_menu = nullptr;
   Gtk::MenuItem* m_menu_add_child = nullptr;
