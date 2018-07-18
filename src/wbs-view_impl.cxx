@@ -100,7 +100,6 @@ WBSViewImpl::WBSViewImpl (
   /* Fix the tree-view */
   m_tree_store = Gtk::TreeStore::create (m_cols);
   m_tree_view.set_model (m_tree_store);
-  m_tree_view.show ();
 
   m_tree_view.append_column ("ID", m_cols.id);
   m_tree_view.append_column_editable ("Title", m_cols.title);
@@ -118,13 +117,12 @@ WBSViewImpl::WBSViewImpl (
   m_tree_selection->signal_changed ().connect
     (sigc::mem_fun (this, &WBSViewImpl::cb_on_row_selected));
 
-  Gtk::Box* top_box = dynamic_cast<Gtk::Box*> (m_top_widget);
-  top_box->add (m_tree_view);
+  Gtk::ScrolledWindow * tree_container = nullptr;
+  builder->get_widget ("tree-container", tree_container);
+  tree_container->add (m_tree_view);
 
-  m_self_change = true;
-  auto row = *m_tree_store->append();
-  row[m_cols.id] = "1";
-  m_self_change = false;
+  Gtk::Box* top_box = dynamic_cast<Gtk::Box*> (m_top_widget);
+  top_box->show_all_children ();
 }
 
 void

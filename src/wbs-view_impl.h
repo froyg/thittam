@@ -87,6 +87,8 @@ private:
   Glib::RefPtr<Gtk::TreeSelection> m_tree_selection;
   Columns m_cols;
 
+  Gtk::ScrolledWindow * m_tree_container = nullptr;
+
   Glib::RefPtr<Gio::SimpleActionGroup> m_action_group;
   Glib::RefPtr<Gio::SimpleAction> m_action_add_child;
   Glib::RefPtr<Gio::SimpleAction> m_action_add_sibling;
