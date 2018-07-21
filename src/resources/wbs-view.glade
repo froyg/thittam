@@ -156,8 +156,9 @@
           <object class="GtkScrolledWindow" id="tree-container">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
+            <property name="hexpand">True</property>
+            <property name="vexpand">True</property>
             <property name="shadow_type">in</property>
-            <property name="propagate_natural_height">True</property>
             <child>
               <placeholder/>
             </child>
