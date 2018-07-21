@@ -153,13 +153,14 @@
           </packing>
         </child>
         <child>
-          <object class="GtkTreeView">
+          <object class="GtkScrolledWindow" id="tree-container">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="model">wbs-model</property>
-            <property name="search_column">0</property>
-            <child internal-child="selection">
-              <object class="GtkTreeSelection"/>
+            <property name="hexpand">True</property>
+            <property name="vexpand">True</property>
+            <property name="shadow_type">in</property>
+            <child>
+              <placeholder/>
             </child>
           </object>
           <packing>
@@ -171,14 +172,26 @@
       </object>
     </child>
   </object>
-  <object class="GtkTreeStore" id="wbs-model">
-    <columns>
-      <!-- column-name ID -->
-      <column type="gchar"/>
-      <!-- column-name Title -->
-      <column type="gchar"/>
-      <!-- column-name Effort -->
-      <column type="gchar"/>
-    </columns>
+  <object class="GtkMenu" id="wbspopup">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <child>
+      <object class="GtkMenuItem" id="menu-add-child">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="action_name">wbs.add-child</property>
+        <property name="label" translatable="yes">Add child</property>
+        <property name="use_underline">True</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="menu-add-sibling">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="action_name">wbs.add-sibling</property>
+        <property name="label" translatable="yes">Add sibling</property>
+        <property name="use_underline">True</property>
+      </object>
+    </child>
   </object>
 </interface>

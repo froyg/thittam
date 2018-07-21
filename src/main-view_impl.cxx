@@ -18,7 +18,8 @@ namespace bofs = ::boost::filesystem;
 MainViewImpl::MainViewImpl (
   hipro::log::Logger* logger,
   Glib::RefPtr<Gtk::Builder> builder)
-  : logger (logger)
+  : logger (logger),
+    m_builder (builder)
 {
   builder->get_widget ("project-container", m_container);
 

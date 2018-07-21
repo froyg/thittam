@@ -58,6 +58,7 @@ private:
 
 private:
   hipro::log::Logger* logger = nullptr;
+  Glib::RefPtr<Gtk::Builder> m_builder;
 
   MainViewCallbacks* m_handler = nullptr;
 

@@ -35,7 +35,10 @@ public:
   }
 
   /*--- WBSViewCallbacks interface ---*/
-  void view_add_clicked (void);
+  void view_node_selected (std::vector<Task::Path> && path_list);
+  void view_node_activated (const Task::Path & path);
+  void view_add_child_clicked (void);
+  void view_add_sibling_clicked (void);
   void view_cut_clicked (void);
   void view_copy_clicked (void);
   void view_paste_clicked (void);
@@ -44,11 +47,14 @@ public:
   void view_unindent_clicked (void);
   void view_up_clicked (void);
   void view_down_clicked (void);
+  void view_title_changed (const std::string & text);
+  void view_effort_changed (const std::string & text);
 
 private:
   hipro::log::Logger* logger = nullptr;
 
   std::unique_ptr<WBSView> m_view;
+  Task::Path m_selected_path;
 };
 
 NAMESPACE__THITTAM__END

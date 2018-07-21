@@ -12,6 +12,24 @@
 
 NAMESPACE__THITTAM__START
 
+std::ostream& operator << (std::ostream & os, const TaskPath & path)
+{
+  const auto & parts = path.parts ();
+
+  auto it = parts.cbegin ();
+  while (it != parts.cend ())
+  {
+    os << *it;
+    ++it;
+    if (it != parts.cend ())
+    {
+      os << ".";
+    }
+  }
+
+  return os;
+}
+
 void
 Task::set_work (const std::string & work)
 {
