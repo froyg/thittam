@@ -192,20 +192,11 @@ WBSViewImpl::cb_on_button_pressed (GdkEventButton * event)
 {
   if (((int)event->type == (int)Gdk::BUTTON_PRESS) && (event->button == 3))
     {
-      Gtk::TreeModel::Path path;
-      if (m_tree_view.get_path_at_pos (event->x, event->y, path))
-        {
-          m_tree_view.grab_focus ();
-          m_tree_view.set_cursor (path);
-
-          if (!m_menu->get_attach_widget ())
-          {
-            Log_I << "Attaching menu..";
-            m_menu->attach_to_widget (m_tree_view);
-          }
-
-          m_menu->popup (event->button, event->time);
-        }
+      if (!m_menu->get_attach_widget ())
+      {
+        m_menu->attach_to_widget (m_tree_view);
+      }
+      m_menu->popup (event->button, event->time);
     }
 }
 
