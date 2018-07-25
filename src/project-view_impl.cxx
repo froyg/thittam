@@ -14,7 +14,8 @@ NAMESPACE__THITTAM__START
 ProjectViewImpl::ProjectViewImpl (
   hipro::log::Logger* logger,
   Glib::RefPtr<Gtk::Builder> builder)
-  : logger (logger)
+  : logger (logger),
+    m_builder (builder)
 {
   builder->get_widget ("top-widget", m_top_widget);
   auto parent = m_top_widget->get_parent ();

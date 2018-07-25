@@ -18,7 +18,36 @@ WBSControllerImpl::WBSControllerImpl (hipro::log::Logger* logger)
 }
 
 void
-WBSControllerImpl::view_add_clicked (void)
+WBSControllerImpl::view_node_selected (
+  std::vector<Task::Path> && path_list)
+{
+  if (path_list.empty ())
+  {
+    return;
+  }
+
+  m_selected_path = path_list[0];
+}
+
+void
+WBSControllerImpl::view_node_activated (const Task::Path & path)
+{
+
+}
+
+void
+WBSControllerImpl::view_add_child_clicked (void)
+{
+  Log_I << "Adding child";
+  m_view->add_child (m_selected_path);
+  m_view->renumber ();
+
+  // m_wbs->add_child (m_selected_path);
+  // m_wbs->renumber ();
+}
+
+void
+WBSControllerImpl::view_add_sibling_clicked (void)
 {
 
 }
@@ -67,6 +96,18 @@ WBSControllerImpl::view_up_clicked (void)
 
 void
 WBSControllerImpl::view_down_clicked (void)
+{
+
+}
+
+void
+WBSControllerImpl::view_title_changed (const std::string & text)
+{
+
+}
+
+void
+WBSControllerImpl::view_effort_changed (const std::string & text)
 {
 
 }
