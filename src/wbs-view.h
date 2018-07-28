@@ -49,6 +49,8 @@ public:
   virtual void set_handler (WBSViewCallbacks* handler) = 0;
 
   virtual void add_child (const Task::Path & path) = 0;
+  virtual void indent (const Task::Path & path) = 0;
+  virtual void unindent (const Task::Path & Path) = 0;
   virtual void renumber (void) = 0;
 };
 
