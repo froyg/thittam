@@ -106,16 +106,16 @@ WBSViewImpl::WBSViewImpl (
   m_tree_view.append_column_editable ("Effort", m_cols.effort);
 
   m_tree_view.signal_button_press_event ().connect_notify
-    (sigc::mem_fun (this, &WBSViewImpl::cb_on_button_pressed));
+    (sigc::mem_fun (*this, &WBSViewImpl::cb_on_button_pressed));
   m_tree_view.signal_row_activated ().connect
-    (sigc::mem_fun (this, &WBSViewImpl::cb_on_row_activated));
+    (sigc::mem_fun (*this, &WBSViewImpl::cb_on_row_activated));
 
   m_tree_store->signal_row_changed ().connect (
-    sigc::mem_fun (this, &WBSViewImpl::cb_on_row_changed));
+    sigc::mem_fun (*this, &WBSViewImpl::cb_on_row_changed));
 
   m_tree_selection = m_tree_view.get_selection ();
   m_tree_selection->signal_changed ().connect
-    (sigc::mem_fun (this, &WBSViewImpl::cb_on_row_selected));
+    (sigc::mem_fun (*this, &WBSViewImpl::cb_on_row_selected));
 
   Gtk::ScrolledWindow * tree_container = nullptr;
   builder->get_widget ("tree-container", tree_container);
