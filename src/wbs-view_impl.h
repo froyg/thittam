@@ -34,6 +34,8 @@ public:
   }
 
   void add_child (const Task::Path & path);
+  void indent (const Task::Path & path);
+  void unindent (const Task::Path & path);
   void renumber (void);
 
 private:
@@ -92,6 +94,8 @@ private:
   Glib::RefPtr<Gio::SimpleActionGroup> m_action_group;
   Glib::RefPtr<Gio::SimpleAction> m_action_add_child;
   Glib::RefPtr<Gio::SimpleAction> m_action_add_sibling;
+  Glib::RefPtr<Gio::SimpleAction> m_action_indent;
+  Glib::RefPtr<Gio::SimpleAction> m_action_unindent;
 
   Gtk::Menu* m_menu = nullptr;
   Gtk::MenuItem* m_menu_add_child = nullptr;

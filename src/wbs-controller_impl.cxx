@@ -53,6 +53,19 @@ WBSControllerImpl::view_add_sibling_clicked (void)
 }
 
 void
+WBSControllerImpl::view_indent_clicked (void)
+{
+  Log_I << "Indenting";
+  m_view->indent(m_selected_path);
+}
+
+void
+WBSControllerImpl::view_unindent_clicked (void)
+{
+
+}
+
+void
 WBSControllerImpl::view_cut_clicked (void)
 {
 
@@ -72,18 +85,6 @@ WBSControllerImpl::view_paste_clicked (void)
 
 void
 WBSControllerImpl::view_delete_clicked (void)
-{
-
-}
-
-void
-WBSControllerImpl::view_indent_clicked (void)
-{
-
-}
-
-void
-WBSControllerImpl::view_unindent_clicked (void)
 {
 
 }
