@@ -25,28 +25,28 @@ MainViewImpl::MainViewImpl (
 
   builder->get_widget ("main-window", m_window);
   m_window->signal_hide ().connect
-    (sigc::mem_fun (this, &MainViewImpl::cb_on_close));
+    (sigc::mem_fun (*this, &MainViewImpl::cb_on_close));
 
   Gtk::MenuItem * menuitem;
   builder->get_widget ("menu-file-new", menuitem);
   menuitem->signal_activate ().connect
-    (sigc::mem_fun (this, &MainViewImpl::cb_on_file_new));
+    (sigc::mem_fun (*this, &MainViewImpl::cb_on_file_new));
 
   builder->get_widget ("menu-file-open", menuitem);
   menuitem->signal_activate ().connect
-    (sigc::mem_fun (this, &MainViewImpl::cb_on_file_open));
+    (sigc::mem_fun (*this, &MainViewImpl::cb_on_file_open));
 
   builder->get_widget ("menu-file-save", menuitem);
   menuitem->signal_activate ().connect
-    (sigc::mem_fun (this, &MainViewImpl::cb_on_file_save));
+    (sigc::mem_fun (*this, &MainViewImpl::cb_on_file_save));
 
   builder->get_widget ("menu-file-save-as", menuitem);
   menuitem->signal_activate ().connect
-    (sigc::mem_fun (this, &MainViewImpl::cb_on_file_save_as));
+    (sigc::mem_fun (*this, &MainViewImpl::cb_on_file_save_as));
 
   builder->get_widget ("menu-file-quit", menuitem);
   menuitem->signal_activate ().connect
-    (sigc::mem_fun (this, &MainViewImpl::cb_on_close));
+    (sigc::mem_fun (*this, &MainViewImpl::cb_on_close));
 
   m_window->set_title ("Untitled");
 }

@@ -82,14 +82,25 @@ WBSViewImpl::WBSViewImpl (
     sigc::mem_fun (*this, &WBSViewImpl::cb_on_down_clicked));
 
   m_action_group = Gio::SimpleActionGroup::create ();
+
   m_action_add_child = m_action_group->add_action (
     "add-child",
     sigc::mem_fun (*this, &WBSViewImpl::cb_on_add_child_clicked));
   m_action_add_child->set_enabled (true);
+
   m_action_add_sibling = m_action_group->add_action (
     "add-sibling",
     sigc::mem_fun (*this, &WBSViewImpl::cb_on_add_sibling_clicked));
-  m_top_widget->insert_action_group ("wbs", m_action_group);
+
+  m_action_indent = m_action_group->add_action (
+    "indent-task",
+    sigc::mem_fun (*this, &WBSViewImpl::cb_on_indent_clicked));
+
+  m_action_unindent = m_action_group->add_action (
+    "unindent-task",
+    sigc::mem_fun (*this, &WBSViewImpl::cb_on_unindent_clicked));
+
+    m_top_widget->insert_action_group ("wbs", m_action_group);
 
   builder->get_widget ("wbspopup", m_menu);
   builder->get_widget ("menu-add-child", m_menu_add_child);
@@ -106,16 +117,16 @@ WBSViewImpl::WBSViewImpl (
   m_tree_view.append_column_editable ("Effort", m_cols.effort);
 
   m_tree_view.signal_button_press_event ().connect_notify
-    (sigc::mem_fun (this, &WBSViewImpl::cb_on_button_pressed));
+    (sigc::mem_fun (*this, &WBSViewImpl::cb_on_button_pressed));
   m_tree_view.signal_row_activated ().connect
-    (sigc::mem_fun (this, &WBSViewImpl::cb_on_row_activated));
+    (sigc::mem_fun (*this, &WBSViewImpl::cb_on_row_activated));
 
   m_tree_store->signal_row_changed ().connect (
-    sigc::mem_fun (this, &WBSViewImpl::cb_on_row_changed));
+    sigc::mem_fun (*this, &WBSViewImpl::cb_on_row_changed));
 
   m_tree_selection = m_tree_view.get_selection ();
   m_tree_selection->signal_changed ().connect
-    (sigc::mem_fun (this, &WBSViewImpl::cb_on_row_selected));
+    (sigc::mem_fun (*this, &WBSViewImpl::cb_on_row_selected));
 
   Gtk::ScrolledWindow * tree_container = nullptr;
   builder->get_widget ("tree-container", tree_container);
@@ -135,6 +146,40 @@ WBSViewImpl::add_child (const Task::Path & t_path)
   auto & row = *child;
   row[m_cols.id] = "aa";
   Log_D << "g_path " << g_path.size ();
+}
+
+void
+WBSViewImpl::indent (const Task::Path & t_path)
+{
+  auto g_path = task_path_to_gtk_tree_path (t_path);
+  if (g_path.size() == 0) {
+    return;
+  }
+  auto &index = g_path[g_path.size() - 1];
+  if (index == 0)
+  {
+    Log_I << "Can't indent first element";
+  }
+  else
+  {
+    Log_I << "indent " << index;
+    auto it = m_tree_store->get_iter (g_path);
+    auto tmp_it = it;
+    --it;
+    auto &row = *m_tree_store->append (it->children());
+    row[m_cols.id] = tmp_it->get_value(m_cols.id);
+    row[m_cols.title] = tmp_it->get_value(m_cols.title);
+    row[m_cols.effort] = tmp_it->get_value(m_cols.effort);
+    m_tree_store->erase (tmp_it);
+    m_tree_view.expand_row(m_tree_store->get_path(it), false);
+    m_tree_selection->select (row);
+  }
+}
+
+void
+WBSViewImpl::unindent (const Task::Path & t_path)
+{
+  Log_I << "unindent ";
 }
 
 void
@@ -225,6 +270,12 @@ WBSViewImpl::cb_on_add_sibling_clicked (void)
 }
 
 void
+WBSViewImpl::cb_on_indent_clicked (void)
+{
+  m_handler->view_indent_clicked();
+}
+
+void
 WBSViewImpl::cb_on_cut_clicked (void)
 {
   m_handler->view_cut_clicked ();
@@ -246,12 +297,6 @@ void
 WBSViewImpl::cb_on_delete_clicked (void)
 {
   m_handler->view_delete_clicked ();
-}
-
-void
-WBSViewImpl::cb_on_indent_clicked (void)
-{
-  m_handler->view_indent_clicked ();
 }
 
 void
