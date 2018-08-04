@@ -149,6 +149,18 @@ WBSViewImpl::add_child (const Task::Path & t_path)
 }
 
 void
+WBSViewImpl::add_sibling (const Task::Path & t_path)
+{
+  Log_I << "add_sibling ";
+  auto g_path = task_path_to_gtk_tree_path (t_path);
+  auto it = m_tree_store->get_iter (g_path);
+  auto child = m_tree_store->insert_after (it);
+  auto & row = *child;
+  row[m_cols.id] = "aa";
+  Log_D << "g_path " << g_path.size ();
+}
+
+void
 WBSViewImpl::indent (const Task::Path & t_path)
 {
   auto g_path = task_path_to_gtk_tree_path (t_path);
