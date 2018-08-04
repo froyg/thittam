@@ -49,6 +49,10 @@ WBSViewImpl::WBSViewImpl (
   }
 
   Gtk::ToolButton* btn;
+  builder->get_widget ("tb-add-sibling", btn);
+  btn->signal_clicked ().connect (
+    sigc::mem_fun (*this, &WBSViewImpl::cb_on_add_sibling_clicked));
+
   builder->get_widget ("tb-cut", btn);
   btn->signal_clicked ().connect (
     sigc::mem_fun (*this, &WBSViewImpl::cb_on_cut_clicked));
@@ -154,7 +158,7 @@ WBSViewImpl::add_sibling (const Task::Path & t_path)
   Log_I << "add_sibling ";
   auto g_path = task_path_to_gtk_tree_path (t_path);
   auto it = m_tree_store->get_iter (g_path);
-  auto child = m_tree_store->insert_after (it);
+  auto child = m_tree_store->insert_after (it->children());
   auto & row = *child;
   row[m_cols.id] = "aa";
   Log_D << "g_path " << g_path.size ();
