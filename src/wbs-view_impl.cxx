@@ -174,9 +174,9 @@ WBSViewImpl::indent (const Task::Path & t_path)
     // Create a node at the end of its previous sibling's children
     auto &row = *m_tree_store->append (it->children());
     // Copy the current node's contents
-    row[m_cols.id] = old_node.get_value(m_cols.id);
-    row[m_cols.title] = old_node.get_value(m_cols.title);
-    row[m_cols.effort] = old_node.get_value(m_cols.effort);
+    row.set_value(m_cols.id, old_node.get_value(m_cols.id));
+    row.set_value(m_cols.title, old_node.get_value(m_cols.title));
+    row.set_value(m_cols.effort, old_node.get_value(m_cols.effort));
 
     // Copy the children of the current node to the newly created node
     copy_sub_tasks(old_node, row);
@@ -352,9 +352,9 @@ WBSViewImpl::copy_sub_tasks(
   for (auto &old_child : source.children())
   {
     auto &new_child = *m_tree_store->append (destination->children());
-    new_child[m_cols.id] = old_child.get_value(m_cols.id);
-    new_child[m_cols.title] = old_child.get_value(m_cols.title);
-    new_child[m_cols.effort] = old_child.get_value(m_cols.effort);
+    new_child.set_value(m_cols.id, old_child.get_value(m_cols.id));
+    new_child.set_value(m_cols.title, old_child.get_value(m_cols.title));
+    new_child.set_value(m_cols.effort, old_child.get_value(m_cols.effort));
     copy_sub_tasks (old_child, new_child);
   }
 }
