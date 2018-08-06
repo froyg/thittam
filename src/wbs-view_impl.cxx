@@ -148,6 +148,9 @@ WBSViewImpl::add_child (const Task::Path & t_path)
   Log_D << "g_path " << g_path.size ();
 }
 
+
+// Indent a selected node towards the right i.e. append the current node to the
+// end of its previous sibling's children
 void
 WBSViewImpl::indent (const Task::Path & t_path)
 {
@@ -164,14 +167,25 @@ WBSViewImpl::indent (const Task::Path & t_path)
   {
     Log_I << "indent " << index;
     auto it = m_tree_store->get_iter (g_path);
-    auto tmp_it = it;
+    auto old_node_iter = it;
+    auto &old_node = *old_node_iter;
     --it;
+
+    // Create a node at the end of its previous sibling's children
     auto &row = *m_tree_store->append (it->children());
-    row[m_cols.id] = tmp_it->get_value(m_cols.id);
-    row[m_cols.title] = tmp_it->get_value(m_cols.title);
-    row[m_cols.effort] = tmp_it->get_value(m_cols.effort);
-    m_tree_store->erase (tmp_it);
+    // Copy the current node's contents
+    row[m_cols.id] = old_node.get_value(m_cols.id);
+    row[m_cols.title] = old_node.get_value(m_cols.title);
+    row[m_cols.effort] = old_node.get_value(m_cols.effort);
+
+    // Copy the children of the current node to the newly created node
+    copy_sub_tasks(old_node, row);
+
+    // Delete the current node
+    m_tree_store->erase (old_node_iter);
     m_tree_view.expand_row(m_tree_store->get_path(it), false);
+
+    // Select the newly created node
     m_tree_selection->select (row);
   }
 }
@@ -328,6 +342,21 @@ WBSViewImpl::cb_on_row_changed (
   }
 
   Log_D << "Path: " << path.to_string ();
+}
+
+void
+WBSViewImpl::copy_sub_tasks(
+  const Gtk::TreeRow &source,
+  const Gtk::TreeRow &destination)
+{
+  for (auto &old_child : source.children())
+  {
+    auto &new_child = *m_tree_store->append (destination->children());
+    new_child[m_cols.id] = old_child.get_value(m_cols.id);
+    new_child[m_cols.title] = old_child.get_value(m_cols.title);
+    new_child[m_cols.effort] = old_child.get_value(m_cols.effort);
+    copy_sub_tasks (old_child, new_child);
+  }
 }
 
 NAMESPACE__THITTAM__END

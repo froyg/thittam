@@ -60,6 +60,10 @@ private:
 
   void do_renumber (
     const Gtk::TreeRow * row, const std::string & parent_id, int index);
+  void
+  copy_sub_tasks(
+    const Gtk::TreeRow &source,
+    const Gtk::TreeRow &destination);
 
 private:
   hipro::log::Logger* logger = nullptr;
