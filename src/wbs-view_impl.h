@@ -106,6 +106,8 @@ private:
   Gtk::Menu* m_menu = nullptr;
   Gtk::MenuItem* m_menu_add_child = nullptr;
   Gtk::MenuItem* m_menu_add_sibling = nullptr;
+  Gtk::MenuItem* m_menu_indent = nullptr;
+  Gtk::MenuItem* m_menu_unindent = nullptr;
 };
 
 NAMESPACE__THITTAM__END

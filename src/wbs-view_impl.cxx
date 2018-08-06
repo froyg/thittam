@@ -86,7 +86,6 @@ WBSViewImpl::WBSViewImpl (
   m_action_add_child = m_action_group->add_action (
     "add-child",
     sigc::mem_fun (*this, &WBSViewImpl::cb_on_add_child_clicked));
-  m_action_add_child->set_enabled (true);
 
   m_action_add_sibling = m_action_group->add_action (
     "add-sibling",
@@ -100,13 +99,20 @@ WBSViewImpl::WBSViewImpl (
     "unindent-task",
     sigc::mem_fun (*this, &WBSViewImpl::cb_on_unindent_clicked));
 
-    m_top_widget->insert_action_group ("wbs", m_action_group);
+  m_action_add_child->set_enabled (true);
+  m_action_add_sibling->set_enabled(true);
+  m_action_indent->set_enabled(true);
+  m_action_unindent->set_enabled(true);
+
+  m_top_widget->insert_action_group ("wbs", m_action_group);
 
   builder->get_widget ("wbspopup", m_menu);
   builder->get_widget ("menu-add-child", m_menu_add_child);
   builder->get_widget ("menu-add-sibling", m_menu_add_sibling);
+  builder->get_widget ("menu-indent", m_menu_indent);
+  builder->get_widget ("menu-unindent", m_menu_unindent);
   m_menu_add_child->set_sensitive (true);
-  m_menu_add_sibling->set_sensitive (true);
+  m_menu_add_sibling->set_sensitive (false);
 
   /* Fix the tree-view */
   m_tree_store = Gtk::TreeStore::create (m_cols);
@@ -244,6 +250,10 @@ WBSViewImpl::cb_on_row_selected (void)
   }
 
   m_handler->view_node_selected (std::move (task_paths));
+
+  m_menu_add_sibling->set_sensitive (true);
+  m_menu_indent->set_sensitive (true);
+  m_menu_unindent->set_sensitive (true);
 }
 
 void
