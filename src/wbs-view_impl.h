@@ -60,6 +60,8 @@ private:
 
   void do_renumber (
     const Gtk::TreeRow * row, const std::string & parent_id, int index);
+
+  // Recursively copy whole sub-tree from source to destination
   void
   copy_sub_tasks(
     const Gtk::TreeRow &source,

@@ -57,6 +57,7 @@ WBSControllerImpl::view_indent_clicked (void)
 {
   Log_I << "Indenting";
   m_view->indent(m_selected_path);
+  m_view->renumber();
 }
 
 void
