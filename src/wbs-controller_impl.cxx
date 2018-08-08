@@ -63,7 +63,9 @@ WBSControllerImpl::view_indent_clicked (void)
 void
 WBSControllerImpl::view_unindent_clicked (void)
 {
-
+  Log_I << "Unindenting";
+  m_view->unindent(m_selected_path);
+  m_view->renumber();
 }
 
 void
