@@ -74,6 +74,11 @@ public:
     m_parts.clear ();
   }
 
+  int operator[](size_t index) const
+  {
+    return m_parts[index];
+  }
+
 private:
   std::vector<int> m_parts;
 };

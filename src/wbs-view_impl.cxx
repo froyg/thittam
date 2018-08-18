@@ -86,7 +86,6 @@ WBSViewImpl::WBSViewImpl (
   m_action_add_child = m_action_group->add_action (
     "add-child",
     sigc::mem_fun (*this, &WBSViewImpl::cb_on_add_child_clicked));
-  m_action_add_child->set_enabled (true);
 
   m_action_add_sibling = m_action_group->add_action (
     "add-sibling",
@@ -100,13 +99,22 @@ WBSViewImpl::WBSViewImpl (
     "unindent-task",
     sigc::mem_fun (*this, &WBSViewImpl::cb_on_unindent_clicked));
 
-    m_top_widget->insert_action_group ("wbs", m_action_group);
+  m_action_add_child->set_enabled (true);
+  m_action_add_sibling->set_enabled(true);
+  m_action_indent->set_enabled(true);
+  m_action_unindent->set_enabled(true);
+
+  m_top_widget->insert_action_group ("wbs", m_action_group);
 
   builder->get_widget ("wbspopup", m_menu);
   builder->get_widget ("menu-add-child", m_menu_add_child);
   builder->get_widget ("menu-add-sibling", m_menu_add_sibling);
+  builder->get_widget ("menu-indent", m_menu_indent);
+  builder->get_widget ("menu-unindent", m_menu_unindent);
   m_menu_add_child->set_sensitive (true);
   m_menu_add_sibling->set_sensitive (true);
+  m_menu_indent->set_sensitive (true);
+  m_menu_unindent->set_sensitive (true);
 
   /* Fix the tree-view */
   m_tree_store = Gtk::TreeStore::create (m_cols);
@@ -148,40 +156,57 @@ WBSViewImpl::add_child (const Task::Path & t_path)
   Log_D << "g_path " << g_path.size ();
 }
 
+
+// Indent a selected node towards the right i.e. append the current node to the
+// end of its previous sibling's children.
+// it should be valid and also have a valid previous sibling.
 void
 WBSViewImpl::indent (const Task::Path & t_path)
 {
-  auto g_path = task_path_to_gtk_tree_path (t_path);
-  if (g_path.size() == 0) {
-    return;
-  }
-  auto &index = g_path[g_path.size() - 1];
-  if (index == 0)
-  {
-    Log_I << "Can't indent first element";
-  }
-  else
-  {
-    Log_I << "indent " << index;
-    auto it = m_tree_store->get_iter (g_path);
-    auto tmp_it = it;
-    --it;
-    auto &row = *m_tree_store->append (it->children());
-    row[m_cols.id] = tmp_it->get_value(m_cols.id);
-    row[m_cols.title] = tmp_it->get_value(m_cols.title);
-    row[m_cols.effort] = tmp_it->get_value(m_cols.effort);
-    m_tree_store->erase (tmp_it);
-    m_tree_view.expand_row(m_tree_store->get_path(it), false);
-    m_tree_selection->select (row);
-  }
+  Log_I << "[WBSViewImpl] Indent";
+  auto g_path = task_path_to_gtk_tree_path(t_path);
+  auto old_node = m_tree_store->get_iter (g_path);
+  auto prev_sibling = (--old_node)++;
+
+  // Create a node at the end of its previous sibling's children
+  auto &new_node = *m_tree_store->append (prev_sibling->children());
+
+  // Copy all the tasks from old_node to new_node
+  copy_task(*old_node, new_node);
+  copy_sub_tasks(*old_node, new_node);
+
+  // Delete the current node
+  m_tree_store->erase (old_node);
+
+  // Expand the subtree else we wont be able to select the new_node
+  m_tree_view.expand_row(m_tree_store->get_path(prev_sibling), false);
+  m_tree_selection->select (new_node);
 }
 
+// Unindent a given node towards the left
 void
 WBSViewImpl::unindent (const Task::Path & t_path)
 {
-  Log_I << "unindent ";
+  Log_I << "[WBSViewImpl] Unindent";
+  auto g_path = task_path_to_gtk_tree_path (t_path);
+  auto old_node = m_tree_store->get_iter (g_path);
+  auto parent_node = old_node->parent();
+
+  // Create a new sibling of parent node
+  auto &new_node = *m_tree_store->insert_after (parent_node->children());
+
+  // Copy all the tasks from old_node to new_node
+  copy_task(*old_node, new_node);
+  copy_sub_tasks(*old_node, new_node);
+
+  // Delete the current node
+  m_tree_store->erase (old_node);
+
+  // Select the newly created node
+  m_tree_selection->select (new_node);
 }
 
+// Renumbers all task IDs. Call this after the wbs tree is modified.
 void
 WBSViewImpl::renumber (void)
 {
@@ -230,6 +255,15 @@ WBSViewImpl::cb_on_row_selected (void)
   }
 
   m_handler->view_node_selected (std::move (task_paths));
+
+  m_menu_add_sibling->set_sensitive (true);
+  m_menu_indent->set_sensitive (true);
+  m_menu_unindent->set_sensitive (true);
+
+  m_action_add_child->set_enabled (true);
+  m_action_add_sibling->set_enabled(true);
+  m_action_indent->set_enabled(true);
+  m_action_unindent->set_enabled(true);
 }
 
 void
@@ -328,6 +362,29 @@ WBSViewImpl::cb_on_row_changed (
   }
 
   Log_D << "Path: " << path.to_string ();
+}
+
+void
+WBSViewImpl::copy_sub_tasks(
+  const Gtk::TreeRow &source,
+  const Gtk::TreeRow &destination)
+{
+  for (auto &old_child : source.children())
+  {
+    auto &new_child = *m_tree_store->append (destination->children());
+    copy_task(old_child, new_child);
+    copy_sub_tasks (old_child, new_child);
+  }
+}
+
+inline void
+WBSViewImpl::copy_task(
+  const Gtk::TreeRow &source,
+  const Gtk::TreeRow &destination)
+{
+  destination.set_value(m_cols.id, source.get_value(m_cols.id));
+  destination.set_value(m_cols.title, source.get_value(m_cols.title));
+  destination.set_value(m_cols.effort, source.get_value(m_cols.effort));
 }
 
 NAMESPACE__THITTAM__END

@@ -61,6 +61,16 @@ private:
   void do_renumber (
     const Gtk::TreeRow * row, const std::string & parent_id, int index);
 
+  // Copy task details from one row to another row. Arg 1 is source.
+  void copy_task(
+    const Gtk::TreeRow &source,
+    const Gtk::TreeRow &destination);
+
+  // Recursively copy whole sub-tree from source to destination
+  void copy_sub_tasks(
+    const Gtk::TreeRow &source,
+    const Gtk::TreeRow &destination);
+
 private:
   hipro::log::Logger* logger = nullptr;
   Glib::RefPtr<Gtk::Builder> m_builder;
@@ -100,6 +110,8 @@ private:
   Gtk::Menu* m_menu = nullptr;
   Gtk::MenuItem* m_menu_add_child = nullptr;
   Gtk::MenuItem* m_menu_add_sibling = nullptr;
+  Gtk::MenuItem* m_menu_indent = nullptr;
+  Gtk::MenuItem* m_menu_unindent = nullptr;
 };
 
 NAMESPACE__THITTAM__END
