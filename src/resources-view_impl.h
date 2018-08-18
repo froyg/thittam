@@ -33,6 +33,15 @@ public:
   {
     m_handler = handler;
   }
+  
+private:
+  void cb_on_add_clicked (void);
+  void cb_on_cut_clicked (void);
+  void cb_on_copy_clicked (void);
+  void cb_on_paste_clicked (void);
+  void cb_on_delete_clicked (void);
+  void cb_on_up_clicked (void);
+  void cb_on_down_clicked (void);
 
 private:
   hipro::log::Logger* logger = nullptr;

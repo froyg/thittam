@@ -49,6 +49,10 @@ WBSViewImpl::WBSViewImpl (
   }
 
   Gtk::ToolButton* btn;
+  builder->get_widget ("tb-add-sibling", btn);
+  btn->signal_clicked ().connect (
+    sigc::mem_fun (*this, &WBSViewImpl::cb_on_add_sibling_clicked));
+
   builder->get_widget ("tb-cut", btn);
   btn->signal_clicked ().connect (
     sigc::mem_fun (*this, &WBSViewImpl::cb_on_cut_clicked));
@@ -160,6 +164,25 @@ WBSViewImpl::add_child (const Task::Path & t_path)
 // Indent a selected node towards the right i.e. append the current node to the
 // end of its previous sibling's children.
 // it should be valid and also have a valid previous sibling.
+void
+WBSViewImpl::add_sibling (const Task::Path & t_path)
+{
+  Log_I << "add_sibling ";
+  auto g_path = task_path_to_gtk_tree_path (t_path);
+  auto it = m_tree_store->get_iter (g_path);
+  if (t_path.parts_length() != 0)
+  {
+    auto child = m_tree_store->insert_after (it->children());
+  }
+  else
+  {
+    auto child = m_tree_store->append ();
+  }
+  // auto & row = *child;
+  // row[m_cols.id] = "aa";
+  Log_D << "g_path " << g_path.size ();
+}
+
 void
 WBSViewImpl::indent (const Task::Path & t_path)
 {

@@ -34,6 +34,7 @@ public:
   }
 
   void add_child (const Task::Path & path);
+  void add_sibling (const Task::Path & path);
   void indent (const Task::Path & path);
   void unindent (const Task::Path & path);
   void renumber (void);
