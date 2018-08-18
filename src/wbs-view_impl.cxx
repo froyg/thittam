@@ -158,72 +158,52 @@ WBSViewImpl::add_child (const Task::Path & t_path)
 
 
 // Indent a selected node towards the right i.e. append the current node to the
-// end of its previous sibling's children
+// end of its previous sibling's children.
+// it should be valid and also have a valid previous sibling.
 void
 WBSViewImpl::indent (const Task::Path & t_path)
 {
-  auto g_path = task_path_to_gtk_tree_path (t_path);
-  assert (g_path.size() != 0);
-  auto &index = g_path[g_path.size() - 1];
-  if (index == 0)
-  {
-    Log_I << "Can't indent first element";
-    return;
-  }
-  Log_I << "indent " << index;
-  auto it = m_tree_store->get_iter (g_path);
-  auto old_node_iter = it;
-  auto &old_node = *old_node_iter;
-  --it;
+  Log_I << "[WBSViewImpl] Indent";
+  auto g_path = task_path_to_gtk_tree_path(t_path);
+  auto old_node = m_tree_store->get_iter (g_path);
+  auto prev_sibling = (--old_node)++;
 
   // Create a node at the end of its previous sibling's children
-  auto &new_row = *m_tree_store->append (it->children());
-  // Copy the current node's contents
-  new_row.set_value(m_cols.id, old_node.get_value(m_cols.id));
-  new_row.set_value(m_cols.title, old_node.get_value(m_cols.title));
-  new_row.set_value(m_cols.effort, old_node.get_value(m_cols.effort));
+  auto &new_node = *m_tree_store->append (prev_sibling->children());
 
-  // Copy the children of the current node to the newly created node
-  copy_sub_tasks(old_node, new_row);
+  // Copy all the tasks from old_node to new_node
+  copy_task(*old_node, new_node);
+  copy_sub_tasks(*old_node, new_node);
 
   // Delete the current node
-  m_tree_store->erase (old_node_iter);
-  m_tree_view.expand_row(m_tree_store->get_path(it), false);
+  m_tree_store->erase (old_node);
 
-  // Select the newly created node
-  m_tree_selection->select (new_row);
+  // Expand the subtree else we wont be able to select the new_node
+  m_tree_view.expand_row(m_tree_store->get_path(prev_sibling), false);
+  m_tree_selection->select (new_node);
 }
 
 // Unindent a given node towards the left
 void
 WBSViewImpl::unindent (const Task::Path & t_path)
 {
+  Log_I << "[WBSViewImpl] Unindent";
   auto g_path = task_path_to_gtk_tree_path (t_path);
-  assert (g_path.size() != 0);
-  if (g_path.size() < 2)
-  {
-    Log_I << "Level 1 tasks can't be unindented";
-    return;
-  }
-  Log_I << "unindent ";
-  auto old_node_iter = m_tree_store->get_iter (g_path);
-  auto &old_node = *old_node_iter;
-  auto parent_node = old_node_iter->parent();
+  auto old_node = m_tree_store->get_iter (g_path);
+  auto parent_node = old_node->parent();
 
   // Create a new sibling of parent node
-  auto &new_row = *m_tree_store->insert_after (parent_node->children());
-  new_row.set_value(m_cols.id, old_node.get_value(m_cols.id));
-  new_row.set_value(m_cols.title, old_node.get_value(m_cols.title));
-  new_row.set_value(m_cols.effort, old_node.get_value(m_cols.effort));
+  auto &new_node = *m_tree_store->insert_after (parent_node->children());
 
-  // Copy the children of the current node to the newly created node
-  copy_sub_tasks(old_node, new_row);
+  // Copy all the tasks from old_node to new_node
+  copy_task(*old_node, new_node);
+  copy_sub_tasks(*old_node, new_node);
 
   // Delete the current node
-  m_tree_store->erase (old_node_iter);
+  m_tree_store->erase (old_node);
 
   // Select the newly created node
-  m_tree_selection->select (new_row);
+  m_tree_selection->select (new_node);
 }
 
 // Renumbers all task IDs. Call this after the wbs tree is modified.
@@ -392,9 +372,7 @@ WBSViewImpl::copy_sub_tasks(
   for (auto &old_child : source.children())
   {
     auto &new_child = *m_tree_store->append (destination->children());
-    new_child.set_value(m_cols.id, old_child.get_value(m_cols.id));
-    new_child.set_value(m_cols.title, old_child.get_value(m_cols.title));
-    new_child.set_value(m_cols.effort, old_child.get_value(m_cols.effort));
+    copy_task(old_child, new_child);
     copy_sub_tasks (old_child, new_child);
   }
 }

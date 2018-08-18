@@ -55,16 +55,36 @@ WBSControllerImpl::view_add_sibling_clicked (void)
 void
 WBSControllerImpl::view_indent_clicked (void)
 {
-  Log_I << "Indenting";
+  Log_I << "[WBSControllerImpl] Indent";
+
+  assert (m_selected_path.parts_length() != 0);
+  if (m_selected_path[m_selected_path.parts_length() - 1] == 0)
+  {
+    // TODO: Put this message in status bar of thittam
+    Log_I << "Can't indent first element";
+    return;
+  }
+
   m_view->indent(m_selected_path);
+
   m_view->renumber();
 }
 
 void
 WBSControllerImpl::view_unindent_clicked (void)
 {
-  Log_I << "Unindenting";
+  Log_I << "[WBSControllerImpl] Unindent";
+
+  assert (m_selected_path.parts_length() != 0);
+  if (m_selected_path.parts_length() < 2)
+  {
+    // TODO: Put this message in status bar of thittam
+    Log_I << "Can't unindent level 1 task";
+    return;
+  }
+
   m_view->unindent(m_selected_path);
+
   m_view->renumber();
 }
 
