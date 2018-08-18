@@ -399,6 +399,16 @@ WBSViewImpl::copy_sub_tasks(
   }
 }
 
+inline void
+WBSViewImpl::copy_task(
+  const Gtk::TreeRow &source,
+  const Gtk::TreeRow &destination)
+{
+  destination.set_value(m_cols.id, source.get_value(m_cols.id));
+  destination.set_value(m_cols.title, source.get_value(m_cols.title));
+  destination.set_value(m_cols.effort, source.get_value(m_cols.effort));
+}
+
 NAMESPACE__THITTAM__END
 
 /*
