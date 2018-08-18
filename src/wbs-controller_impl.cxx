@@ -26,6 +26,23 @@ WBSControllerImpl::view_node_selected (
     return;
   }
 
+  m_view->enable_cut (true);
+  m_view->enable_copy (true);
+  m_view->enable_delete (true);
+  m_view->enable_indent_task (true);
+  m_view->enable_unindent_task (true);
+  m_view->enable_up (true);
+  m_view->enable_down (true);
+
+  if (path_list.size () > 1)
+  {
+    m_view->enable_paste (false);
+  }
+  else
+  {
+    m_view->enable_paste (true);
+  }
+
   m_selected_path = path_list[0];
 }
 

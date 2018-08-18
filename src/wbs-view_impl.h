@@ -33,6 +33,17 @@ public:
     m_handler = handler;
   }
 
+  void enable_add_child (bool enable);
+  void enable_add_sibling (bool enable);
+  void enable_indent_task (bool enable);
+  void enable_unindent_task (bool enable);
+  void enable_up (bool enable);
+  void enable_down (bool enable);
+  void enable_cut (bool enable);
+  void enable_copy (bool enable);
+  void enable_paste (bool enable);
+  void enable_delete (bool enable);
+
   void add_child (const Task::Path & path);
   void indent (const Task::Path & path);
   void unindent (const Task::Path & path);
@@ -98,6 +109,15 @@ private:
   Glib::RefPtr<Gtk::TreeStore> m_tree_store;
   Glib::RefPtr<Gtk::TreeSelection> m_tree_selection;
   Columns m_cols;
+
+  Gtk::ToolButton * m_btn_cut = nullptr;
+  Gtk::ToolButton * m_btn_copy = nullptr;
+  Gtk::ToolButton * m_btn_paste = nullptr;
+  Gtk::ToolButton * m_btn_delete = nullptr;
+  Gtk::ToolButton * m_btn_indent = nullptr;
+  Gtk::ToolButton * m_btn_unindent = nullptr;
+  Gtk::ToolButton * m_btn_up = nullptr;
+  Gtk::ToolButton * m_btn_down = nullptr;
 
   Gtk::ScrolledWindow * m_tree_container = nullptr;
 

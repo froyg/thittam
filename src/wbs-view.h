@@ -48,6 +48,17 @@ public:
 
   virtual void set_handler (WBSViewCallbacks* handler) = 0;
 
+  virtual void enable_add_child (bool enable) = 0;
+  virtual void enable_add_sibling (bool enable) = 0;
+  virtual void enable_indent_task (bool enable) = 0;
+  virtual void enable_unindent_task (bool enable) = 0;
+  virtual void enable_up (bool enable) = 0;
+  virtual void enable_down (bool enable) = 0;
+  virtual void enable_cut (bool enable) = 0;
+  virtual void enable_copy (bool enable) = 0;
+  virtual void enable_paste (bool enable) = 0;
+  virtual void enable_delete (bool enable) = 0;
+
   virtual void add_child (const Task::Path & path) = 0;
   virtual void indent (const Task::Path & path) = 0;
   virtual void unindent (const Task::Path & Path) = 0;

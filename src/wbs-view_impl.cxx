@@ -48,38 +48,45 @@ WBSViewImpl::WBSViewImpl (
     parent->remove (*m_top_widget);
   }
 
-  Gtk::ToolButton* btn;
-  builder->get_widget ("tb-cut", btn);
-  btn->signal_clicked ().connect (
+  builder->get_widget ("tb-cut", m_btn_cut);
+  m_btn_cut->signal_clicked ().connect (
     sigc::mem_fun (*this, &WBSViewImpl::cb_on_cut_clicked));
+  m_btn_cut->set_sensitive (false);
 
-  builder->get_widget ("tb-copy", btn);
-  btn->signal_clicked ().connect (
+  builder->get_widget ("tb-copy", m_btn_copy);
+  m_btn_copy->signal_clicked ().connect (
     sigc::mem_fun (*this, &WBSViewImpl::cb_on_copy_clicked));
+  m_btn_copy->set_sensitive (false);
 
-  builder->get_widget ("tb-paste", btn);
-  btn->signal_clicked ().connect (
+  builder->get_widget ("tb-paste", m_btn_paste);
+  m_btn_paste->signal_clicked ().connect (
     sigc::mem_fun (*this, &WBSViewImpl::cb_on_paste_clicked));
+  m_btn_paste->set_sensitive (false);
 
-  builder->get_widget ("tb-delete", btn);
-  btn->signal_clicked ().connect (
+  builder->get_widget ("tb-delete", m_btn_delete);
+  m_btn_delete->signal_clicked ().connect (
     sigc::mem_fun (*this, &WBSViewImpl::cb_on_delete_clicked));
+  m_btn_delete->set_sensitive (false);
 
-  builder->get_widget ("tb-indent", btn);
-  btn->signal_clicked ().connect (
+  builder->get_widget ("tb-indent", m_btn_indent);
+  m_btn_indent->signal_clicked ().connect (
     sigc::mem_fun (*this, &WBSViewImpl::cb_on_indent_clicked));
+  m_btn_indent->set_sensitive (false);
 
-  builder->get_widget ("tb-unindent", btn);
-  btn->signal_clicked ().connect (
+  builder->get_widget ("tb-unindent", m_btn_unindent);
+  m_btn_unindent->signal_clicked ().connect (
     sigc::mem_fun (*this, &WBSViewImpl::cb_on_unindent_clicked));
+  m_btn_unindent->set_sensitive (false);
 
-  builder->get_widget ("tb-up", btn);
-  btn->signal_clicked ().connect (
+  builder->get_widget ("tb-up", m_btn_up);
+  m_btn_up->signal_clicked ().connect (
     sigc::mem_fun (*this, &WBSViewImpl::cb_on_up_clicked));
+  m_btn_up->set_sensitive (false);
 
-  builder->get_widget ("tb-down", btn);
-  btn->signal_clicked ().connect (
+  builder->get_widget ("tb-down", m_btn_down);
+  m_btn_down->signal_clicked ().connect (
     sigc::mem_fun (*this, &WBSViewImpl::cb_on_down_clicked));
+  m_btn_down->set_sensitive (false);
 
   m_action_group = Gio::SimpleActionGroup::create ();
 
@@ -100,9 +107,9 @@ WBSViewImpl::WBSViewImpl (
     sigc::mem_fun (*this, &WBSViewImpl::cb_on_unindent_clicked));
 
   m_action_add_child->set_enabled (true);
-  m_action_add_sibling->set_enabled(true);
-  m_action_indent->set_enabled(true);
-  m_action_unindent->set_enabled(true);
+  m_action_add_sibling->set_enabled(false);
+  m_action_indent->set_enabled(false);
+  m_action_unindent->set_enabled(false);
 
   m_top_widget->insert_action_group ("wbs", m_action_group);
 
@@ -112,9 +119,9 @@ WBSViewImpl::WBSViewImpl (
   builder->get_widget ("menu-indent", m_menu_indent);
   builder->get_widget ("menu-unindent", m_menu_unindent);
   m_menu_add_child->set_sensitive (true);
-  m_menu_add_sibling->set_sensitive (true);
-  m_menu_indent->set_sensitive (true);
-  m_menu_unindent->set_sensitive (true);
+  m_menu_add_sibling->set_sensitive (false);
+  m_menu_indent->set_sensitive (false);
+  m_menu_unindent->set_sensitive (false);
 
   /* Fix the tree-view */
   m_tree_store = Gtk::TreeStore::create (m_cols);
@@ -142,6 +149,72 @@ WBSViewImpl::WBSViewImpl (
 
   Gtk::Box* top_box = dynamic_cast<Gtk::Box*> (m_top_widget);
   top_box->show_all_children ();
+}
+
+void
+WBSViewImpl::enable_add_child (bool enable)
+{
+  m_action_add_child->set_enabled (enable);
+  m_menu_add_child->set_sensitive (enable);
+}
+
+void
+WBSViewImpl::enable_add_sibling (bool enable)
+{
+  m_action_add_sibling->set_enabled (enable);
+  m_menu_add_sibling->set_sensitive (enable);
+}
+
+void
+WBSViewImpl::enable_indent_task (bool enable)
+{
+  m_action_indent->set_enabled (enable);
+  m_menu_indent->set_sensitive (enable);
+  m_btn_indent->set_sensitive (enable);
+}
+
+void
+WBSViewImpl::enable_unindent_task (bool enable)
+{
+  m_action_unindent->set_enabled (enable);
+  m_menu_unindent->set_sensitive (enable);
+  m_btn_unindent->set_sensitive (enable);
+}
+
+void
+WBSViewImpl::enable_up (bool enable)
+{
+  m_btn_up->set_sensitive (enable);
+}
+
+void
+WBSViewImpl::enable_down (bool enable)
+{
+  m_btn_down->set_sensitive (enable);
+}
+
+void
+WBSViewImpl::enable_cut (bool enable)
+{
+  m_btn_cut->set_sensitive (enable);
+}
+
+void
+WBSViewImpl::enable_copy (bool enable)
+{
+  m_btn_copy->set_sensitive (enable);
+}
+
+void
+WBSViewImpl::enable_paste (bool enable)
+{
+  m_btn_paste->set_sensitive (enable);
+}
+
+void
+WBSViewImpl::enable_delete (bool enable)
+{
+  m_btn_delete->set_sensitive (enable);
 }
 
 void

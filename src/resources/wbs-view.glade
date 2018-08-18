@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.22.1 -->
+<!-- Generated with glade 3.20.0 -->
 <interface>
   <requires lib="gtk+" version="3.20"/>
   <object class="GtkWindow">
     <property name="can_focus">False</property>
-    <child>
-      <placeholder/>
-    </child>
     <child>
       <object class="GtkBox" id="top-widget">
         <property name="visible">True</property>
@@ -204,7 +201,7 @@
         <property name="visible">True</property>
         <property name="sensitive">False</property>
         <property name="can_focus">False</property>
-        <property name="action_name">wbs.indent</property>
+        <property name="action_name">wbs.indent-task</property>
         <property name="label" translatable="yes">Indent</property>
         <property name="use_underline">True</property>
       </object>
@@ -214,7 +211,7 @@
         <property name="visible">True</property>
         <property name="sensitive">False</property>
         <property name="can_focus">False</property>
-        <property name="action_name">wbs.unindent</property>
+        <property name="action_name">wbs.unindent-task</property>
         <property name="label" translatable="yes">Unindent</property>
         <property name="use_underline">True</property>
       </object>
