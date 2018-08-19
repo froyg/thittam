@@ -11,11 +11,9 @@
 #define HIPRO__e1c5e618_2450_11e8_9023_448500dfb04c
 
 #include "_namespace.h"
-#include "task.h"
+#include "wbs-path.h"
 
 NAMESPACE__THITTAM__START
-
-typedef TaskPath WBSPath;
 
 class WBS
 {
