@@ -19,32 +19,11 @@
 
 NAMESPACE__THITTAM__START
 
-class WBSEntry
-{
-public:
-  WBSEntry (const WBS::Path & path_, std::unique_ptr<Task> && task_)
-    : path (path_),
-      task (std::move (task_))
-  {
-
-  }
-
-  WBS::Path path;
-  std::unique_ptr<Task> task;
-};
-
-
 class WBSImpl : public WBS
 {
 public:
   WBSImpl (hipro::log::Logger* logger);
   ~WBSImpl () {}
-
-  /*--- DI ---*/
-  void add_observer (WBSObserver * observer)
-  {
-    m_observers.push_back (observer);
-  }
 
   /*--- WBS interface ---*/
   bool is_first_child (const Path & path) const;
@@ -65,20 +44,10 @@ public:
   }
 
 private:
-  void notify_observers_node_inserted (const WBS::Path & path);
-  void notify_observers_node_changed (const WBS::Path & path);
-  void notify_observers_node_deleted (const WBS::Path & path);
-  void notify_observers_node_reordered (
-    const WBS::Path & path, const std::vector<int> & new_order);
-
-private:
   hipro::log::Logger* logger = nullptr;
   bool m_dirty = false;
 
   Task m_root;
-  typedef WBSEntry Entry;
-  std::list<Entry> m_flat_wbs;
-  std::vector<WBSObserver *> m_observers;
 };
 
 NAMESPACE__THITTAM__END

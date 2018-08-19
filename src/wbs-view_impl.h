@@ -44,9 +44,9 @@ public:
   void enable_paste (bool enable);
   void enable_delete (bool enable);
 
-  void add_child (const Task::Path & path);
-  void indent (const Task::Path & path);
-  void unindent (const Task::Path & path);
+  void add_child (const WBS::Path & path);
+  void indent (const WBS::Path & path);
+  void unindent (const WBS::Path & path);
   void renumber (void);
 
 private:

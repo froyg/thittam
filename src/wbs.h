@@ -15,7 +15,7 @@
 
 NAMESPACE__THITTAM__START
 
-typedef Task::Path WBSPath;
+typedef TaskPath WBSPath;
 
 class WBS
 {
@@ -34,16 +34,6 @@ public:
 
   virtual bool dirty (void) const = 0;
   virtual void clear_dirty (void) = 0;
-};
-
-class WBSObserver
-{
-public:
-  virtual void wbs_observer_node_inserted (const WBS::Path & path) = 0;
-  virtual void wbs_observer_node_changed (const WBS::Path & path) = 0;
-  virtual void wbs_observer_node_deleted (const WBS::Path & path) = 0;
-  virtual void wbs_observer_node_reordered (
-    const WBS::Path & path, const std::vector<int> & new_order) = 0;
 };
 
 NAMESPACE__THITTAM__END

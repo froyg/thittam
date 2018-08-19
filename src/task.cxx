@@ -47,55 +47,40 @@ Task::set_work (const std::string & work)
   }
 }
 
-const Task::Path &
-Task::add_child (Task * task)
+void
+Task::add_child (std::unique_ptr<Task> && task)
 {
-  auto child_index = m_children.size ();
-  m_children.push_back (task);
-  task->m_id = compute_child_id (child_index);
-  task->m_path = compute_child_path (child_index);
-  return task->path ();
+  auto task_raw = task.get ();
+  auto child_index = m_children_raw.size ();
+  m_children_raw.push_back(task_raw);
+  m_children_owned.push_back (std::move (task));
+
+  task_raw->m_id = compute_child_id (child_index);
 }
 
 void
-Task::add_child_after (
-  size_t index, Task * task,
-  std::function<void (const Task::Path &)> insert_notification,
-  std::function<void (const Task::Path &)> change_notification)
+Task::add_child_after (size_t index, std::unique_ptr<Task> && task)
 {
-  auto add_it = m_children.begin () + index + 1;
-  m_children.insert (add_it, task);
+  auto task_raw = task.get ();
+  auto raw_it = m_children_raw.begin () + index + 1;
+  auto owned_it = m_children_owned.begin () + index + 1;
 
-  recompute_path_and_id_of_children (index + 1);
-  insert_notification (task->path ());
+  m_children_raw.insert (raw_it, task_raw);
+  m_children_owned.insert (owned_it, std::move (task));
 
-  auto changed_it = m_children.begin () + index + 1;
-  for (auto it = changed_it; it != m_children.end (); ++it)
-  {
-    notify_change_in_tree (*it, change_notification);
-  }
+  recompute_id_of_children (index + 1);
 }
 
 void
-Task::remove_child (
-  size_t index,
-  std::function<void (const Task::Path&)> remove_notification,
-  std::function<void (const Task::Path&)> change_notification)
+Task::remove_child (size_t index)
 {
-  auto remove_it = m_children.begin () + index;
-  auto child = *remove_it;
-  auto child_path = child->path ();
+  auto raw_it = m_children_raw.begin () + index;
+  auto owned_it = m_children_owned.begin () + index;
 
-  m_children.erase (remove_it);
-  remove_notification (child_path);
+  m_children_raw.erase (raw_it);
+  m_children_owned.erase (owned_it);
 
-  recompute_path_and_id_of_children (index);
-
-  auto changed_it = m_children.begin () + index;
-  for (auto it = changed_it; it != m_children.end (); ++it)
-  {
-    notify_change_in_tree (*it, change_notification);
-  }
+  recompute_id_of_children (index);
 }
 
 boost::property_tree::ptree
@@ -108,7 +93,7 @@ Task::dump (void)
     pt.put ("work", m_work);
 
     boost::property_tree::ptree child_array;
-    for (auto & child : m_children)
+    for (auto & child : m_children_raw)
       {
         child_array.push_back
           (std::make_pair ("", boost::property_tree::ptree(child->id ())));
@@ -118,36 +103,35 @@ Task::dump (void)
 }
 
 void
-Task::recompute_path_and_id_of_children (size_t start_index)
+Task::recompute_id_of_children (size_t start_index)
 {
-  auto begin_it = m_children.begin () + start_index;
+  auto begin_it = m_children_raw.begin () + start_index;
   auto index = start_index;
-  for (auto it = begin_it; it != m_children.end (); ++it)
+  for (auto it = begin_it; it != m_children_raw.end (); ++it)
   {
-    recompute_path_and_id_of_tree (*it, index);
+    recompute_id_of_tree (*it, index);
     index += 1;
   }
 }
 
 void
-Task::recompute_path_and_id_of_tree (Task * task, size_t index)
+Task::recompute_id_of_tree (Task * task, size_t index)
 {
   task->m_id = compute_child_id (index);
-  task->m_path = compute_child_path (index);
 
   if (task->has_children ())
   {
     size_t child_index = 0;
-    for (auto child : m_children)
+    for (auto child : m_children_raw)
     {
-      recompute_path_and_id_of_tree (child, child_index);
+      recompute_id_of_tree (child, child_index);
       child_index += 1;
     }
   }
 }
 
-std::string &&
-Task::compute_child_id (int index)
+std::string
+Task::compute_child_id (int index) const
 {
   std::ostringstream os;
   size_t part = index + 1;
@@ -161,35 +145,6 @@ Task::compute_child_id (int index)
   }
 
   return std::move (os.str ());
-}
-
-Task::Path &&
-Task::compute_child_path (int number)
-{
-  Task::Path path;
-  if (m_parent == nullptr)
-  {
-    path.push_back (number);
-  }
-  else
-  {
-    path = m_parent->path ();
-    path.push_back (number);
-  }
-
-  return std::move (path);
-}
-
-void
-Task::notify_change_in_tree (
-  Task * task,
-  std::function<void (const Task::Path &)> change_notification)
-{
-  change_notification (task->path ());
-  for (auto child : task->m_children)
-  {
-    change_notification (child->path ());
-  }
 }
 
 NAMESPACE__THITTAM__END

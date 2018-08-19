@@ -12,6 +12,7 @@
 
 #include "wbs-controller.h"
 #include "wbs-view.h"
+#include "wbs.h"
 #include "log.h"
 
 NAMESPACE__THITTAM__START
@@ -28,6 +29,11 @@ public:
     m_view = std::move (view);
   }
 
+  void set_wbs (WBS * wbs)
+  {
+    m_wbs = std::move (wbs);
+  }
+
   /*--- WBSController interface ---*/
   Gtk::Widget * view_widget (void)
   {
@@ -35,8 +41,8 @@ public:
   }
 
   /*--- WBSViewCallbacks interface ---*/
-  void view_node_selected (std::vector<Task::Path> && path_list);
-  void view_node_activated (const Task::Path & path);
+  void view_node_selected (std::vector<WBS::Path> && path_list);
+  void view_node_activated (const WBS::Path & path);
   void view_add_child_clicked (void);
   void view_add_sibling_clicked (void);
   void view_cut_clicked (void);
@@ -54,7 +60,9 @@ private:
   hipro::log::Logger* logger = nullptr;
 
   std::unique_ptr<WBSView> m_view;
-  Task::Path m_selected_path;
+  WBS * m_wbs = nullptr;
+
+  WBS::Path m_selected_path;
 };
 
 NAMESPACE__THITTAM__END

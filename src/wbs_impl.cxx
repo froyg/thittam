@@ -51,12 +51,7 @@ WBSImpl::add_child (const Path & parent_path)
 
   /* Add to tree */
   auto task = std::make_unique<Task> ();
-  auto child_path = parent->add_child (task.get ());
-
-  /* Add to flat-wbs */
-  m_flat_wbs.push_back (Entry (child_path, std::move (task)));
-
-  notify_observers_node_inserted (child_path);
+  parent->add_child (std::move (task));
 }
 
 void
@@ -75,49 +70,7 @@ WBSImpl::add_sibling (const Path & sibling_path)
   auto parent = sibling->parent ();
 
   auto task = std::make_unique<Task> ();
-  parent->add_child_after (
-    sibling_index, task.get (),
-    std::bind (
-      &WBSImpl::notify_observers_node_inserted, this, std::placeholders::_1),
-    std::bind (
-      &WBSImpl::notify_observers_node_changed, this, std::placeholders::_1));
-}
-
-void
-WBSImpl::notify_observers_node_inserted (const WBS::Path & path)
-{
-  for (auto observer : m_observers)
-  {
-    observer->wbs_observer_node_inserted (path);
-  }
-}
-
-void
-WBSImpl::notify_observers_node_changed (const WBS::Path & path)
-{
-  for (auto observer : m_observers)
-  {
-    observer->wbs_observer_node_changed (path);
-  }
-}
-
-void
-WBSImpl::notify_observers_node_deleted (const WBS::Path & path)
-{
-  for (auto observer : m_observers)
-  {
-    observer->wbs_observer_node_deleted (path);
-  }
-}
-
-void
-WBSImpl::notify_observers_node_reordered (
-  const WBS::Path & path, const std::vector<int> & new_order)
-{
-  for (auto observer : m_observers)
-  {
-    observer->wbs_observer_node_reordered (path, new_order);
-  }
+  parent->add_child_after (sibling_index, std::move (task));
 }
 
 NAMESPACE__THITTAM__END
