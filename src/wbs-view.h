@@ -60,6 +60,7 @@ public:
   virtual void enable_delete (bool enable) = 0;
 
   virtual void add_child (const Task::Path & path) = 0;
+  virtual void add_sibling (const Task::Path & t_path) = 0;
   virtual void indent (const Task::Path & path) = 0;
   virtual void unindent (const Task::Path & Path) = 0;
   virtual void renumber (void) = 0;

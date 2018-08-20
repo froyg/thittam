@@ -45,6 +45,7 @@ public:
   void enable_delete (bool enable);
 
   void add_child (const Task::Path & path);
+  void add_sibling (const Task::Path & t_path);
   void indent (const Task::Path & path);
   void unindent (const Task::Path & path);
   void renumber (void);
