@@ -48,6 +48,11 @@ WBSViewImpl::WBSViewImpl (
     parent->remove (*m_top_widget);
   }
 
+  builder->get_widget ("tb-add", m_btn_add_child);
+  m_btn_add_child->signal_clicked ().connect (
+    sigc::mem_fun (*this, &WBSViewImpl::cb_on_add_child_clicked));
+  m_btn_add_child->set_sensitive (true);
+
   builder->get_widget ("tb-cut", m_btn_cut);
   m_btn_cut->signal_clicked ().connect (
     sigc::mem_fun (*this, &WBSViewImpl::cb_on_cut_clicked));

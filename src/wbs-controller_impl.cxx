@@ -25,7 +25,7 @@ WBSControllerImpl::view_node_selected (
   {
     return;
   }
-
+  
   m_view->enable_cut (true);
   m_view->enable_copy (true);
   m_view->enable_delete (true);

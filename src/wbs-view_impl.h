@@ -111,6 +111,7 @@ private:
   Glib::RefPtr<Gtk::TreeSelection> m_tree_selection;
   Columns m_cols;
 
+  Gtk::ToolButton * m_btn_add_child = nullptr;
   Gtk::ToolButton * m_btn_cut = nullptr;
   Gtk::ToolButton * m_btn_copy = nullptr;
   Gtk::ToolButton * m_btn_paste = nullptr;
