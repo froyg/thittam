@@ -37,6 +37,7 @@ Task::add_child (std::unique_ptr<Task> && task)
   m_children_raw.push_back(task_raw);
   m_children_owned.push_back (std::move (task));
 
+  task_raw->set_parent (this);
   task_raw->m_id = compute_child_id (child_index);
 }
 
@@ -50,6 +51,7 @@ Task::add_child_after (size_t index, std::unique_ptr<Task> && task)
   m_children_raw.insert (raw_it, task_raw);
   m_children_owned.insert (owned_it, std::move (task));
 
+  task_raw->set_parent (this);
   recompute_id_of_children (index + 1);
 }
 
