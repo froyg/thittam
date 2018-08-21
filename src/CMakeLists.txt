@@ -60,9 +60,9 @@ add_library (app
   task.cxx
   util.cxx
   wbs-controller_impl.cxx
-  wbs-gtk-tree-model.cxx
   wbs-view_impl.cxx
   wbs_impl.cxx
+  wbs-path.cxx
   )
 
 

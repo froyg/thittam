@@ -13,9 +13,9 @@ NAMESPACE__THITTAM__START
 
 namespace
 {
-  Task::Path gtk_tree_path_to_task_path (const Gtk::TreeModel::Path & path)
+  WBS::Path gtk_tree_path_to_wbs_path (const Gtk::TreeModel::Path & path)
   {
-    Task::Path opath;
+    WBS::Path opath;
     for (auto index : path)
     {
       opath.push_back (index);
@@ -23,7 +23,7 @@ namespace
     return opath;
   }
 
-  Gtk::TreeModel::Path task_path_to_gtk_tree_path (const Task::Path & path)
+  Gtk::TreeModel::Path wbs_path_to_gtk_tree_path (const WBS::Path & path)
   {
     Gtk::TreeModel::Path opath;
     const auto & parts = path.parts ();
@@ -223,10 +223,10 @@ WBSViewImpl::enable_delete (bool enable)
 }
 
 void
-WBSViewImpl::add_child (const Task::Path & t_path)
+WBSViewImpl::add_child (const WBS::Path & t_path)
 {
   Log_I << "add_child ";
-  auto g_path = task_path_to_gtk_tree_path (t_path);
+  auto g_path = wbs_path_to_gtk_tree_path (t_path);
   auto it = m_tree_store->get_iter (g_path);
   auto child = m_tree_store->append (it->children ());
   auto & row = *child;
@@ -235,10 +235,10 @@ WBSViewImpl::add_child (const Task::Path & t_path)
 }
 
 void
-WBSViewImpl::add_sibling (const Task::Path & t_path)
+WBSViewImpl::add_sibling (const WBS::Path & t_path)
 {
   Log_I << "add_sibling ";
-  auto g_path = task_path_to_gtk_tree_path (t_path);
+  auto g_path = wbs_path_to_gtk_tree_path (t_path);
   auto it = m_tree_store->get_iter (g_path);
   if (t_path.parts_length() != 0)
   {
@@ -258,10 +258,10 @@ WBSViewImpl::add_sibling (const Task::Path & t_path)
 // end of its previous sibling's children.
 // it should be valid and also have a valid previous sibling.
 void
-WBSViewImpl::indent (const Task::Path & t_path)
+WBSViewImpl::indent (const WBS::Path & t_path)
 {
   Log_I << "[WBSViewImpl] Indent";
-  auto g_path = task_path_to_gtk_tree_path(t_path);
+  auto g_path = wbs_path_to_gtk_tree_path(t_path);
   auto old_node = m_tree_store->get_iter (g_path);
   auto prev_sibling = (--old_node)++;
 
@@ -282,10 +282,10 @@ WBSViewImpl::indent (const Task::Path & t_path)
 
 // Unindent a given node towards the left
 void
-WBSViewImpl::unindent (const Task::Path & t_path)
+WBSViewImpl::unindent (const WBS::Path & t_path)
 {
   Log_I << "[WBSViewImpl] Unindent";
-  auto g_path = task_path_to_gtk_tree_path (t_path);
+  auto g_path = wbs_path_to_gtk_tree_path (t_path);
   auto old_node = m_tree_store->get_iter (g_path);
   auto parent_node = old_node->parent();
 
@@ -343,15 +343,15 @@ void
 WBSViewImpl::cb_on_row_selected (void)
 {
   auto gtk_paths = m_tree_selection->get_selected_rows ();
-  std::vector<Task::Path> task_paths;
+  std::vector<WBS::Path> wbs_paths;
 
   for (auto & g_path : gtk_paths)
   {
-    auto t_path = gtk_tree_path_to_task_path (g_path);
-    task_paths.push_back (t_path);
+    auto t_path = gtk_tree_path_to_wbs_path (g_path);
+    wbs_paths.push_back (t_path);
   }
 
-  m_handler->view_node_selected (std::move (task_paths));
+  m_handler->view_node_selected (std::move (wbs_paths));
 
   m_menu_add_sibling->set_sensitive (true);
   m_menu_indent->set_sensitive (true);

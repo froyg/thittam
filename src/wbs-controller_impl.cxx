@@ -19,7 +19,7 @@ WBSControllerImpl::WBSControllerImpl (hipro::log::Logger* logger)
 
 void
 WBSControllerImpl::view_node_selected (
-  std::vector<Task::Path> && path_list)
+  std::vector<WBS::Path> && path_list)
 {
   if (path_list.empty ())
   {
@@ -47,7 +47,7 @@ WBSControllerImpl::view_node_selected (
 }
 
 void
-WBSControllerImpl::view_node_activated (const Task::Path & path)
+WBSControllerImpl::view_node_activated (const WBS::Path & path)
 {
 
 }
@@ -59,8 +59,7 @@ WBSControllerImpl::view_add_child_clicked (void)
   m_view->add_child (m_selected_path);
   m_view->renumber ();
 
-  // m_wbs->add_child (m_selected_path);
-  // m_wbs->renumber ();
+  m_wbs->add_child (m_selected_path);
 }
 
 void

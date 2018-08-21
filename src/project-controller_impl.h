@@ -13,6 +13,7 @@
 #include "_namespace.h"
 #include "project-controller.h"
 #include "project-view.h"
+#include "wbs.h"
 #include "wbs-controller.h"
 #include "resources-controller.h"
 #include "gantt-controller.h"
@@ -57,6 +58,11 @@ public:
     m_view = std::move (view);
   }
 
+  void set_wbs (std::unique_ptr<WBS> wbs)
+  {
+    m_wbs = std::move (wbs);
+  }
+
   /*--- ProjectController interface ---*/
   Gtk::Widget * view_widget (void)
   {
@@ -77,6 +83,7 @@ public:
 private:
   hipro::log::Logger* logger = nullptr;
 
+  std::unique_ptr<WBS> m_wbs;
   std::unique_ptr<WBSController> m_wbs_controller;
   std::unique_ptr<ResourcesController> m_resources_controller;
   std::unique_ptr<GANTTController> m_gantt_controller;

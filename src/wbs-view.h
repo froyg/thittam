@@ -13,7 +13,7 @@
 #include <gtkmm.h>
 
 #include "_namespace.h"
-#include "task.h"
+#include "wbs.h"
 
 NAMESPACE__THITTAM__START
 
@@ -23,9 +23,9 @@ public:
   virtual ~WBSViewCallbacks () {}
 
   virtual void view_node_selected (
-    std::vector<Task::Path> && path_list) = 0;
+    std::vector<WBS::Path> && path_list) = 0;
   virtual void view_node_activated (
-    const Task::Path & path) = 0;
+    const WBS::Path & path) = 0;
 
   virtual void view_add_child_clicked (void) = 0;
   virtual void view_add_sibling_clicked (void) = 0;
@@ -59,10 +59,10 @@ public:
   virtual void enable_paste (bool enable) = 0;
   virtual void enable_delete (bool enable) = 0;
 
-  virtual void add_child (const Task::Path & path) = 0;
-  virtual void add_sibling (const Task::Path & t_path) = 0;
-  virtual void indent (const Task::Path & path) = 0;
-  virtual void unindent (const Task::Path & Path) = 0;
+  virtual void add_child (const WBS::Path & path) = 0;
+  virtual void add_sibling (const WBS::Path & t_path) = 0;
+  virtual void indent (const WBS::Path & path) = 0;
+  virtual void unindent (const WBS::Path & Path) = 0;
   virtual void renumber (void) = 0;
 };
 

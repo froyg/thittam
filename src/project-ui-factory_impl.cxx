@@ -12,6 +12,7 @@
 #include "project-controller_impl.h"
 #include "wbs-view_impl.h"
 #include "wbs-controller_impl.h"
+#include "wbs_impl.h"
 #include "resources-view_impl.h"
 #include "resources-controller_impl.h"
 #include "gantt-view_impl.h"
@@ -39,6 +40,7 @@ ProjectUIFactoryImpl::create (Project * project)
     "/ui/wbs-view.glade");
   auto wbs_view = std::make_unique<WBSViewImpl> (logger, wbs_ui);
   auto wbs_controller = std::make_unique<WBSControllerImpl> (logger);
+  auto wbs = std::make_unique<WBSImpl> (logger);
 
   auto resources_ui = Gtk::Builder::create_from_resource (
     "/ui/resources-view.glade");
@@ -64,6 +66,7 @@ ProjectUIFactoryImpl::create (Project * project)
 
   wbs_view->set_handler (wbs_controller.get ());
   wbs_controller->set_view (std::move (wbs_view));
+  wbs_controller->set_wbs (wbs.get ());
 
   resources_view->set_handler (resources_controller.get ());
   resources_controller->set_view (std::move (resources_view));
@@ -74,6 +77,7 @@ ProjectUIFactoryImpl::create (Project * project)
   resource_usage_view->set_handler (resource_usage_controller.get ());
   resource_usage_controller->set_view (std::move (resource_usage_view));
 
+  project_controller->set_wbs (std::move (wbs));
   project_controller->set_wbs_controller (std::move (wbs_controller));
   project_controller->set_resources_controller (
     std::move (resources_controller));
