@@ -68,6 +68,8 @@ WBSControllerImpl::view_add_sibling_clicked (void)
   Log_I << "Adding Sibling";
   m_view->add_sibling (m_selected_path);
   m_view->renumber ();
+
+  m_wbs->add_sibling (m_selected_path);
 }
 
 void
