@@ -75,6 +75,11 @@ public:
     return m_parts[index];
   }
 
+  int last_part (void) const
+  {
+    return m_parts.back ();
+  }
+
 private:
   std::vector<int> m_parts;
 };

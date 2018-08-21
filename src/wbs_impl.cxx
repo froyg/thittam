@@ -73,6 +73,23 @@ WBSImpl::add_sibling (const Path & sibling_path)
   parent->add_child_after (sibling_index, std::move (task));
 }
 
+void
+WBSImpl::indent (const Path & path)
+{
+  assert (path.empty () == false);
+  assert (path.last_part () != 0);
+
+  Task * parent = &m_root;
+  size_t child_index = 0;
+  for (auto index : path.parts ())
+  {
+    parent = parent->child (index);
+    child_index = index;
+  }
+  parent = parent->parent ();
+  parent->indent_child (child_index);
+}
+
 NAMESPACE__THITTAM__END
 
 /*

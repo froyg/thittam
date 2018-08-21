@@ -75,19 +75,22 @@ WBSControllerImpl::view_add_sibling_clicked (void)
 void
 WBSControllerImpl::view_indent_clicked (void)
 {
-  Log_I << "[WBSControllerImpl] Indent";
+  // Take a copy. When the view gets updated, the current selection will get
+  // updated.
+  auto path = m_selected_path;
 
-  assert (m_selected_path.parts_length() != 0);
-  if (m_selected_path[m_selected_path.parts_length() - 1] == 0)
+  assert (path.parts_length() != 0);
+  if (path.last_part () == 0)
   {
     // TODO: Put this message in status bar of thittam
-    Log_I << "Can't indent first element";
+    Log_D << "Can't indent first element";
     return;
   }
 
-  m_view->indent(m_selected_path);
-
+  m_view->indent(path);
   m_view->renumber();
+
+  m_wbs->indent (path);
 }
 
 void

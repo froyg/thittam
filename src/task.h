@@ -94,6 +94,7 @@ public:
   void add_child (std::unique_ptr<Task> && task);
   void add_child_after (size_t index, std::unique_ptr<Task> && task);
   void remove_child (size_t index);
+  void indent_child (size_t index);
 
   boost::property_tree::ptree dump (void);
 
