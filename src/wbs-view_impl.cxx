@@ -48,6 +48,11 @@ WBSViewImpl::WBSViewImpl (
     parent->remove (*m_top_widget);
   }
 
+  builder->get_widget ("tb-add", m_btn_add_child);
+  m_btn_add_child->signal_clicked ().connect (
+    sigc::mem_fun (*this, &WBSViewImpl::cb_on_add_child_clicked));
+  m_btn_add_child->set_sensitive (true);
+
   builder->get_widget ("tb-cut", m_btn_cut);
   m_btn_cut->signal_clicked ().connect (
     sigc::mem_fun (*this, &WBSViewImpl::cb_on_cut_clicked));
@@ -226,6 +231,25 @@ WBSViewImpl::add_child (const WBS::Path & t_path)
   auto child = m_tree_store->append (it->children ());
   auto & row = *child;
   row[m_cols.id] = "aa";
+  Log_D << "g_path " << g_path.size ();
+}
+
+void
+WBSViewImpl::add_sibling (const WBS::Path & t_path)
+{
+  Log_I << "add_sibling ";
+  auto g_path = wbs_path_to_gtk_tree_path (t_path);
+  auto it = m_tree_store->get_iter (g_path);
+  if (t_path.parts_length() != 0)
+  {
+    auto child = m_tree_store->insert_after (it->children());
+  }
+  else
+  {
+    auto child = m_tree_store->append ();
+  }
+  // auto & row = *child;
+  // row[m_cols.id] = "aa";
   Log_D << "g_path " << g_path.size ();
 }
 

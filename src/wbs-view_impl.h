@@ -45,6 +45,7 @@ public:
   void enable_delete (bool enable);
 
   void add_child (const WBS::Path & path);
+  void add_sibling (const WBS::Path & t_path);
   void indent (const WBS::Path & path);
   void unindent (const WBS::Path & path);
   void renumber (void);
@@ -110,6 +111,7 @@ private:
   Glib::RefPtr<Gtk::TreeSelection> m_tree_selection;
   Columns m_cols;
 
+  Gtk::ToolButton * m_btn_add_child = nullptr;
   Gtk::ToolButton * m_btn_cut = nullptr;
   Gtk::ToolButton * m_btn_copy = nullptr;
   Gtk::ToolButton * m_btn_paste = nullptr;
