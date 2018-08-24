@@ -83,6 +83,22 @@ Task::indent_child (size_t index)
   new_parent->add_child (std::move (task));
 }
 
+void
+Task::unindent_child (size_t index, size_t parent_index)
+{
+  assert (m_parent != nullptr);
+  auto new_parent = m_parent;
+  auto raw_it = m_children_raw.begin () + index;
+  auto owned_it = m_children_owned.begin () + index;
+
+  auto task = std::move (*owned_it);
+
+  m_children_raw.erase (raw_it);
+  m_children_owned.erase (owned_it);
+
+  new_parent->add_child_after (parent_index, std::move (task));
+}
+
 boost::property_tree::ptree
 Task::dump (void)
 {

@@ -95,6 +95,7 @@ public:
   void add_child_after (size_t index, std::unique_ptr<Task> && task);
   void remove_child (size_t index);
   void indent_child (size_t index);
+  void unindent_child (size_t index, size_t parent_index);
 
   boost::property_tree::ptree dump (void);
 

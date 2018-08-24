@@ -90,6 +90,22 @@ WBSImpl::indent (const Path & path)
   parent->indent_child (child_index);
 }
 
+void
+WBSImpl::unindent (const Path & path)
+{
+  assert (path.parts_length () > 1);
+
+  Task * parent = &m_root;
+  size_t child_index = path[path.parts_length () - 1];
+  size_t parent_index = path[path.parts_length () - 2];
+  for (auto index : path.parts ())
+  {
+    parent = parent->child (index);
+  }
+  parent = parent->parent ();
+  parent->unindent_child (child_index, parent_index);
+}
+
 NAMESPACE__THITTAM__END
 
 /*

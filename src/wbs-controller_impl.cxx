@@ -96,19 +96,21 @@ WBSControllerImpl::view_indent_clicked (void)
 void
 WBSControllerImpl::view_unindent_clicked (void)
 {
-  Log_I << "[WBSControllerImpl] Unindent";
+  auto path = m_selected_path;
 
-  assert (m_selected_path.parts_length() != 0);
-  if (m_selected_path.parts_length() < 2)
+  assert (path.parts_length() != 0);
+  if (path.parts_length() < 2)
   {
     // TODO: Put this message in status bar of thittam
     Log_I << "Can't unindent level 1 task";
     return;
   }
 
-  m_view->unindent(m_selected_path);
+  m_view->unindent(path);
 
   m_view->renumber();
+
+  m_wbs->unindent (path);
 }
 
 void
