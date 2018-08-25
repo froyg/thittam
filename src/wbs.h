@@ -30,6 +30,7 @@ public:
   virtual void add_child (const Path & parent_path) = 0;
   virtual void add_sibling (const Path & path) = 0;
   virtual void indent (const Path & path) = 0;
+  virtual void unindent (const Path & path) = 0;
 
   virtual bool dirty (void) const = 0;
   virtual void clear_dirty (void) = 0;

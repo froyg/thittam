@@ -33,6 +33,7 @@ public:
   void add_child (const Path & parent_path);
   void add_sibling (const Path & path);
   void indent (const Path & path);
+  void unindent (const Path & path);
 
   bool dirty (void) const
   {

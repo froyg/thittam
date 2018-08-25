@@ -83,6 +83,23 @@ Task::indent_child (size_t index)
   new_parent->add_child (std::move (task));
 }
 
+void
+Task::unindent_child (size_t index, size_t parent_index)
+{
+  assert (m_parent != nullptr);
+
+  auto new_parent = m_parent;
+  auto raw_it = m_children_raw.begin () + index;
+  auto owned_it = m_children_owned.begin () + index;
+
+  auto task = std::move (*owned_it);
+
+  m_children_raw.erase (raw_it);
+  m_children_owned.erase (owned_it);
+
+  new_parent->add_child_after (parent_index, std::move (task));
+}
+
 boost::property_tree::ptree
 Task::dump (void)
 {
@@ -105,28 +122,10 @@ Task::dump (void)
 void
 Task::recompute_id_of_children (size_t start_index)
 {
-  auto begin_it = m_children_raw.begin () + start_index;
-  auto index = start_index;
-  for (auto it = begin_it; it != m_children_raw.end (); ++it)
+  m_id = compute_child_id (start_index);
+  for (size_t i = start_index; i < m_children_raw.size (); ++i)
   {
-    recompute_id_of_tree (*it, index);
-    index += 1;
-  }
-}
-
-void
-Task::recompute_id_of_tree (Task * task, size_t index)
-{
-  task->m_id = compute_child_id (index);
-
-  if (task->has_children ())
-  {
-    size_t child_index = 0;
-    for (auto child : m_children_raw)
-    {
-      recompute_id_of_tree (child, child_index);
-      child_index += 1;
-    }
+    m_children_raw[i]->recompute_id_of_children ();
   }
 }
 

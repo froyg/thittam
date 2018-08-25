@@ -242,14 +242,12 @@ WBSViewImpl::add_sibling (const WBS::Path & t_path)
   auto it = m_tree_store->get_iter (g_path);
   if (t_path.parts_length() != 0)
   {
-    auto child = m_tree_store->insert_after (it->children());
+    m_tree_store->insert_after (it->children());
   }
   else
   {
-    auto child = m_tree_store->append ();
+    m_tree_store->append ();
   }
-  // auto & row = *child;
-  // row[m_cols.id] = "aa";
   Log_D << "g_path " << g_path.size ();
 }
 
