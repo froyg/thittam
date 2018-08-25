@@ -35,6 +35,8 @@ public:
   void indent (const Path & path);
   void unindent (const Path & path);
 
+  Task *get_task_at_level(const Path & path, size_t level);
+
   bool dirty (void) const
   {
     return m_dirty;
