@@ -100,8 +100,7 @@ public:
   boost::property_tree::ptree dump (void);
 
 private:
-  void recompute_id_of_children (size_t start_index);
-  void recompute_id_of_tree (Task * task, size_t index);
+  void recompute_id_of_children (size_t start_index = 0);
   std::string compute_child_id (int number) const;
 
 private:
