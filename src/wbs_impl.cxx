@@ -54,7 +54,7 @@ void
 WBSImpl::add_child (const Path & path)
 {
   /* Find the parent */
-  auto parent = get_task_at_level (path, path.parts_length () - 1);
+  auto parent = get_task_at_level (path, path.parts_length ());
 
   /* Make a new node/task */
   auto task = std::make_unique<Task> ();
