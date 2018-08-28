@@ -52,7 +52,7 @@ Task::add_child_after (size_t index, std::unique_ptr<Task> && task)
   m_children_owned.insert (owned_it, std::move (task));
 
   task_raw->set_parent (this);
-  recompute_id_of_children (index + 1);
+  recompute_id_of_children ();
 }
 
 void
