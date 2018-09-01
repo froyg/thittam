@@ -62,6 +62,7 @@ private:
   std::unique_ptr<WBSView> m_view;
   WBS * m_wbs = nullptr;
 
+  std::vector<WBS::Path> m_selected_path_all;
   WBS::Path m_selected_path;
 };
 

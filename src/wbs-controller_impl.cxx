@@ -43,7 +43,8 @@ WBSControllerImpl::view_node_selected (
     m_view->enable_paste (true);
   }
 
-  m_selected_path = path_list[0];
+  m_selected_path_all = std::move (path_list);
+  m_selected_path = m_selected_path_all[0];
 }
 
 void

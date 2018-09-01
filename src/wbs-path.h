@@ -11,7 +11,7 @@
 #define HIPRO__69867568_a3e0_11e8_8d95_448500dfb04c
 
 #include <vector>
-#include <ostream>
+#include <iostream>
 
 #include "_namespace.h"
 
@@ -78,6 +78,17 @@ public:
   int last_part (void) const
   {
     return m_parts.back ();
+  }
+
+  const WBSPath *next_sibling() const
+  {
+    if (this->empty())
+      return this;
+    WBSPath *new_path = new WBSPath(*this);
+    auto &x = new_path->m_parts[this->parts_length() - 1];
+    x = x + 1;
+    std::cout << "x " << new_path->m_parts[this->parts_length() - 1] << std::endl;
+    return new_path;
   }
 
 private:

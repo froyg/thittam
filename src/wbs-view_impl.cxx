@@ -8,6 +8,7 @@
  * legal@hipro.co.in. */
 
 #include "wbs-view_impl.h"
+#include <iostream>
 
 NAMESPACE__THITTAM__START
 
@@ -145,6 +146,7 @@ WBSViewImpl::WBSViewImpl (
     sigc::mem_fun (*this, &WBSViewImpl::cb_on_row_changed));
 
   m_tree_selection = m_tree_view.get_selection ();
+  m_tree_selection->set_mode(Gtk::SELECTION_MULTIPLE);
   m_tree_selection->signal_changed ().connect
     (sigc::mem_fun (*this, &WBSViewImpl::cb_on_row_selected));
 
@@ -272,6 +274,16 @@ WBSViewImpl::indent (const WBS::Path & t_path)
 
   // Delete the current node
   m_tree_store->erase (old_node);
+
+  auto wbs_next_sibling_path = t_path.next_sibling();
+  auto next_sibling_path = wbs_path_to_gtk_tree_path(*wbs_next_sibling_path);
+  for (const auto &i : wbs_next_sibling_path->parts())
+  {
+    std::cout << i << " ";
+  }
+  std::cout << "\n";
+  auto next_sibling = *m_tree_store->get_iter (next_sibling_path);
+  m_tree_selection->unselect (next_sibling);
 
   // Expand the subtree else we wont be able to select the new_node
   m_tree_view.expand_row(m_tree_store->get_path(prev_sibling), false);
