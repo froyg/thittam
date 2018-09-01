@@ -80,14 +80,12 @@ public:
     return m_parts.back ();
   }
 
-  const WBSPath *next_sibling() const
+  WBSPath next_sibling() const
   {
-    if (this->empty())
-      return this;
-    WBSPath *new_path = new WBSPath(*this);
-    auto &x = new_path->m_parts[this->parts_length() - 1];
-    x = x + 1;
-    std::cout << "x " << new_path->m_parts[this->parts_length() - 1] << std::endl;
+    WBSPath new_path(*this);
+    auto &x = new_path.m_parts[this->parts_length() - 1];
+    if (this->empty() == false)
+      x = x + 1;
     return new_path;
   }
 
