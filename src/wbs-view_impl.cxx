@@ -8,7 +8,6 @@
  * legal@hipro.co.in. */
 
 #include "wbs-view_impl.h"
-#include <iostream>
 
 NAMESPACE__THITTAM__START
 
@@ -272,13 +271,14 @@ WBSViewImpl::indent (const WBS::Path & t_path)
   copy_task(*old_node, new_node);
   copy_sub_tasks(*old_node, new_node);
 
-  auto wbs_next_sibling_path = t_path.next_sibling();
-  auto next_sibling_path = wbs_path_to_gtk_tree_path(wbs_next_sibling_path);
-  auto next_sibling = *m_tree_store->get_iter (next_sibling_path);
-  std::cout << next_sibling.get_value(m_cols.title);
-  // Delete the current node
-  m_tree_store->erase (old_node);
-  m_tree_selection->unselect (next_sibling);
+  /* This is for unselecting the next sibling node which is selected by default
+     when the selected node is deleted.
+   */
+  //auto wbs_next_sibling_path = t_path.next_sibling();
+  //auto next_sibling_path = wbs_path_to_gtk_tree_path(wbs_next_sibling_path);
+  //auto next_sibling = *m_tree_store->get_iter (next_sibling_path);
+  m_tree_selection->unselect (*old_node);
+  //m_tree_store->erase (old_node);
 
   // Expand the subtree else we wont be able to select the new_node
   m_tree_view.expand_row(m_tree_store->get_path(prev_sibling), false);
