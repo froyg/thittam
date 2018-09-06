@@ -65,6 +65,8 @@ WBSControllerImpl::view_add_child_clicked (void)
 void
 WBSControllerImpl::view_add_sibling_clicked (void)
 {
+  ASSERT ((m_selected_path.parts_length () != 0), "Sibling path cannot be empty");
+
   Log_I << "Adding Sibling";
   m_view->add_sibling (m_selected_path);
   m_view->renumber ();
@@ -140,13 +142,23 @@ WBSControllerImpl::view_delete_clicked (void)
 void
 WBSControllerImpl::view_up_clicked (void)
 {
+  Log_I << "Controller Up";
+  Log_I << "Parts Length is: " << m_selected_path.parts_length();
+  m_view->up (m_selected_path);
+  m_view->renumber ();
 
+  m_wbs->up (m_selected_path);
 }
 
 void
 WBSControllerImpl::view_down_clicked (void)
 {
+  Log_I << "Controller Down";
+  Log_I << "Parts Length is: " << m_selected_path.parts_length();
+  m_view->down (m_selected_path);
+  m_view->renumber ();
 
+  m_wbs->down (m_selected_path);
 }
 
 void

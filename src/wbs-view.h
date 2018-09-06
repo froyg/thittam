@@ -63,6 +63,10 @@ public:
   virtual void add_sibling (const WBS::Path & t_path) = 0;
   virtual void indent (const WBS::Path & path) = 0;
   virtual void unindent (const WBS::Path & Path) = 0;
+
+  virtual void up (const WBS::Path & Path) = 0;
+  virtual void down (const WBS::Path & Path) = 0;
+
   virtual void renumber (void) = 0;
 };
 

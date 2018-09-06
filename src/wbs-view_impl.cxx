@@ -301,6 +301,44 @@ WBSViewImpl::unindent (const WBS::Path & t_path)
   m_tree_selection->select (new_node);
 }
 
+// Moves a node up
+void
+WBSViewImpl::up (const WBS::Path & path)
+{
+  Log_I << "Moving the Node Up";
+  auto g_path = wbs_path_to_gtk_tree_path (path);
+  auto old_node = m_tree_store->get_iter (g_path);
+
+  auto prev_node = (--old_node)++;
+
+  auto &new_node = *m_tree_store->insert (prev_node);
+
+  copy_task (*old_node, new_node);
+  copy_sub_tasks (*old_node, new_node);
+
+  m_tree_store->erase (old_node);
+  m_tree_selection->select (new_node);
+}
+
+// Moves a node down
+void
+WBSViewImpl::down (const WBS::Path & path)
+{
+  Log_I << "Moving the Node Down";
+  auto g_path = wbs_path_to_gtk_tree_path (path);
+  auto old_node = m_tree_store->get_iter (g_path);
+
+  auto next_node = (++old_node)--;
+
+  auto &new_node = *m_tree_store->insert_after (next_node);
+
+  copy_task (*old_node, new_node);
+  copy_sub_tasks (*old_node, new_node);
+
+  m_tree_store->erase (old_node);
+  m_tree_selection->select (new_node);
+}
+
 // Renumbers all task IDs. Call this after the wbs tree is modified.
 void
 WBSViewImpl::renumber (void)

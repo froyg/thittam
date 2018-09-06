@@ -66,8 +66,6 @@ WBSImpl::add_child (const Path & path)
 void
 WBSImpl::add_sibling (const Path & path)
 {
-  ASSERT ((path.parts_length () != 0), "Sibling path cannot be empty");
-
   auto parent = get_task_at_level (path, path.parts_length () - 1);
   auto sibling_index = path[path.parts_length () - 1];
 
@@ -97,6 +95,18 @@ WBSImpl::unindent (const Path & path)
   auto parent = get_task_at_level (path, path.parts_length () - 1);
 
   parent->unindent_child (child_index, parent_index);
+}
+
+void
+WBSImpl::up (const Path & path)
+{
+  Log_I << "Inside Move Node Up";
+}
+
+void
+WBSImpl::down (const Path & path)
+{
+  Log_I << "Inside Move Node Down";
 }
 
 NAMESPACE__THITTAM__END

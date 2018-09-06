@@ -32,6 +32,9 @@ public:
   virtual void indent (const Path & path) = 0;
   virtual void unindent (const Path & path) = 0;
 
+  virtual void up (const Path & path) = 0;
+  virtual void down (const Path & path) = 0;
+
   virtual bool dirty (void) const = 0;
   virtual void clear_dirty (void) = 0;
 };

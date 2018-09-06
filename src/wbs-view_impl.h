@@ -48,6 +48,10 @@ public:
   void add_sibling (const WBS::Path & t_path);
   void indent (const WBS::Path & path);
   void unindent (const WBS::Path & path);
+
+  void up (const WBS::Path & path);
+  void down (const WBS::Path & path);
+
   void renumber (void);
 
 private:
