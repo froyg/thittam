@@ -43,8 +43,7 @@ WBSControllerImpl::view_node_selected (
     m_view->enable_paste (true);
   }
 
-  m_selected_path_all = std::move (path_list);
-  m_selected_path = m_selected_path_all[0];
+  m_selection = std::move (path_list);
 }
 
 void
@@ -57,20 +56,20 @@ void
 WBSControllerImpl::view_add_child_clicked (void)
 {
   Log_I << "Adding child";
-  m_view->add_child (m_selected_path);
+  m_view->add_child (m_selection[0]);
   m_view->renumber ();
 
-  m_wbs->add_child (m_selected_path);
+  m_wbs->add_child (m_selection[0]);
 }
 
 void
 WBSControllerImpl::view_add_sibling_clicked (void)
 {
   Log_I << "Adding Sibling";
-  m_view->add_sibling (m_selected_path);
+  m_view->add_sibling (m_selection[0]);
   m_view->renumber ();
 
-  m_wbs->add_sibling (m_selected_path);
+  m_wbs->add_sibling (m_selection[0]);
 }
 
 void
@@ -78,7 +77,7 @@ WBSControllerImpl::view_indent_clicked (void)
 {
   // Take a copy. When the view gets updated, the current selection will get
   // updated.
-  auto path = m_selected_path;
+  auto path = m_selection[0];
 
   assert (path.parts_length() != 0);
   if (path.last_part () == 0)
@@ -97,7 +96,7 @@ WBSControllerImpl::view_indent_clicked (void)
 void
 WBSControllerImpl::view_unindent_clicked (void)
 {
-  auto path = m_selected_path;
+  auto path = m_selection[0];
 
   assert (path.parts_length() != 0);
   if (path.parts_length() < 2)
