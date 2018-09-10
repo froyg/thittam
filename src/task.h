@@ -76,7 +76,7 @@ public:
     return (m_children_raw.empty () != true);
   }
 
-  Task * child (size_t index)
+  Task * child (size_t index) const
   {
     return m_children_raw[index];
   }

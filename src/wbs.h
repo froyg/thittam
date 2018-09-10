@@ -12,6 +12,7 @@
 
 #include "_namespace.h"
 #include "wbs-path.h"
+#include "task.h"
 
 NAMESPACE__THITTAM__START
 
@@ -31,6 +32,8 @@ public:
   virtual void add_sibling (const Path & path) = 0;
   virtual void indent (const Path & path) = 0;
   virtual void unindent (const Path & path) = 0;
+
+  virtual Task* get_task (const Path& path) = 0;
 
   virtual bool dirty (void) const = 0;
   virtual void clear_dirty (void) = 0;

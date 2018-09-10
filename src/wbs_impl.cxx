@@ -18,26 +18,38 @@ WBSImpl::WBSImpl (hipro::log::Logger* logger)
 
 }
 
+
 bool
 WBSImpl::is_first_child (const Path & path) const
 {
-  // todo
-  return false;
+  return path.last_part () == 0;
 }
+
 
 bool
 WBSImpl::is_last_child (const Path & path) const
 {
-  // todo
+  auto parent = &m_root;
+  for (size_t i = 0; i < (path.parts_length() - 1); ++i)
+  {
+    parent = parent->child (path[i]);
+  }
+
+  if (path.last_part () == (parent->children_count () - 1))
+  {
+    return true;
+  }
+
   return false;
 }
+
 
 bool
 WBSImpl::is_top_level (const Path & path) const
 {
-  // todo
-  return false;
+  return path.parts_length () == 1;
 }
+
 
 Task *
 WBSImpl::get_task_at_level(const Path & path, size_t level)
@@ -48,6 +60,17 @@ WBSImpl::get_task_at_level(const Path & path, size_t level)
     parent = parent->child (path[i]);
   }
   return parent;
+}
+
+Task*
+WBSImpl::get_task (const Path& path)
+{
+  Task* task = &m_root;
+  for (auto i : path.parts ())
+  {
+    task = task->child (i);
+  }
+  return task;
 }
 
 void
