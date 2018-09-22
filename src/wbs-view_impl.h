@@ -44,11 +44,12 @@ public:
   void enable_paste (bool enable);
   void enable_delete (bool enable);
 
-  void add_child (const WBS::Path & path);
-  void add_sibling (const WBS::Path & t_path);
-  void indent (const WBS::Path & path);
-  void unindent (const WBS::Path & path);
-  void renumber (void);
+  void add_child (const WBS::Path & path, const std::string& id);
+  void add_child (
+    const WBS::Path & t_path, const std::string& id,
+    const std::string& title, const std::string& effort);
+  void add_sibling (const WBS::Path & t_path, const std::string& id);
+  void remove (const WBS::Path & t_path);
 
 private:
   void cb_on_row_selected (void);
@@ -69,19 +70,6 @@ private:
   void cb_on_row_changed (
     const Gtk::TreeModel::Path& path,
     const Gtk::TreeModel::iterator& iter);
-
-  void do_renumber (
-    const Gtk::TreeRow * row, const std::string & parent_id, int index);
-
-  // Copy task details from one row to another row. Arg 1 is source.
-  void copy_task(
-    const Gtk::TreeRow &source,
-    const Gtk::TreeRow &destination);
-
-  // Recursively copy whole sub-tree from source to destination
-  void copy_sub_tasks(
-    const Gtk::TreeRow &source,
-    const Gtk::TreeRow &destination);
 
 private:
   hipro::log::Logger* logger = nullptr;

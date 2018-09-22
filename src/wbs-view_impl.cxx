@@ -224,124 +224,45 @@ WBSViewImpl::enable_delete (bool enable)
 }
 
 void
-WBSViewImpl::add_child (const WBS::Path & t_path)
+WBSViewImpl::add_child (const WBS::Path & t_path, const std::string& id)
 {
-  Log_I << "add_child ";
   auto g_path = wbs_path_to_gtk_tree_path (t_path);
   auto it = m_tree_store->get_iter (g_path);
   auto child = m_tree_store->append (it->children ());
   auto & row = *child;
-  row[m_cols.id] = "aa";
-  Log_D << "g_path " << g_path.size ();
+  row[m_cols.id] = id;
 }
 
 void
-WBSViewImpl::add_sibling (const WBS::Path & t_path)
+WBSViewImpl::add_child (
+  const WBS::Path & t_path,
+  const std::string& id, const std::string& title, const std::string& effort)
 {
-  Log_I << "add_sibling ";
   auto g_path = wbs_path_to_gtk_tree_path (t_path);
   auto it = m_tree_store->get_iter (g_path);
-  if (t_path.parts_length() != 0)
-  {
-    m_tree_store->insert_after (it->children());
-  }
-  else
-  {
-    m_tree_store->append ();
-  }
-  Log_D << "g_path " << g_path.size ();
+  auto child = m_tree_store->append (it->children ());
+  auto & row = *child;
+  row[m_cols.id] = id;
+  row[m_cols.title] = title;
+  row[m_cols.effort] = effort;
 }
 
-
-// Indent a selected node towards the right i.e. append the current node to the
-// end of its previous sibling's children.
-// it should be valid and also have a valid previous sibling.
 void
-WBSViewImpl::indent (const WBS::Path & t_path)
+WBSViewImpl::add_sibling (const WBS::Path & t_path, const std::string& id)
 {
-  Log_I << "[WBSViewImpl] Indent";
-  auto g_path = wbs_path_to_gtk_tree_path(t_path);
-  auto old_node = m_tree_store->get_iter (g_path);
-  auto prev_sibling = (--old_node)++;
-
-  // Create a node at the end of its previous sibling's children
-  auto &new_node = *m_tree_store->append (prev_sibling->children());
-
-  // Copy all the tasks from old_node to new_node
-  copy_task(*old_node, new_node);
-  copy_sub_tasks(*old_node, new_node);
-
-  /* This is for unselecting the next sibling node which is selected by default
-     when the selected node is deleted.
-   */
-  //auto wbs_next_sibling_path = t_path.next_sibling();
-  //auto next_sibling_path = wbs_path_to_gtk_tree_path(wbs_next_sibling_path);
-  //auto next_sibling = *m_tree_store->get_iter (next_sibling_path);
-  m_tree_selection->unselect (*old_node);
-  //m_tree_store->erase (old_node);
-
-  // Expand the subtree else we wont be able to select the new_node
-  m_tree_view.expand_row(m_tree_store->get_path(prev_sibling), false);
-  m_tree_selection->select (new_node);
-}
-
-// Unindent a given node towards the left
-void
-WBSViewImpl::unindent (const WBS::Path & t_path)
-{
-  Log_I << "[WBSViewImpl] Unindent";
   auto g_path = wbs_path_to_gtk_tree_path (t_path);
-  auto old_node = m_tree_store->get_iter (g_path);
-  auto parent_node = old_node->parent();
-
-  // Create a new sibling of parent node
-  auto &new_node = *m_tree_store->insert_after (parent_node->children());
-
-  // Copy all the tasks from old_node to new_node
-  copy_task(*old_node, new_node);
-  copy_sub_tasks(*old_node, new_node);
-
-  // Delete the current node
-  m_tree_store->erase (old_node);
-
-  // Select the newly created node
-  m_tree_selection->select (new_node);
-}
-
-// Renumbers all task IDs. Call this after the wbs tree is modified.
-void
-WBSViewImpl::renumber (void)
-{
-  auto children = m_tree_store;
-  int index = 1;
-  std::string id;
-  for (auto child : m_tree_store->children ())
-  {
-    do_renumber (&(*child), id, index);
-    index += 1;
-  }
+  auto it = m_tree_store->get_iter (g_path);
+  auto child = m_tree_store->insert_after (it->children());
+  auto & row = *child;
+  row[m_cols.id] = id;
 }
 
 void
-WBSViewImpl::do_renumber (
-  const Gtk::TreeRow * row, const std::string & parent_id, int index)
+WBSViewImpl::remove (const WBS::Path & t_path)
 {
-  std::ostringstream os;
-  if (! parent_id.empty ())
-  {
-    os << parent_id << ".";
-  }
-  os << index;
-  auto id = os.str ();
-  (*row)[m_cols.id] = id;
-
-  index = 1;
-  for (auto child : row->children ())
-  {
-    auto iter = &(*child);
-    do_renumber (iter, id, index);
-    index +=1;
-  }
+  auto g_path = wbs_path_to_gtk_tree_path(t_path);
+  auto it = m_tree_store->get_iter (g_path);
+  m_tree_store->erase (it);
 }
 
 void
@@ -464,29 +385,6 @@ WBSViewImpl::cb_on_row_changed (
   }
 
   Log_D << "Path: " << path.to_string ();
-}
-
-void
-WBSViewImpl::copy_sub_tasks(
-  const Gtk::TreeRow &source,
-  const Gtk::TreeRow &destination)
-{
-  for (auto &old_child : source.children())
-  {
-    auto &new_child = *m_tree_store->append (destination->children());
-    copy_task(old_child, new_child);
-    copy_sub_tasks (old_child, new_child);
-  }
-}
-
-inline void
-WBSViewImpl::copy_task(
-  const Gtk::TreeRow &source,
-  const Gtk::TreeRow &destination)
-{
-  destination.set_value(m_cols.id, source.get_value(m_cols.id));
-  destination.set_value(m_cols.title, source.get_value(m_cols.title));
-  destination.set_value(m_cols.effort, source.get_value(m_cols.effort));
 }
 
 NAMESPACE__THITTAM__END

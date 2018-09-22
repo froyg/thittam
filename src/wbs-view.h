@@ -59,11 +59,14 @@ public:
   virtual void enable_paste (bool enable) = 0;
   virtual void enable_delete (bool enable) = 0;
 
-  virtual void add_child (const WBS::Path & path) = 0;
-  virtual void add_sibling (const WBS::Path & t_path) = 0;
-  virtual void indent (const WBS::Path & path) = 0;
-  virtual void unindent (const WBS::Path & Path) = 0;
-  virtual void renumber (void) = 0;
+  virtual void add_child (
+    const WBS::Path & path, const std::string& id) = 0;
+  virtual void add_child (
+    const WBS::Path & t_path, const std::string& id,
+    const std::string& title, const std::string& effort) = 0;
+  virtual void add_sibling (
+    const WBS::Path & t_path, const std::string& id) = 0;
+  virtual void remove (const WBS::Path & t_path) = 0;
 };
 
 NAMESPACE__THITTAM__END
