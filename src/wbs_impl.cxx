@@ -36,7 +36,7 @@ WBSImpl::is_last_child (const Path & path) const
     parent = parent->child (path[i]);
   }
 
-  if (path.last_part () == (parent->children_count () - 1))
+  if (path.last_part () == ((int)parent->children_count () - 1))
   {
     return true;
   }
