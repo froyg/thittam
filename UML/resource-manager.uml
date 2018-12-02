@@ -1,0 +1,19 @@
+@startuml
+class resource_manager_view {
+    -rm_tree_store
+    -rm_tree_selection
+    -rm_btn_add
+    -rm_btn_del
+    -on_del_clicked()
+    -on_add_clicked()
+    +add()
+    +del()
+}
+
+class resource_manager_controller {
+    +view_add_clicked()
+    +view_delete_clicked()
+    -rm_view: resource_manager_view
+    -rm_model: resource_manager_model
+}
+@enduml
