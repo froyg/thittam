@@ -1,0 +1,59 @@
+@startuml
+
+abstract class resourceManagerCallbacks {
+    +view_add_clicked()
+    +view_add_group_clicked()
+    +view_delete_clicked()
+}
+
+class resourceManagerView {
+    -rm_handler: resourceManagerCallbacks
+    -rm_tree_store
+    -rm_btn_add
+    -rm_btn_add_grp
+    -rm_btn_del
+    -on_add_clicked()
+    -on_add_grp_clicked()
+    -on_del_clicked()
+    +add(resource)
+    +add_group(resourceGroup)
+    +del()
+}
+
+resourceManagerCallbacks --> resourceManagerView : As an object
+
+class resource {
+    +id: string
+    +name: string
+    +cost: float
+}
+
+class resourceGroup {
+    +id: string
+    +name: string
+    +resources: resource[]
+}
+
+resource --> resourceGroup : As a list of Objects
+
+class resourceManagerModel {
+    -resource_groups: resourceGroup[]
+    +add_resource(group, resource)
+    +remove_resource(group, resource)
+    +add_group(group)
+    +remove_group(group)
+}
+
+resourceGroup --> resourceManagerModel : As a list of Objects
+
+class resourceManagerController {
+    -rm_view: resourceManagerView
+    -rm_model: resourceManagerModel
+}
+
+resourceManagerView --> resourceManagerController : As an object
+resourceManagerModel --> resourceManagerController : As an object
+
+resourceManagerController ---|> resourceManagerCallbacks
+
+@enduml
