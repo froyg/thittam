@@ -16,7 +16,7 @@ class ResourceManagerView {
     +del()
 }
 
-ResourceManagerCallbacks --* ResourceManagerView
+ResourceManagerView --* ResourceManagerCallbacks
 
 class resource {
     +id: string
@@ -30,7 +30,7 @@ class resourceGroup {
     +resources: resource[]
 }
 
-resource --* resourceGroup
+resourceGroup --* resource
 
 class ResourceManagerModel {
     -resource_groups: resourceGroup[]
@@ -40,15 +40,15 @@ class ResourceManagerModel {
     +remove_group(group)
 }
 
-resourceGroup --* ResourceManagerModel
+ResourceManagerModel --* resourceGroup
 
 class ResourceManagerController {
     -rm_view: ResourceManagerView
     -rm_model: ResourceManagerModel
 }
 
-ResourceManagerView --* ResourceManagerController
-ResourceManagerModel --* ResourceManagerController
+ResourceManagerController --* ResourceManagerView
+ResourceManagerController --* ResourceManagerModel
 
 ResourceManagerController ---|> ResourceManagerCallbacks
 
