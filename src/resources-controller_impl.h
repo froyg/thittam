@@ -35,6 +35,18 @@ public:
     return m_view->widget ();
   }
 
+  void view_node_selected (std::vector<WBS::Path> && path_list);
+  void view_node_activated (const WBS::Path & path);
+
+  void view_add_resource_clicked (void);
+  void view_add_resource_group_clicked (void);
+  void view_cut_clicked (void);
+  void view_copy_clicked (void);
+  void view_paste_clicked (void);
+  void view_delete_clicked (void);
+  void view_up_clicked (void);
+  void view_down_clicked (void);
+
 private:
   hipro::log::Logger* logger = nullptr;
 
