@@ -35,8 +35,8 @@ public:
     return m_view->widget ();
   }
 
-  void view_node_selected (std::vector<WBS::Path> && path_list);
-  void view_node_activated (const WBS::Path & path);
+  void view_node_selected ();
+  void view_node_activated ();
 
   void view_add_resource_clicked (void);
   void view_add_resource_group_clicked (void);

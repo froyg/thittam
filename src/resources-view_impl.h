@@ -42,8 +42,8 @@ public:
   void enable_paste (bool enable);
   void enable_delete (bool enable);
 
-  void add_resource (const WBS::Path & path);
-  void add_resource_group (const WBS::Path & t_path);
+  void add_resource ();
+  void add_resource_group ();
 
 private:
   hipro::log::Logger* logger = nullptr;

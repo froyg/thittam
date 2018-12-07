@@ -21,10 +21,8 @@ class ResourcesViewCallbacks
 public:
   virtual ~ResourcesViewCallbacks () {}
 
-  virtual void view_node_selected (
-                                   std::vector<WBS::Path> && path_list) = 0;
-  virtual void view_node_activated (
-                                    const WBS::Path & path) = 0;
+  virtual void view_node_selected () = 0;
+  virtual void view_node_activated () = 0;
 
   virtual void view_add_resource_clicked (void) = 0;
   virtual void view_add_resource_group_clicked (void) = 0;
@@ -54,8 +52,8 @@ public:
   virtual void enable_paste (bool enable) = 0;
   virtual void enable_delete (bool enable) = 0;
 
-  virtual void add_resource (const WBS::Path & path) = 0;
-  virtual void add_resource_group (const WBS::Path & t_path) = 0;
+  virtual void add_resource () = 0;
+  virtual void add_resource_group () = 0;
 };
 
 NAMESPACE__THITTAM__END
