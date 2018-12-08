@@ -63,6 +63,7 @@ add_library (app
   wbs-view_impl.cxx
   wbs_impl.cxx
   wbs-path.cxx
+  resource-group.cxx
   )
 
 
