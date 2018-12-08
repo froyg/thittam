@@ -24,6 +24,46 @@ ResourcesViewImpl::ResourcesViewImpl (
   }
 }
 
+void enable_add_resource (bool enable)
+{
+}
+
+void enable_add_resource_group (bool enable)
+{
+}
+
+void enable_up (bool enable)
+{
+}
+
+void enable_down (bool enable)
+{
+}
+
+void enable_cut (bool enable)
+{
+}
+
+void enable_copy (bool enable)
+{
+}
+
+void enable_paste (bool enable)
+{
+}
+
+void enable_delete (bool enable)
+{
+}
+
+void add_resource ()
+{
+}
+
+void add_resource_group ()
+{
+}
+
 NAMESPACE__THITTAM__END
 
 /*
