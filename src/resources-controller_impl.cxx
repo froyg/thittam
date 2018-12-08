@@ -17,43 +17,43 @@ ResourcesControllerImpl::ResourcesControllerImpl (hipro::log::Logger* logger)
 
 }
 
-void view_node_selected ()
+void ResourcesControllerImpl::view_node_selected ()
 {
 }
 
-void view_node_activated ()
+void ResourcesControllerImpl::view_node_activated ()
 {
 }
 
-void view_add_resource_clicked (void)
+void ResourcesControllerImpl::view_add_resource_clicked (void)
 {
 }
 
-void view_add_resource_group_clicked (void)
+void ResourcesControllerImpl::view_add_resource_group_clicked (void)
 {
 }
 
-void view_cut_clicked (void)
+void ResourcesControllerImpl::view_cut_clicked (void)
 {
 }
 
-void view_copy_clicked (void)
+void ResourcesControllerImpl::view_copy_clicked (void)
 {
 }
 
-void view_paste_clicked (void)
+void ResourcesControllerImpl::view_paste_clicked (void)
 {
 }
 
-void view_delete_clicked (void)
+void ResourcesControllerImpl::view_delete_clicked (void)
 {
 }
 
-void view_up_clicked (void)
+void ResourcesControllerImpl::view_up_clicked (void)
 {
 }
 
-void view_down_clicked (void)
+void ResourcesControllerImpl::view_down_clicked (void)
 {
 }
 
