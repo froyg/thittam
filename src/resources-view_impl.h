@@ -33,19 +33,52 @@ public:
   {
     m_handler = handler;
   }
+
+  void init_toolbar (Glib::RefPtr<Gtk::Builder> builder);
+  void init_menu (Glib::RefPtr<Gtk::Builder> builder);
+  void init_tree (Glib::RefPtr<Gtk::Builder> builder);
+
   void enable_add_resource (bool enable);
-  void enable_add_resource_group (bool enable);
-  void enable_up (bool enable);
-  void enable_down (bool enable);
-  void enable_cut (bool enable);
-  void enable_copy (bool enable);
-  void enable_paste (bool enable);
+  void enable_add_group (bool enable);
   void enable_delete (bool enable);
 
-  void add_resource ();
-  void add_resource_group ();
+  void add_resource (void);
+  void add_group (void);
 
 private:
+  class Columns : public Gtk::TreeModel::ColumnRecord
+  {
+  public:
+    Columns ()
+    {
+      add (id);
+      add (name);
+      add (cost);
+    }
+
+    Gtk::TreeModelColumn<Glib::ustring> id;
+    Gtk::TreeModelColumn<Glib::ustring> name;
+    Gtk::TreeModelColumn<Glib::ustring> cost;
+  } m_cols;
+
+  Gtk::TreeView m_tree_view;
+  Glib::RefPtr<Gtk::TreeStore> m_tree_store;
+  Glib::RefPtr<Gtk::TreeSelection> m_tree_selection;
+
+  Gtk::ToolButton * m_btn_add_resource = nullptr;
+  Gtk::ToolButton * m_btn_add_group = nullptr;
+
+  Glib::RefPtr<Gio::SimpleActionGroup> m_action_group;
+  Glib::RefPtr<Gio::SimpleAction> m_action_add_resource;
+  Glib::RefPtr<Gio::SimpleAction> m_action_add_group;
+
+  Gtk::Menu* m_menu = nullptr;
+  Gtk::MenuItem* m_menu_add_resource = nullptr;
+  Gtk::MenuItem* m_menu_add_group = nullptr;
+
+  void cb_on_add_resource_clicked (void);
+  void cb_on_add_group_clicked(void);
+
   hipro::log::Logger* logger = nullptr;
 
   Gtk::Widget* m_top_widget = nullptr;

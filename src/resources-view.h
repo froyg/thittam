@@ -42,18 +42,13 @@ public:
   virtual Gtk::Widget* widget (void) = 0;
 
   virtual void set_handler (ResourcesViewCallbacks* handler) = 0;
-  
+
   virtual void enable_add_resource (bool enable) = 0;
-  virtual void enable_add_resource_group (bool enable) = 0;
-  virtual void enable_up (bool enable) = 0;
-  virtual void enable_down (bool enable) = 0;
-  virtual void enable_cut (bool enable) = 0;
-  virtual void enable_copy (bool enable) = 0;
-  virtual void enable_paste (bool enable) = 0;
+  virtual void enable_add_group (bool enable) = 0;
   virtual void enable_delete (bool enable) = 0;
 
   virtual void add_resource () = 0;
-  virtual void add_resource_group () = 0;
+  virtual void add_group () = 0;
 };
 
 NAMESPACE__THITTAM__END

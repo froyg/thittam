@@ -17,7 +17,21 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <child>
-              <object class="GtkToolButton" id="tb-add">
+              <object class="GtkToolButton" id="tb-add-group">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="tooltip_text" translatable="yes">Add node	</property>
+                <property name="label" translatable="yes">Add</property>
+                <property name="use_underline">True</property>
+                <property name="stock_id">gtk-zoom-in</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkToolButton" id="tb-add-resource">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="tooltip_text" translatable="yes">Add node	</property>
@@ -82,46 +96,6 @@
                 <property name="homogeneous">True</property>
               </packing>
             </child>
-            <child>
-              <object class="GtkSeparatorToolItem" id="toolbutton1">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="homogeneous">True</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkToolButton" id="tb-down">
-                <property name="visible">True</property>
-                <property name="sensitive">False</property>
-                <property name="can_focus">False</property>
-                <property name="tooltip_text" translatable="yes">Move down</property>
-                <property name="label" translatable="yes">Move down</property>
-                <property name="use_underline">True</property>
-                <property name="stock_id">gtk-go-down</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="homogeneous">True</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkToolButton" id="tb-up">
-                <property name="visible">True</property>
-                <property name="sensitive">False</property>
-                <property name="can_focus">False</property>
-                <property name="tooltip_text" translatable="yes">Move up</property>
-                <property name="label" translatable="yes">Move up</property>
-                <property name="use_underline">True</property>
-                <property name="stock_id">gtk-go-up</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="homogeneous">True</property>
-              </packing>
-            </child>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -149,15 +123,15 @@
       </object>
     </child>
   </object>
-  <object class="GtkMenu" id="wbspopup">
+  <object class="GtkMenu" id="resource-popup">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <child>
       <object class="GtkMenuItem" id="menu-add-resource">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="action_name">wbs.add-child</property>
-        <property name="label" translatable="yes">Add child</property>
+        <property name="action_name">resource.add</property>
+        <property name="label" translatable="yes">Add resource</property>
         <property name="use_underline">True</property>
       </object>
     </child>
@@ -166,8 +140,8 @@
         <property name="visible">True</property>
         <property name="sensitive">False</property>
         <property name="can_focus">False</property>
-        <property name="action_name">wbs.add-sibling</property>
-        <property name="label" translatable="yes">Add sibling</property>
+        <property name="action_name">resource.add-group</property>
+        <property name="label" translatable="yes">Add resource group</property>
         <property name="use_underline">True</property>
       </object>
     </child>
