@@ -11,25 +11,6 @@
 
 NAMESPACE__THITTAM__START
 
-auto
-ResourceManager::get_group (const std::string & id) const
-{
-  for (auto it = m_resource_groups.begin(); it != m_resource_groups.end(); it++)
-  {
-    if (it->ResourceGroup::id() == id)
-    {
-      return it;
-    }
-  }
-}
-
-const std::string &
-ResourceManager::get_group_name (const std::string & id) const
-{
-  auto it = ResourceManager::get_group(id);
-  return it->ResourceGroup::name();
-}
-
 void
 ResourceManager::add_group (void)
 {
@@ -37,13 +18,6 @@ ResourceManager::add_group (void)
   new_res_group.ResourceGroup::set_id("id");
   new_res_group.ResourceGroup::set_name("name");
   m_resource_groups.push_back(new_res_group);
-}
-
-void
-ResourceManager::remove_group (const std::string & id)
-{
-  auto it = ResourceManager::get_group(id);
-  m_resource_groups.erase(it);
 }
 
 NAMESPACE__THITTAM__END

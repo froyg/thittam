@@ -43,9 +43,7 @@ public:
     m_name = name;
   }
 
-  const std::string & get_resource_name (const std::string & id) const;
   void add_resource (void);
-  void remove_resource (const std::string & id);
 
 private:
   std::string m_id;

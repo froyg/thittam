@@ -21,9 +21,7 @@ NAMESPACE__THITTAM__START
 class ResourceManager
 {
 public:
-  const std::string & get_group_name (const std::string & id) const;
   void add_group (void);
-  void remove_group (const std::string & id);
 
 private:
   std::list <ResourceGroup> m_resource_groups;

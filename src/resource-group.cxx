@@ -11,25 +11,6 @@
 
 NAMESPACE__THITTAM__START
 
-auto
-ResourceGroup::get_resource (const std::string & id) const
-{
-  for (auto it = m_resources.begin(); it != m_resources.end(); it++)
-  {
-    if (it->Resource::id() == id)
-    {
-      return it;
-    }
-  }
-}
-
-const std::string &
-ResourceGroup::get_resource_name (const std::string & id) const
-{
-  auto it = get_resource(id);
-  return it->Resource::name();
-}
-
 void
 ResourceGroup::add_resource (void)
 {
@@ -38,13 +19,6 @@ ResourceGroup::add_resource (void)
   new_res.Resource::set_name("name");
   new_res.Resource::set_cost(0.0);
   m_resources.push_back(new_res);
-}
-
-void
-ResourceGroup::remove_resource (const std::string & id)
-{
-  auto it = get_resource(id);
-  m_resources.erase(it);
 }
 
 NAMESPACE__THITTAM__END
