@@ -21,7 +21,7 @@ NAMESPACE__THITTAM__START
 class ResourceManager
 {
 public:
-  void add_group (void);
+  const ResourceGroup & add_group (void);
 
 private:
   std::list <ResourceGroup> m_resource_groups;

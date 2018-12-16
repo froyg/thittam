@@ -11,13 +11,14 @@
 
 NAMESPACE__THITTAM__START
 
-void
+const ResourceGroup &
 ResourceManager::add_group (void)
 {
   ResourceGroup new_res_group = ResourceGroup();
   new_res_group.ResourceGroup::set_id(std::to_string(m_resource_groups.size() + 1));
   new_res_group.ResourceGroup::set_name("name");
   m_resource_groups.push_back(new_res_group);
+  return m_resource_groups.back();
 }
 
 NAMESPACE__THITTAM__END
