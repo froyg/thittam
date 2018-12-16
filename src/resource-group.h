@@ -43,7 +43,7 @@ public:
     m_name = name;
   }
 
-  void add_resource (void);
+  const Resource & add_resource (void);
 
 private:
   std::string m_id;
