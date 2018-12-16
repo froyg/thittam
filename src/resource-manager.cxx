@@ -31,11 +31,11 @@ ResourceManager::get_group_name (const std::string & id) const
 }
 
 void
-ResourceManager::add_group (const std::string & id, const std::string & name)
+ResourceManager::add_group (void)
 {
   ResourceGroup new_res_group = ResourceGroup();
-  new_res_group.ResourceGroup::set_id(id);
-  new_res_group.ResourceGroup::set_name(name);
+  new_res_group.ResourceGroup::set_id("id");
+  new_res_group.ResourceGroup::set_name("name");
   m_resource_groups.push_back(new_res_group);
 }
 

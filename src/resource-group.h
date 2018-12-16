@@ -44,7 +44,7 @@ public:
   }
 
   const std::string & get_resource_name (const std::string & id) const;
-  void add_resource (const std::string & id, const std::string & name, const float cost);
+  void add_resource (void);
   void remove_resource (const std::string & id);
 
 private:

@@ -31,12 +31,12 @@ ResourceGroup::get_resource_name (const std::string & id) const
 }
 
 void
-ResourceGroup::add_resource (const std::string & id, const std::string & name, const float cost)
+ResourceGroup::add_resource (void)
 {
   Resource new_res = Resource();
-  new_res.Resource::set_id(id);
-  new_res.Resource::set_name(name);
-  new_res.Resource::set_cost(cost);
+  new_res.Resource::set_id("id");
+  new_res.Resource::set_name("name");
+  new_res.Resource::set_cost(0.0);
   m_resources.push_back(new_res);
 }
 

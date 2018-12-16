@@ -40,7 +40,7 @@ public:
       m_id = id;
     }
   }
-  
+
   void set_name (const std::string & name)
   {
     m_name = name;
