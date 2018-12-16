@@ -7,8 +7,8 @@
  * distribution or for further clarifications, please contact
  * legal@hipro.co.in. */
 
-#ifndef HIPRO__4f14b450_242f_11e8_85b8_448500dfb04c
-#define HIPRO__4f14b450_242f_11e8_85b8_448500dfb04c
+#ifndef HIPRO__b118fb6a_00fd_11e9_ae49_30e37a0d36da
+#define HIPRO__b118fb6a_00fd_11e9_ae49_30e37a0d36da
 
 #include <string>
 
@@ -19,32 +19,34 @@ NAMESPACE__THITTAM__START
 class Resource
 {
 public:
-  const std::string & resource_id (void) const
+  const std::string & id (void) const
   {
     return m_id;
   }
 
-  const std::string & resource_name (void) const
+  const std::string & name (void) const
   {
     return m_name;
   }
 
-  const float & resource_cost (void) const
+  const float & cost (void) const
   {
     return m_cost;
   }
 
-  void set_resource_id (const std::string & id)
+  void set_id (const std::string & id)
   {
-    m_id = id;
+    if (id.length() <= 6){
+      m_id = id;
+    }
   }
   
-  void set_resource_name (const std::string & name)
+  void set_name (const std::string & name)
   {
     m_name = name;
   }
 
-  void set_resource_cost (const float & cost)
+  void set_cost (const float & cost)
   {
     m_cost = cost;
   }
@@ -57,7 +59,7 @@ private:
 
 NAMESPACE__THITTAM__END
 
-#endif // HIPRO__4f14b450_242f_11e8_85b8_448500dfb04c
+#endif // HIPRO__b118fb6a_00fd_11e9_ae49_30e37a0d36da
 
 /*
   Local Variables:

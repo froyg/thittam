@@ -7,12 +7,11 @@
  * distribution or for further clarifications, please contact
  * legal@hipro.co.in. */
 
-#ifndef HIPRO__4f14b450_242f_11e8_85b8_448500dfb04c
-#define HIPRO__4f14b450_242f_11e8_85b8_448500dfb04c
+#ifndef HIPRO__ea8a30f8_00fd_11e9_8822_30e37a0d36da
+#define HIPRO__ea8a30f8_00fd_11e9_8822_30e37a0d36da
 
 #include <string>
-#include <vector>
-#include <memory>
+#include <list>
 
 #include "_namespace.h"
 #include "resource.h"
@@ -22,27 +21,28 @@ NAMESPACE__THITTAM__START
 class ResourceGroup
 {
 public:
-  const std::string & resource_group_id (void) const
+  const std::string & id (void) const
   {
     return m_id;
   }
 
-  const std::string & resource_group_name (void) const
+  const std::string & name (void) const
   {
     return m_name;
   }
 
-  void set_resource_group_id (const std::string & id)
+  void set_id (const std::string & id)
   {
-    m_id = id;
+    if (id.length() <= 6){
+      m_id = id;
+    }
   }
   
-  void set_resource_group_name (const std::string & name)
+  void set_name (const std::string & name)
   {
     m_name = name;
   }
 
-  auto get_resource (const std::string & id);
   const std::string & get_resource_name (const std::string & id) const;
   void add_resource (const std::string & id, const std::string & name, const float cost);
   void remove_resource (const std::string & id);
@@ -50,12 +50,14 @@ public:
 private:
   std::string m_id;
   std::string m_name;
-  std::vector <std::unique_ptr<Resource>> m_resources;
+  std::list <Resource> m_resources;
+
+  auto get_resource (const std::string & id) const;
 };
 
 NAMESPACE__THITTAM__END
 
-#endif // HIPRO__4f14b450_242f_11e8_85b8_448500dfb04c
+#endif // HIPRO__ea8a30f8_00fd_11e9_8822_30e37a0d36da
 
 /*
   Local Variables:

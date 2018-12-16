@@ -11,44 +11,41 @@
 
 NAMESPACE__THITTAM__START
 
-// auto
-// ResourceGroup::get_resource (const std::string & id)
-// {
-//   for(auto it = m_resources.begin(); it != m_resources.end(); it++)
-//   {
-//     if (it->resource_id() == id){
-//       return it;
-//     }
-//   }
-// }
-
-const std::string &
-ResourceGroup::get_resource_name (const std::string & id) const
+auto
+ResourceGroup::get_resource (const std::string & id) const
 {
-  for(auto it = m_resources.begin(); it != m_resources.end(); it++)
+  for (auto it = m_resources.begin(); it != m_resources.end(); it++)
   {
-    if (it->resource_id() == id){
-      return it->resource_name();
+    if (it->Resource::id() == id)
+    {
+      return it;
     }
   }
 }
 
-// void
-// ResourceGroup::add_resource (const std::string & id, const std::string & name, const float cost)
-// {
-//   Resource new_res = Resource();
-//   new_res.set_resource_id(id);
-//   new_res.set_resource_name(name);
-//   new_res.set_resource_cost(cost);
-//   m_resources.push_back(new_res);
-// }
+const std::string &
+ResourceGroup::get_resource_name (const std::string & id) const
+{
+  auto it = get_resource(id);
+  return it->Resource::name();
+}
 
-// void
-// ResourceGroup::remove_resource (const std::string & id)
-// {
-//   auto it = get_resource(id);
-//   m_resources.erase(it);
-// }
+void
+ResourceGroup::add_resource (const std::string & id, const std::string & name, const float cost)
+{
+  Resource new_res = Resource();
+  new_res.Resource::set_id(id);
+  new_res.Resource::set_name(name);
+  new_res.Resource::set_cost(cost);
+  m_resources.push_back(new_res);
+}
+
+void
+ResourceGroup::remove_resource (const std::string & id)
+{
+  auto it = get_resource(id);
+  m_resources.erase(it);
+}
 
 NAMESPACE__THITTAM__END
 

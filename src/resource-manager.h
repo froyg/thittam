@@ -7,29 +7,33 @@
  * distribution or for further clarifications, please contact
  * legal@hipro.co.in. */
 
-#ifndef HIPRO__4f14b450_242f_11e8_85b8_448500dfb04c
-#define HIPRO__4f14b450_242f_11e8_85b8_448500dfb04c
+#ifndef HIPRO__8aa70514_0100_11e9_b81a_30e37a0d36da
+#define HIPRO__8aa70514_0100_11e9_b81a_30e37a0d36da
 
-#include <vector>
 #include <string>
+#include <list>
 
 #include "_namespace.h"
-#include "ResourceGroup.h"
+#include "resource-group.h"
 
 NAMESPACE__THITTAM__START
 
 class ResourceManager
 {
 public:
-  // TODO
+  const std::string & get_group_name (const std::string & id) const;
+  void add_group (const std::string & id, const std::string & name);
+  void remove_group (const std::string & id);
 
 private:
-  std::vector<std::unique_ptr<ResourceGroup>> m_resource_group;
+  std::list <ResourceGroup> m_resource_groups;
+
+  auto get_group (const std::string & id) const;
 };
 
 NAMESPACE__THITTAM__END
 
-#endif // HIPRO__4f14b450_242f_11e8_85b8_448500dfb04c
+#endif // HIPRO__8aa70514_0100_11e9_b81a_30e37a0d36da
 
 /*
   Local Variables:
