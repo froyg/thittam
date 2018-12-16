@@ -15,8 +15,8 @@ void
 ResourceGroup::add_resource (void)
 {
   Resource new_res = Resource();
-  new_res.Resource::set_id("id");
-  new_res.Resource::set_name("name");
+  new_res.Resource::set_id(std::to_string(m_resources.size() + 1));
+  new_res.Resource::set_name("insert resource name here");
   new_res.Resource::set_cost(0.0);
   m_resources.push_back(new_res);
 }
