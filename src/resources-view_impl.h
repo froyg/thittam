@@ -43,7 +43,7 @@ public:
   void enable_delete (bool enable);
 
   void add_resource (void);
-  void add_group (void);
+  void add_group (const std::string &id, const std::string &name);
 
 private:
   class Columns : public Gtk::TreeModel::ColumnRecord
@@ -58,7 +58,7 @@ private:
 
     Gtk::TreeModelColumn<Glib::ustring> id;
     Gtk::TreeModelColumn<Glib::ustring> name;
-    Gtk::TreeModelColumn<Glib::ustring> cost;
+    Gtk::TreeModelColumn<float> cost;
   } m_cols;
 
   Gtk::TreeView m_tree_view;
@@ -78,6 +78,10 @@ private:
 
   void cb_on_add_resource_clicked (void);
   void cb_on_add_group_clicked(void);
+  void cb_on_row_selected (void);
+  void cb_on_row_changed (
+    const Gtk::TreeModel::Path&,
+    const Gtk::TreeModel::iterator&);
 
   hipro::log::Logger* logger = nullptr;
 

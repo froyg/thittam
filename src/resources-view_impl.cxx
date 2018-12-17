@@ -71,6 +71,13 @@ void ResourcesViewImpl::init_tree (Glib::RefPtr<Gtk::Builder> builder)
   m_tree_view.append_column_editable ("Name", m_cols.name);
   m_tree_view.append_column_editable ("Cost", m_cols.cost);
 
+  m_tree_store->signal_row_changed ().connect (
+    sigc::mem_fun (*this, &ResourcesViewImpl::cb_on_row_changed));
+
+  m_tree_selection = m_tree_view.get_selection ();
+  m_tree_selection->signal_changed ().connect
+    (sigc::mem_fun (*this, &ResourcesViewImpl::cb_on_row_selected));
+
   Gtk::ScrolledWindow * tree_container = nullptr;
   builder->get_widget ("tree-container", tree_container);
   tree_container->add (m_tree_view);
@@ -85,7 +92,17 @@ void ResourcesViewImpl::cb_on_add_resource_clicked (void)
 
 void ResourcesViewImpl::cb_on_add_group_clicked(void)
 {
-  Log_I << "Test";
+  m_handler->view_add_group_clicked ();
+}
+
+void ResourcesViewImpl::cb_on_row_selected (void)
+{
+}
+
+void ResourcesViewImpl::cb_on_row_changed (
+  const Gtk::TreeModel::Path& path,
+  const Gtk::TreeModel::iterator& iter)
+{
 }
 
 void ResourcesViewImpl::enable_add_resource (bool enable)
@@ -110,8 +127,12 @@ void ResourcesViewImpl::add_resource ()
 {
 }
 
-void ResourcesViewImpl::add_group ()
+void ResourcesViewImpl::add_group (const std::string &id,
+                                   const std::string &name)
 {
+  auto row = *m_tree_store->append ();
+  row[m_cols.id] = id;
+  row[m_cols.name] = name;
 }
 
 NAMESPACE__THITTAM__END

@@ -21,7 +21,7 @@ void ResourcesControllerImpl::view_node_selected ()
 {
 }
 
-void ResourcesControllerImpl::view_node_activated ()
+void ResourcesControllerImpl::view_node_changed ()
 {
 }
 
@@ -29,31 +29,14 @@ void ResourcesControllerImpl::view_add_resource_clicked (void)
 {
 }
 
-void ResourcesControllerImpl::view_add_resource_group_clicked (void)
+void ResourcesControllerImpl::view_add_group_clicked (void)
 {
-}
-
-void ResourcesControllerImpl::view_cut_clicked (void)
-{
-}
-
-void ResourcesControllerImpl::view_copy_clicked (void)
-{
-}
-
-void ResourcesControllerImpl::view_paste_clicked (void)
-{
+  Log_I << "Adding new group";
+  const ResourceGroup &r = m_rm->add_group ();
+  m_view->add_group (r.id (), r.name ());
 }
 
 void ResourcesControllerImpl::view_delete_clicked (void)
-{
-}
-
-void ResourcesControllerImpl::view_up_clicked (void)
-{
-}
-
-void ResourcesControllerImpl::view_down_clicked (void)
 {
 }
 

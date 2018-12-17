@@ -14,6 +14,7 @@
 #include <list>
 
 #include "_namespace.h"
+#include <iostream>
 #include "resource.h"
 
 NAMESPACE__THITTAM__START
@@ -33,11 +34,12 @@ public:
 
   void set_id (const std::string & id)
   {
-    if (id.length() <= 6){
+    if (id.length() <= 6) {
       m_id = id;
     }
+    std::cout << "Id: '" << m_id << "' '" << id << "'\n";
   }
-  
+
   void set_name (const std::string & name)
   {
     m_name = name;
