@@ -22,21 +22,12 @@ class ResourceManager
 {
 public:
   const ResourceGroup & add_group (void);
-  const Resource & add_resource (const std::string & id)
-  {
-    for (auto it = m_resource_groups.begin(); it != m_resource_groups.end(); it++)
-    {
-      if (it->id() == id)
-      {
-        return (it->ResourceGroup::add_resource());
-      }
-    }
-  }
+  const Resource & add_resource (const std::string & id);
   
 private:
   std::list <ResourceGroup> m_resource_groups;
 
-  auto get_group (const std::string & id) const;
+  ResourceGroup get_group (const std::string & id) const;
 };
 
 NAMESPACE__THITTAM__END
