@@ -24,12 +24,17 @@ ResourceManager::get_group (const std::string & id)
   throw ("Invalid Id");
 }
 
+ResourceGroup &
+ResourceManager::get_group (const int index)
+{
+  return *std::next(m_resource_groups.begin (), index);
+}
+
 const ResourceGroup &
 ResourceManager::add_group (void)
 {
   ResourceGroup new_res_group = ResourceGroup();
   new_res_group.set_id(std::to_string(m_resource_groups.size() + 1));
-  new_res_group.set_name("name");
   m_resource_groups.push_back(new_res_group);
   return m_resource_groups.back();
 }

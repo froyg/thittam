@@ -37,7 +37,6 @@ public:
     if (id.length() <= 6) {
       m_id = id;
     }
-    std::cout << "Id: '" << m_id << "' '" << id << "'\n";
   }
 
   void set_name (const std::string & name)
@@ -46,13 +45,13 @@ public:
   }
 
   const Resource & add_resource (void);
+  Resource & get_resource (const std::string & id);
+  Resource & get_resource (const int index);
 
 private:
   std::string m_id;
-  std::string m_name;
+  std::string m_name = "group name";
   std::list <Resource> m_resources;
-
-  auto get_resource (const std::string & id) const;
 };
 
 NAMESPACE__THITTAM__END

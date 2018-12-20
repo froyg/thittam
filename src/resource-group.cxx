@@ -11,13 +11,17 @@
 
 NAMESPACE__THITTAM__START
 
+Resource &
+ResourceGroup::get_resource (const int index)
+{
+  return *std::next(m_resources.begin (), index);
+}
+
 const Resource &
 ResourceGroup::add_resource (void)
 {
   Resource new_res = Resource();
   new_res.Resource::set_id(std::to_string(m_resources.size() + 1));
-  new_res.Resource::set_name("insert resource name here");
-  new_res.Resource::set_cost(0.0);
   m_resources.push_back(new_res);
   return m_resources.back();
 }

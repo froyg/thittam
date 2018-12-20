@@ -41,8 +41,8 @@ public:
     return m_view->widget ();
   }
 
-  void view_node_selected ();
-  void view_node_changed ();
+  void view_node_selected (const Gtk::TreeModel::Path &, const Gtk::TreeRow &);
+  void view_node_changed (const Gtk::TreeModel::Path &, const Gtk::TreeRow &);
 
   void view_add_resource_clicked (void);
   void view_add_group_clicked (void);
@@ -50,6 +50,9 @@ public:
 
 private:
   hipro::log::Logger* logger = nullptr;
+
+  int group_index = -1;
+  int resource_index = -1;
 
   std::unique_ptr<ResourcesView> m_view;
   std::unique_ptr<ResourceManager> m_rm;

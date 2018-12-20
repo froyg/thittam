@@ -53,8 +53,8 @@ public:
 
 private:
   std::string m_id;
-  std::string m_name;
-  float m_cost;
+  std::string m_name = "resource name";
+  float m_cost = 10;
 };
 
 NAMESPACE__THITTAM__END

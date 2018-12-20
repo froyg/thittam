@@ -23,11 +23,13 @@ class ResourceManager
 public:
   const ResourceGroup & add_group (void);
   const Resource & add_resource (const std::string & group_id);
-  
+
+  ResourceGroup & get_group (const std::string & id);
+  ResourceGroup & get_group (const int index);
+
 private:
   std::list <ResourceGroup> m_resource_groups;
 
-  ResourceGroup & get_group (const std::string & id);
 };
 
 NAMESPACE__THITTAM__END

@@ -42,10 +42,9 @@ public:
   void enable_add_group (bool enable);
   void enable_delete (bool enable);
 
-  void add_resource (void);
+  void add_resource (const int, const std::string &, const std::string &, const float);
   void add_group (const std::string &id, const std::string &name);
 
-private:
   class Columns : public Gtk::TreeModel::ColumnRecord
   {
   public:
@@ -56,11 +55,12 @@ private:
       add (cost);
     }
 
-    Gtk::TreeModelColumn<Glib::ustring> id;
-    Gtk::TreeModelColumn<Glib::ustring> name;
+    Gtk::TreeModelColumn<std::string> id;
+    Gtk::TreeModelColumn<std::string> name;
     Gtk::TreeModelColumn<float> cost;
   } m_cols;
 
+private:
   Gtk::TreeView m_tree_view;
   Glib::RefPtr<Gtk::TreeStore> m_tree_store;
   Glib::RefPtr<Gtk::TreeSelection> m_tree_selection;
@@ -76,12 +76,19 @@ private:
   Gtk::MenuItem* m_menu_add_resource = nullptr;
   Gtk::MenuItem* m_menu_add_group = nullptr;
 
+  std::string get_id (const Gtk::TreeRow &);
+  std::string get_name (const Gtk::TreeRow &);
+  float get_cost (const Gtk::TreeRow &);
+
   void cb_on_add_resource_clicked (void);
   void cb_on_add_group_clicked(void);
   void cb_on_row_selected (void);
   void cb_on_row_changed (
     const Gtk::TreeModel::Path&,
     const Gtk::TreeModel::iterator&);
+
+  bool node_is_selected (const Gtk::TreeModel::Path &);
+  bool selected_is_group (void);
 
   hipro::log::Logger* logger = nullptr;
 
