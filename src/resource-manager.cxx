@@ -11,6 +11,19 @@
 
 NAMESPACE__THITTAM__START
 
+ResourceGroup &
+ResourceManager::get_group (const std::string & id)
+{
+  for (auto & it : m_resource_groups)
+  {
+    if (it.id() == id)
+    {
+      return it;
+    }
+  }
+  throw ("Invalid Id");
+}
+
 const ResourceGroup &
 ResourceManager::add_group (void)
 {
@@ -20,6 +33,14 @@ ResourceManager::add_group (void)
   m_resource_groups.push_back(new_res_group);
   return m_resource_groups.back();
 }
+
+const Resource &
+ResourceManager::add_resource (const std::string & group_id)
+{
+  return (ResourceManager::get_group(group_id).ResourceGroup::add_resource());
+}
+
+
 
 NAMESPACE__THITTAM__END
 
