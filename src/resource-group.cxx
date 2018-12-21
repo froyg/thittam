@@ -11,6 +11,36 @@
 
 NAMESPACE__THITTAM__START
 
+bool
+ResourceGroup::validate_resources_id (const std::string & resource_id)
+{
+  for (auto & it : m_resources)
+  {
+    if (it.id() == resource_id)
+    {
+      return false;
+    }
+  }
+  return true;
+}
+
+std::string
+ResourceGroup::generate_unique_resource_id (void)
+{
+  // In case number of resources is more than MOD_MAX
+  // generating unique id would not be possible
+  if (m_resources.size() < MOD_MAX)
+  {
+    std::string id = util::generate_random_id();
+    for (; !ResourceGroup::validate_resources_id(id) ; )
+    {
+      id = util::generate_random_id();
+    }
+    return id;
+  }
+  return FAILED_TO_GENERATE_RANDOM_ID;
+}
+
 Resource &
 ResourceGroup::get_resource (const int index)
 {
@@ -20,35 +50,41 @@ ResourceGroup::get_resource (const int index)
 const Resource &
 ResourceGroup::add_resource (void)
 {
-  Resource new_res = Resource();
-  new_res.Resource::set_id(std::to_string(m_resources.size() + 1));
-  new_res.Resource::set_name("insert resource name here");
-  new_res.Resource::set_cost(0.0);
-  m_resources.push_back(new_res);
-  return m_resources.back();
+  std::string id = ResourceGroup::generate_unique_resource_id();
+
+  if (id != FAILED_TO_GENERATE_RANDOM_ID)
+  {
+    Resource new_res = Resource();
+    new_res.Resource::set_id(id);
+    new_res.Resource::set_name("insert resource name here");
+    new_res.Resource::set_cost(0.0);
+    m_resources.push_back(new_res);
+    return m_resources.back();
+  }
 }
 
-void
+bool
 ResourceGroup::change_resource_id (const int index, const std::string & resource_id)
 {
-  auto resource = ResourceGroup::get_resource(index);
-  resource.Resource::set_id(resource_id);
+  if (ResourceGroup::validate_resources_id(resource_id))
+  {
+    ResourceGroup::get_resource(index).Resource::set_id(resource_id);
+    return true;
+  }
+  return false;
 }
 
 void
 ResourceGroup::change_resource_name (const int index, const std::string & resource_name)
 {
-  auto resource = ResourceGroup::get_resource(index);
-  resource.Resource::set_name(resource_name);
+  ResourceGroup::get_resource(index).Resource::set_name(resource_name);
 }
 
 void
 ResourceGroup::change_resource_cost (const int index, const float & resource_cost)
 {
-  auto resource = ResourceGroup::get_resource(index);
-  resource.Resource::set_cost(resource_cost);
+  ResourceGroup::get_resource(index).Resource::set_cost(resource_cost);
 }
-
 
 NAMESPACE__THITTAM__END
 

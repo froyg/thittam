@@ -15,6 +15,9 @@
 
 #include "_namespace.h"
 #include "resource.h"
+#include "util.h"
+
+#define FAILED_TO_GENERATE_RANDOM_ID "FAILED"
 
 NAMESPACE__THITTAM__START
 
@@ -44,7 +47,7 @@ public:
   }
 
   const Resource & add_resource (void);
-  void change_resource_id (const int index, const std::string & resource_id);
+  bool change_resource_id (const int index, const std::string & resource_id);
   void change_resource_name (const int index, const std::string & resource_name);
   void change_resource_cost (const int index, const float & resource_cost);
 
@@ -54,7 +57,8 @@ private:
   std::list <Resource> m_resources;
 
   Resource & get_resource (const int index);
-
+  bool validate_resources_id (const std::string & resource_id);
+  std::string generate_unique_resource_id (void);
 };
 
 NAMESPACE__THITTAM__END
