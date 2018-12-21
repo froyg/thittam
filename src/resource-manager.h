@@ -22,12 +22,19 @@ class ResourceManager
 {
 public:
   const ResourceGroup & add_group (void);
+  void change_group_id (const int index, const std::string & group_id);
+  void change_group_name (const int index, const std::string & group_name);
+
   const Resource & add_resource (const std::string & group_id);
-  
+  void change_resource_id (const int group_index, const int resource_index, const std::string & resource_id);
+  void change_resource_name (const int group_index, const int resource_index, const std::string & resource_name);
+  void change_resource_cost (const int group_index, const int resource_index, const float & resource_cost);
+
 private:
   std::list <ResourceGroup> m_resource_groups;
 
   ResourceGroup & get_group (const std::string & id);
+  ResourceGroup & get_group (const int index);
 };
 
 NAMESPACE__THITTAM__END

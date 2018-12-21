@@ -44,13 +44,17 @@ public:
   }
 
   const Resource & add_resource (void);
+  void change_resource_id (const int index, const std::string & resource_id);
+  void change_resource_name (const int index, const std::string & resource_name);
+  void change_resource_cost (const int index, const float & resource_cost);
 
 private:
   std::string m_id;
   std::string m_name;
   std::list <Resource> m_resources;
 
-  auto get_resource (const std::string & id) const;
+  Resource & get_resource (const int index);
+
 };
 
 NAMESPACE__THITTAM__END

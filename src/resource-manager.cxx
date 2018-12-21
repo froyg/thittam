@@ -24,6 +24,12 @@ ResourceManager::get_group (const std::string & id)
   throw ("Invalid Id");
 }
 
+ResourceGroup &
+ResourceManager::get_group (const int index)
+{
+  return *std::next(m_resource_groups.begin (), index);
+}
+
 const ResourceGroup &
 ResourceManager::add_group (void)
 {
@@ -40,6 +46,35 @@ ResourceManager::add_resource (const std::string & group_id)
   return (ResourceManager::get_group(group_id).ResourceGroup::add_resource());
 }
 
+void
+ResourceManager::change_group_id (const int index, const std::string & group_id)
+{
+  ResourceManager::get_group(index).ResourceGroup::set_id(group_id);
+}
+
+void
+ResourceManager::change_group_name (const int index, const std::string & group_name)
+{
+  ResourceManager::get_group(index).ResourceGroup::set_name(group_name);
+}
+
+void
+ResourceManager::change_resource_id (const int group_index, const int resource_index, const std::string & resource_id)
+{
+  ResourceManager::get_group(group_index).ResourceGroup::change_resource_id(resource_index, resource_id);
+}
+
+void
+ResourceManager::change_resource_name (const int group_index, const int resource_index, const std::string & resource_name)
+{
+  ResourceManager::get_group(group_index).ResourceGroup::change_resource_name(resource_index, resource_name);
+}
+
+void
+ResourceManager::change_resource_cost (const int group_index, const int resource_index, const float & resource_cost)
+{
+  ResourceManager::get_group(group_index).ResourceGroup::change_resource_cost(resource_index, resource_cost);
+}
 
 
 NAMESPACE__THITTAM__END

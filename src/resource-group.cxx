@@ -11,6 +11,12 @@
 
 NAMESPACE__THITTAM__START
 
+Resource &
+ResourceGroup::get_resource (const int index)
+{
+  return *std::next(m_resources.begin (), index);
+}
+
 const Resource &
 ResourceGroup::add_resource (void)
 {
@@ -21,6 +27,28 @@ ResourceGroup::add_resource (void)
   m_resources.push_back(new_res);
   return m_resources.back();
 }
+
+void
+ResourceGroup::change_resource_id (const int index, const std::string & resource_id)
+{
+  auto resource = ResourceGroup::get_resource(index);
+  resource.Resource::set_id(resource_id);
+}
+
+void
+ResourceGroup::change_resource_name (const int index, const std::string & resource_name)
+{
+  auto resource = ResourceGroup::get_resource(index);
+  resource.Resource::set_name(resource_name);
+}
+
+void
+ResourceGroup::change_resource_cost (const int index, const float & resource_cost)
+{
+  auto resource = ResourceGroup::get_resource(index);
+  resource.Resource::set_cost(resource_cost);
+}
+
 
 NAMESPACE__THITTAM__END
 
