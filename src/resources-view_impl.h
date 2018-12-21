@@ -76,6 +76,10 @@ private:
   Gtk::MenuItem* m_menu_add_resource = nullptr;
   Gtk::MenuItem* m_menu_add_group = nullptr;
 
+  void set_id (const Gtk::TreeRow &, const std::string &);
+  void set_name (const Gtk::TreeRow &, const std::string &);
+  void set_cost (const Gtk::TreeRow &, const float);
+
   std::string get_id (const Gtk::TreeRow &);
   std::string get_name (const Gtk::TreeRow &);
   float get_cost (const Gtk::TreeRow &);

@@ -52,18 +52,24 @@ void ResourcesControllerImpl::view_node_changed (
     return;
   }
 
-  ResourceGroup &rg = m_rm->get_group (path[0]);
+  const ResourceGroup &rg = m_rm->get_group (path[0]);
   if (m_view->selected_is_group ())
   {
-    rg.set_id (m_view->get_id (row));
-    rg.set_name (m_view->get_name (row));
+    if (m_rm->change_group_id (path[0], m_view->get_id (row)))
+    {
+      m_view->set_id (row, rg.id ());
+    }
+    m_rm->change_group_name (path[0], m_view->get_name (row));
   }
   else if (path.size () == 2)
   {
-    Resource &r = rg.get_resource (path[1]);
-    r.set_id (m_view->get_id (row));
-    r.set_name (m_view->get_name (row));
-    r.set_cost (m_view->get_cost (row));
+    const Resource &r = rg.get_resource (path[1]);
+    if (m_rm->change_resource_id (path[0], path[1], m_view->get_id (row)))
+    {
+      m_view->set_id (row, r.id ());
+    }
+    m_rm->change_resource_name (path[0], path[1], m_view->get_name (row));
+    m_rm->change_resource_cost (path[0], path[1], m_view->get_cost (row));
   }
 }
 
@@ -74,8 +80,7 @@ void ResourcesControllerImpl::view_add_resource_clicked (void)
   {
     return;
   }
-  ResourceGroup &rg = m_rm->get_group (gi);
-  const Resource &r = rg.add_resource ();
+  const Resource &r = m_rm->add_resource (gi);
   m_view->add_resource (gi, r.id (), r.name (), r.cost ());
 }
 

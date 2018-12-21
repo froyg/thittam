@@ -15,21 +15,36 @@
 
 #include "_namespace.h"
 #include "resource-group.h"
+#include "util.h"
 
 NAMESPACE__THITTAM__START
 
 class ResourceManager
 {
 public:
-  const ResourceGroup & add_group (void);
-  const Resource & add_resource (const std::string & group_id);
+  bool change_group_id (const int index, const std::string & group_id);
+  void change_group_name (const int index, const std::string & group_name);
 
-  ResourceGroup & get_group (const std::string & id);
-  ResourceGroup & get_group (const int index);
+  const ResourceGroup & add_group (void);
+  const Resource & add_resource (const int index);
+
+  bool change_resource_id (const int, const int, const std::string &);
+  void change_resource_name (const int, const int, const std::string &);
+  void change_resource_cost (const int, const int, const float &);
+
+  const ResourceGroup & get_group (const int index) const;
+  const Resource & get_resource (const int, const int) const;
+
+  // WIP
+  void generate_json (void);
 
 private:
   std::list <ResourceGroup> m_resource_groups;
 
+  ResourceGroup & _get_group (const std::string & id);
+  ResourceGroup & _get_group (const int index);
+  bool validate_group_id (const std::string & group_id);
+  std::string generate_unique_group_id (void);
 };
 
 NAMESPACE__THITTAM__END

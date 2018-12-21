@@ -41,6 +41,10 @@ public:
   virtual bool node_is_selected (const Gtk::TreeModel::Path &) = 0;
   virtual bool selected_is_group (void) = 0;
 
+  virtual void set_id (const Gtk::TreeRow &, const std::string &) = 0;
+  virtual void set_name (const Gtk::TreeRow &, const std::string &) = 0;
+  virtual void set_cost (const Gtk::TreeRow &, const float) = 0;
+
   virtual std::string get_id (const Gtk::TreeRow &) = 0;
   virtual std::string get_name (const Gtk::TreeRow &) = 0;
   virtual float get_cost (const Gtk::TreeRow &) = 0;

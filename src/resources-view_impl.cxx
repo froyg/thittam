@@ -112,6 +112,27 @@ void ResourcesViewImpl::cb_on_row_changed (
   m_handler->view_node_changed (path, *iter);
 }
 
+void ResourcesViewImpl::set_id (
+  const Gtk::TreeRow &row,
+  const std::string & id)
+{
+  row.set_value (m_cols.id, id);
+}
+
+void ResourcesViewImpl::set_name (
+  const Gtk::TreeRow &row,
+  const std::string & name)
+{
+  row.set_value (m_cols.name, name);
+}
+
+void ResourcesViewImpl::set_cost (
+  const Gtk::TreeRow &row,
+  const float cost)
+{
+  row.set_value (m_cols.cost, cost);
+}
+
 std::string ResourcesViewImpl::get_id (const Gtk::TreeRow &row)
 {
   return row.get_value (m_cols.id);
