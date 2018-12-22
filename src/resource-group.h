@@ -14,7 +14,6 @@
 #include <list>
 
 #include "_namespace.h"
-#include <iostream>
 #include "resource.h"
 #include "util.h"
 
@@ -47,7 +46,7 @@ public:
     m_name = name;
   }
 
-  const Resource & add_resource (void);
+  size_t add_resource (void);
 
   bool change_resource_id (const int index, const std::string & resource_id);
   void change_resource_name (const int index, const std::string & resource_name);

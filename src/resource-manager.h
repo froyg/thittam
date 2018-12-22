@@ -25,8 +25,15 @@ public:
   bool change_group_id (const int index, const std::string & group_id);
   void change_group_name (const int index, const std::string & group_name);
 
-  const ResourceGroup & add_group (void);
-  const Resource & add_resource (const int index);
+  size_t add_group (void);
+  size_t add_resource (const int index);
+
+  const std::string & get_group_id (const int) const;
+  const std::string & get_group_name (const int) const;
+
+  const std::string & get_resource_id (const int, const int) const;
+  const std::string & get_resource_name (const int, const int) const;
+  const float get_resource_cost (const int, const int) const;
 
   bool change_resource_id (const int, const int, const std::string &);
   void change_resource_name (const int, const int, const std::string &);

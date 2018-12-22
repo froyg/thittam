@@ -53,7 +53,7 @@ ResourceGroup::get_resource (const int index) const
   return *std::next(m_resources.begin (), index);
 }
 
-const Resource &
+size_t
 ResourceGroup::add_resource (void)
 {
   std::string id = ResourceGroup::generate_unique_resource_id();
@@ -63,7 +63,7 @@ ResourceGroup::add_resource (void)
     Resource new_res = Resource();
     new_res.Resource::set_id(id);
     m_resources.push_back(new_res);
-    return m_resources.back();
+    return m_resources.size() - 1;
   }
 
   throw "Unable to generate id";

@@ -74,7 +74,38 @@ ResourceManager::get_resource (const int group_i, const int resource_i) const
   return get_group (group_i).get_resource (resource_i);
 }
 
-const ResourceGroup &
+const std::string & ResourceManager::get_group_id (const int index) const
+{
+  return get_group(index).id();
+}
+
+const std::string & ResourceManager::get_group_name (const int index) const
+{
+  return get_group(index).name();
+}
+
+const std::string & ResourceManager::get_resource_id (
+  const int group_index,
+  const int resource_index) const
+{
+  return get_resource(group_index, resource_index).id();
+}
+
+const std::string & ResourceManager::get_resource_name (
+  const int group_index,
+  const int resource_index) const
+{
+  return get_resource(group_index, resource_index).name();
+}
+
+const float ResourceManager::get_resource_cost (
+  const int group_index,
+  const int resource_index) const
+{
+  return get_resource(group_index, resource_index).cost();
+}
+
+size_t
 ResourceManager::add_group (void)
 {
   std::string id = ResourceManager::generate_unique_group_id();
@@ -83,13 +114,13 @@ ResourceManager::add_group (void)
     ResourceGroup new_res_group = ResourceGroup();
     new_res_group.ResourceGroup::set_id(id);
     m_resource_groups.push_back(new_res_group);
-    return m_resource_groups.back();
+    return m_resource_groups.size () - 1;
   }
 
   throw "Unable to set unique id";
 }
 
-const Resource &
+size_t
 ResourceManager::add_resource (const int index)
 {
   return (ResourceManager::_get_group(index).ResourceGroup::add_resource());
