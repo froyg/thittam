@@ -49,49 +49,41 @@ WBSViewImpl::WBSViewImpl (
   }
 
   builder->get_widget ("tb-add", m_btn_add_child);
+  builder->get_widget ("tb-cut", m_btn_cut);
+  builder->get_widget ("tb-copy", m_btn_copy);
+  builder->get_widget ("tb-paste", m_btn_paste);
+  builder->get_widget ("tb-delete", m_btn_delete);
+  builder->get_widget ("tb-indent", m_btn_indent);
+  builder->get_widget ("tb-unindent", m_btn_unindent);
+  builder->get_widget ("tb-up", m_btn_up);
+  builder->get_widget ("tb-down", m_btn_down);
+
   m_btn_add_child->signal_clicked ().connect (
     sigc::mem_fun (*this, &WBSViewImpl::cb_on_add_child_clicked));
-  m_btn_add_child->set_sensitive (true);
 
-  builder->get_widget ("tb-cut", m_btn_cut);
   m_btn_cut->signal_clicked ().connect (
     sigc::mem_fun (*this, &WBSViewImpl::cb_on_cut_clicked));
-  m_btn_cut->set_sensitive (false);
 
-  builder->get_widget ("tb-copy", m_btn_copy);
   m_btn_copy->signal_clicked ().connect (
     sigc::mem_fun (*this, &WBSViewImpl::cb_on_copy_clicked));
-  m_btn_copy->set_sensitive (false);
 
-  builder->get_widget ("tb-paste", m_btn_paste);
   m_btn_paste->signal_clicked ().connect (
     sigc::mem_fun (*this, &WBSViewImpl::cb_on_paste_clicked));
-  m_btn_paste->set_sensitive (false);
 
-  builder->get_widget ("tb-delete", m_btn_delete);
   m_btn_delete->signal_clicked ().connect (
     sigc::mem_fun (*this, &WBSViewImpl::cb_on_delete_clicked));
-  m_btn_delete->set_sensitive (false);
 
-  builder->get_widget ("tb-indent", m_btn_indent);
   m_btn_indent->signal_clicked ().connect (
     sigc::mem_fun (*this, &WBSViewImpl::cb_on_indent_clicked));
-  m_btn_indent->set_sensitive (false);
 
-  builder->get_widget ("tb-unindent", m_btn_unindent);
   m_btn_unindent->signal_clicked ().connect (
     sigc::mem_fun (*this, &WBSViewImpl::cb_on_unindent_clicked));
-  m_btn_unindent->set_sensitive (false);
 
-  builder->get_widget ("tb-up", m_btn_up);
   m_btn_up->signal_clicked ().connect (
     sigc::mem_fun (*this, &WBSViewImpl::cb_on_up_clicked));
-  m_btn_up->set_sensitive (false);
 
-  builder->get_widget ("tb-down", m_btn_down);
   m_btn_down->signal_clicked ().connect (
     sigc::mem_fun (*this, &WBSViewImpl::cb_on_down_clicked));
-  m_btn_down->set_sensitive (false);
 
   m_action_group = Gio::SimpleActionGroup::create ();
 
@@ -111,10 +103,6 @@ WBSViewImpl::WBSViewImpl (
     "unindent-task",
     sigc::mem_fun (*this, &WBSViewImpl::cb_on_unindent_clicked));
 
-  m_action_add_child->set_enabled (true);
-  m_action_add_sibling->set_enabled(false);
-  m_action_indent->set_enabled(false);
-  m_action_unindent->set_enabled(false);
 
   m_top_widget->insert_action_group ("wbs", m_action_group);
 
@@ -123,10 +111,17 @@ WBSViewImpl::WBSViewImpl (
   builder->get_widget ("menu-add-sibling", m_menu_add_sibling);
   builder->get_widget ("menu-indent", m_menu_indent);
   builder->get_widget ("menu-unindent", m_menu_unindent);
-  m_menu_add_child->set_sensitive (true);
-  m_menu_add_sibling->set_sensitive (false);
-  m_menu_indent->set_sensitive (false);
-  m_menu_unindent->set_sensitive (false);
+
+  enable_add_child (true);
+  enable_add_sibling (false);
+  enable_indent_task (false);
+  enable_unindent_task (false);
+  enable_copy (false);
+  enable_cut (false);
+  enable_delete (false);
+  enable_down (false);
+  enable_paste (false);
+  enable_up (false);
 
   /* Fix the tree-view */
   m_tree_store = Gtk::TreeStore::create (m_cols);
@@ -350,15 +345,6 @@ WBSViewImpl::cb_on_row_selected (void)
   }
 
   m_handler->view_node_selected (std::move (wbs_paths));
-
-  m_menu_add_sibling->set_sensitive (true);
-  m_menu_indent->set_sensitive (true);
-  m_menu_unindent->set_sensitive (true);
-
-  m_action_add_child->set_enabled (true);
-  m_action_add_sibling->set_enabled(true);
-  m_action_indent->set_enabled(true);
-  m_action_unindent->set_enabled(true);
 }
 
 void

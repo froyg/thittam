@@ -29,6 +29,7 @@ WBSControllerImpl::view_node_selected (
   m_view->enable_cut (true);
   m_view->enable_copy (true);
   m_view->enable_delete (true);
+  m_view->enable_add_sibling (true);
   m_view->enable_indent_task (true);
   m_view->enable_unindent_task (true);
   m_view->enable_up (true);
