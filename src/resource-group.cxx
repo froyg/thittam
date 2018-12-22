@@ -7,6 +7,8 @@
  * distribution or for further clarifications, please contact
  * legal@hipro.co.in. */
 
+#include <iostream>
+
 #include "resource-group.h"
 
 NAMESPACE__THITTAM__START
@@ -31,11 +33,14 @@ ResourceGroup::generate_unique_resource_id (void)
   // generating unique id would not be possible
   if (m_resources.size() < MOD_MAX)
   {
-    std::string id = util::generate_random_id();
+    unsigned int seeder = 0;
+    std::string id = std::to_string(util::generate_random_id());
     for (; !ResourceGroup::validate_resources_id(id) ; )
     {
-      id = util::generate_random_id();
+      id = std::to_string(util::generate_random_id() + seeder);
+      seeder++;
     }
+    std::cout << "Executed " << seeder << " times\n\n";
     return id;
   }
   return FAILED_TO_GENERATE_RANDOM_ID;

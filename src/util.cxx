@@ -19,13 +19,13 @@ int effort_str_to_minutes (
   return 2400;
 }
 
-std::string
-generate_random_id (void)
+unsigned int
+generate_random_id ()
 {
-  srand((unsigned)time(NULL));
   // For 6 digit random number.
-  int number = rand() % MOD_MAX;
-  return std::to_string(number);
+  srand(time(NULL));
+  unsigned int number = rand() % MOD_MAX;
+  return number;
 }
 
 NAMESPACE__THITTAM_UTIL__END
