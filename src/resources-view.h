@@ -21,17 +21,12 @@ class ResourcesViewCallbacks
 public:
   virtual ~ResourcesViewCallbacks () {}
 
-  virtual void view_node_selected () = 0;
-  virtual void view_node_activated () = 0;
+  virtual void view_node_selected (const Gtk::TreeModel::Path &, const Gtk::TreeRow &) = 0;
+  virtual void view_node_changed (const Gtk::TreeModel::Path &, const Gtk::TreeRow &) = 0;
 
   virtual void view_add_resource_clicked (void) = 0;
-  virtual void view_add_resource_group_clicked (void) = 0;
-  virtual void view_cut_clicked (void) = 0;
-  virtual void view_copy_clicked (void) = 0;
-  virtual void view_paste_clicked (void) = 0;
+  virtual void view_add_group_clicked (void) = 0;
   virtual void view_delete_clicked (void) = 0;
-  virtual void view_up_clicked (void) = 0;
-  virtual void view_down_clicked (void) = 0;
 };
 
 class ResourcesView
@@ -43,12 +38,23 @@ public:
 
   virtual void set_handler (ResourcesViewCallbacks* handler) = 0;
 
+  virtual bool node_is_selected (const Gtk::TreeModel::Path &) = 0;
+  virtual bool selected_is_group (void) = 0;
+
+  virtual void set_id (const Gtk::TreeRow &, const std::string &) = 0;
+  virtual void set_name (const Gtk::TreeRow &, const std::string &) = 0;
+  virtual void set_cost (const Gtk::TreeRow &, const float) = 0;
+
+  virtual std::string get_id (const Gtk::TreeRow &) = 0;
+  virtual std::string get_name (const Gtk::TreeRow &) = 0;
+  virtual float get_cost (const Gtk::TreeRow &) = 0;
+
   virtual void enable_add_resource (bool enable) = 0;
   virtual void enable_add_group (bool enable) = 0;
   virtual void enable_delete (bool enable) = 0;
 
-  virtual void add_resource () = 0;
-  virtual void add_group () = 0;
+  virtual void add_resource (const int, const std::string &, const std::string &, const float) = 0;
+  virtual void add_group (const std::string &, const std::string &) = 0;
 };
 
 NAMESPACE__THITTAM__END

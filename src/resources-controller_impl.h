@@ -12,6 +12,7 @@
 
 #include "resources-controller.h"
 #include "resources-view.h"
+#include "resource-manager.h"
 #include "log.h"
 
 NAMESPACE__THITTAM__START
@@ -29,28 +30,32 @@ public:
     m_view = std::move (view);
   }
 
+  void set_rm (std::unique_ptr<ResourceManager> rm)
+  {
+    m_rm = std::move (rm);
+  }
+
   /*--- ResourcesController interface ---*/
   Gtk::Widget * view_widget (void)
   {
     return m_view->widget ();
   }
 
-  void view_node_selected ();
-  void view_node_activated ();
+  void view_node_selected (const Gtk::TreeModel::Path &, const Gtk::TreeRow &);
+  void view_node_changed (const Gtk::TreeModel::Path &, const Gtk::TreeRow &);
 
   void view_add_resource_clicked (void);
-  void view_add_resource_group_clicked (void);
-  void view_cut_clicked (void);
-  void view_copy_clicked (void);
-  void view_paste_clicked (void);
+  void view_add_group_clicked (void);
   void view_delete_clicked (void);
-  void view_up_clicked (void);
-  void view_down_clicked (void);
 
 private:
   hipro::log::Logger* logger = nullptr;
 
+  int group_index = -1;
+  int resource_index = -1;
+
   std::unique_ptr<ResourcesView> m_view;
+  std::unique_ptr<ResourceManager> m_rm;
 };
 
 NAMESPACE__THITTAM__END

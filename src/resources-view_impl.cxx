@@ -71,6 +71,13 @@ void ResourcesViewImpl::init_tree (Glib::RefPtr<Gtk::Builder> builder)
   m_tree_view.append_column_editable ("Name", m_cols.name);
   m_tree_view.append_column_editable ("Cost", m_cols.cost);
 
+  m_tree_store->signal_row_changed ().connect (
+    sigc::mem_fun (*this, &ResourcesViewImpl::cb_on_row_changed));
+
+  m_tree_selection = m_tree_view.get_selection ();
+  m_tree_selection->signal_changed ().connect
+    (sigc::mem_fun (*this, &ResourcesViewImpl::cb_on_row_selected));
+
   Gtk::ScrolledWindow * tree_container = nullptr;
   builder->get_widget ("tree-container", tree_container);
   tree_container->add (m_tree_view);
@@ -81,17 +88,93 @@ void ResourcesViewImpl::init_tree (Glib::RefPtr<Gtk::Builder> builder)
 
 void ResourcesViewImpl::cb_on_add_resource_clicked (void)
 {
+  m_handler->view_add_resource_clicked ();
 }
 
 void ResourcesViewImpl::cb_on_add_group_clicked(void)
 {
-  Log_I << "Test";
+  m_handler->view_add_group_clicked ();
+}
+
+void ResourcesViewImpl::cb_on_row_selected (void)
+{
+  auto sel = m_tree_view.get_selection ();
+  auto iter = sel->get_selected ();
+  const auto &path = m_tree_store->get_path (iter);
+
+  m_handler->view_node_selected (path, *iter);
+}
+
+void ResourcesViewImpl::cb_on_row_changed (
+  const Gtk::TreeModel::Path& path,
+  const Gtk::TreeModel::iterator& iter)
+{
+  m_handler->view_node_changed (path, *iter);
+}
+
+void ResourcesViewImpl::set_id (
+  const Gtk::TreeRow &row,
+  const std::string & id)
+{
+  row.set_value (m_cols.id, id);
+}
+
+void ResourcesViewImpl::set_name (
+  const Gtk::TreeRow &row,
+  const std::string & name)
+{
+  row.set_value (m_cols.name, name);
+}
+
+void ResourcesViewImpl::set_cost (
+  const Gtk::TreeRow &row,
+  const float cost)
+{
+  row.set_value (m_cols.cost, cost);
+}
+
+std::string ResourcesViewImpl::get_id (const Gtk::TreeRow &row)
+{
+  return row.get_value (m_cols.id);
+}
+
+std::string ResourcesViewImpl::get_name (const Gtk::TreeRow &row)
+{
+  return row.get_value (m_cols.name);
+}
+
+float ResourcesViewImpl::get_cost (const Gtk::TreeRow &row)
+{
+  return row.get_value (m_cols.cost);
+}
+
+bool ResourcesViewImpl::node_is_selected (const Gtk::TreeModel::Path &path)
+{
+  auto rows = m_tree_selection->get_selected_rows ();
+  if (rows.size () == 0)
+  {
+    return false;
+  }
+  auto row = rows[0];
+  for (size_t i = 0; i < path.size () && i < row.size (); i++)
+  {
+    if (path[i] != row[i])
+    {
+      return false;
+    }
+  }
+  return true;
+}
+
+bool ResourcesViewImpl::selected_is_group ()
+{
+  return m_tree_selection->get_selected_rows ()[0].size () == 1;
 }
 
 void ResourcesViewImpl::enable_add_resource (bool enable)
 {
   m_action_add_resource->set_enabled (enable);
-  m_menu_add_resource->set_sensitive (enable);
+  // m_menu_add_resource->set_sensitive (enable);
   m_btn_add_resource->set_sensitive (enable);
 }
 
@@ -106,12 +189,27 @@ void ResourcesViewImpl::enable_delete (bool enable)
 {
 }
 
-void ResourcesViewImpl::add_resource ()
+void ResourcesViewImpl::add_resource (
+  const int group_index,
+  const std::string &id,
+  const std::string &name,
+  const float cost)
 {
+  Gtk::TreeModel::Path p;
+  p.push_back (group_index);
+  auto resource_group = *m_tree_store->get_iter (p);
+  auto &resource = *m_tree_store->append(resource_group.children ());
+  resource.set_value (m_cols.id, id);
+  resource.set_value (m_cols.name, name);
+  resource.set_value (m_cols.cost, cost);
 }
 
-void ResourcesViewImpl::add_group ()
+void ResourcesViewImpl::add_group (const std::string &id,
+                                   const std::string &name)
 {
+  auto row = *m_tree_store->append ();
+  row.set_value (m_cols.id, id);
+  row.set_value (m_cols.name, name);
 }
 
 NAMESPACE__THITTAM__END

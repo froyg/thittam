@@ -15,6 +15,7 @@
 #include "wbs_impl.h"
 #include "resources-view_impl.h"
 #include "resources-controller_impl.h"
+#include "resource-manager.h"
 #include "gantt-view_impl.h"
 #include "gantt-controller_impl.h"
 #include "resource-usage-view_impl.h"
@@ -48,6 +49,7 @@ ProjectUIFactoryImpl::create (Project * project)
     std::make_unique<ResourcesViewImpl> (logger, resources_ui);
   auto resources_controller =
     std::make_unique<ResourcesControllerImpl> (logger);
+  auto resource_manager = std::make_unique<ResourceManager> ();
 
   auto gantt_ui = Gtk::Builder::create_from_resource (
     "/ui/gantt-view.glade");
@@ -70,6 +72,7 @@ ProjectUIFactoryImpl::create (Project * project)
 
   resources_view->set_handler (resources_controller.get ());
   resources_controller->set_view (std::move (resources_view));
+  resources_controller->set_rm (std::move (resource_manager));
 
   gantt_view->set_handler (gantt_controller.get ());
   gantt_controller->set_view (std::move (gantt_view));
