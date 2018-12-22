@@ -19,10 +19,14 @@ int effort_str_to_minutes (
   return 2400;
 }
 
+void init_random (void)
+{
+  srand((unsigned)time(NULL));
+}
+
 std::string
 generate_random_id (void)
 {
-  srand((unsigned)time(NULL));
   // For 6 digit random number.
   int number = rand() % MOD_MAX;
   return std::to_string(number);

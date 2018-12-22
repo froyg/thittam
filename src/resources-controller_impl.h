@@ -41,6 +41,7 @@ public:
     return m_view->widget ();
   }
 
+  // Called when a node is selected
   void view_node_selected (const Gtk::TreeModel::Path &, const Gtk::TreeRow &);
   void view_node_changed (const Gtk::TreeModel::Path &, const Gtk::TreeRow &);
 
