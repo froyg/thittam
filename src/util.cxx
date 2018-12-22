@@ -24,12 +24,13 @@ void init_random (void)
   srand((unsigned)time(NULL));
 }
 
-std::string
-generate_random_id (void)
+unsigned int
+generate_random_id ()
 {
   // For 6 digit random number.
-  int number = rand() % MOD_MAX;
-  return std::to_string(number);
+  srand(time(NULL));
+  unsigned int number = rand() % MOD_MAX;
+  return number;
 }
 
 NAMESPACE__THITTAM_UTIL__END

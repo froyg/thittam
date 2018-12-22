@@ -33,10 +33,13 @@ ResourceManager::generate_unique_group_id (void)
   // generating unique id would not be possible
   if (m_resource_groups.size() < MOD_MAX)
   {
-    std::string id = util::generate_random_id();
+    unsigned int seeder = 0;
+    std::string id = std::to_string(util::generate_random_id());
+
     for (; !ResourceManager::validate_group_id(id) ; )
     {
-      id = util::generate_random_id();
+      id = std::to_string(util::generate_random_id() + seeder);
+      seeder++;
     }
     return id;
   }

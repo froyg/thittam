@@ -28,7 +28,7 @@ int effort_str_to_minutes (
   int working_hours_per_day);
 
 // generates 6 digit random number string for resource and group id.
-std::string generate_random_id (void);
+unsigned int generate_random_id ();
 
 NAMESPACE__THITTAM_UTIL__END
 
