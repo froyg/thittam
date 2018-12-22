@@ -19,6 +19,11 @@ int effort_str_to_minutes (
   return 2400;
 }
 
+void init_random (void)
+{
+  srand((unsigned)time(NULL));
+}
+
 unsigned int
 generate_random_id ()
 {

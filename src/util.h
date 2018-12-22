@@ -21,6 +21,8 @@
 
 NAMESPACE__THITTAM_UTIL__START
 
+void init_random (void);
+
 int effort_str_to_minutes (
   const std::string & effort, int working_days_per_week,
   int working_hours_per_day);

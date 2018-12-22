@@ -34,10 +34,6 @@ public:
     m_handler = handler;
   }
 
-  void init_toolbar (Glib::RefPtr<Gtk::Builder> builder);
-  void init_menu (Glib::RefPtr<Gtk::Builder> builder);
-  void init_tree (Glib::RefPtr<Gtk::Builder> builder);
-
   void enable_add_resource (bool enable);
   void enable_add_group (bool enable);
   void enable_delete (bool enable);
@@ -75,6 +71,10 @@ private:
   Gtk::Menu* m_menu = nullptr;
   Gtk::MenuItem* m_menu_add_resource = nullptr;
   Gtk::MenuItem* m_menu_add_group = nullptr;
+
+  void init_toolbar (Glib::RefPtr<Gtk::Builder> builder);
+  void init_menu (Glib::RefPtr<Gtk::Builder> builder);
+  void init_tree (Glib::RefPtr<Gtk::Builder> builder);
 
   void set_id (const Gtk::TreeRow &, const std::string &);
   void set_name (const Gtk::TreeRow &, const std::string &);
