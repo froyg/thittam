@@ -16,6 +16,8 @@
 
 NAMESPACE__THITTAM__START
 
+#define SIZE_COUNTER_DIFFERENCE 100
+
 class Resource
 {
 public:
@@ -29,16 +31,24 @@ public:
     return m_name;
   }
 
+  const std::string & long_name (void) const
+  {
+    return m_long_name;
+  }
+
   const float & cost (void) const
   {
     return m_cost;
   }
 
+  const std::string & description (void) const
+  {
+    return m_description;
+  }
+
   void set_id (const std::string & id)
   {
-    if (id.length() <= 6){
-      m_id = id;
-    }
+    m_id = id;
   }
 
   void set_name (const std::string & name)
@@ -46,15 +56,30 @@ public:
     m_name = name;
   }
 
+  void set_long_name (const std::string & long_name)
+  {
+    m_long_name = long_name;
+  }
+
   void set_cost (const float & cost)
   {
     m_cost = cost;
   }
 
+  void set_description (const std::string & description)
+  {
+    m_description = description;
+  }
+
 private:
   std::string m_id;
-  std::string m_name = "resource name";
-  float m_cost = 10;
+  // Hidden from user. NOTNULL & UNIQUE
+  std::string m_name;
+  // NOTNULL & UNIQUE
+
+  std::string m_long_name;
+  float m_cost;
+  std::string m_description;
 };
 
 NAMESPACE__THITTAM__END

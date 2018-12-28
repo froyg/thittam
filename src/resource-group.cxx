@@ -13,39 +13,6 @@
 
 NAMESPACE__THITTAM__START
 
-bool
-ResourceGroup::validate_resources_id (const std::string & resource_id)
-{
-  for (auto & it : m_resources)
-  {
-    if (it.id() == resource_id)
-    {
-      return false;
-    }
-  }
-  return true;
-}
-
-std::string
-ResourceGroup::generate_unique_resource_id (void)
-{
-  // In case number of resources is more than MOD_MAX
-  // generating unique id would not be possible
-  if (m_resources.size() < MOD_MAX)
-  {
-    unsigned int seeder = 0;
-    std::string id = std::to_string(util::generate_random_id());
-    for (; !ResourceGroup::validate_resources_id(id) ; )
-    {
-      id = std::to_string(util::generate_random_id() + seeder);
-      seeder++;
-    }
-    std::cout << "Executed " << seeder << " times\n\n";
-    return id;
-  }
-  return FAILED_TO_GENERATE_RANDOM_ID;
-}
-
 Resource &
 ResourceGroup::_get_resource (const int index)
 {
@@ -58,41 +25,74 @@ ResourceGroup::get_resource (const int index) const
   return *std::next(m_resources.begin (), index);
 }
 
-size_t
-ResourceGroup::add_resource (void)
+void
+ResourceGroup::renumber_ids (void)
 {
-  std::string id = ResourceGroup::generate_unique_resource_id();
-
-  if (id != FAILED_TO_GENERATE_RANDOM_ID)
+  for (auto & it : m_resources)
   {
-    Resource new_res = Resource();
-    new_res.Resource::set_id(id);
-    m_resources.push_back(new_res);
-    return m_resources.size() - 1;
+    id_counter++;
+    it.set_id(std::to_string(id_counter));
   }
+}
 
-  throw "Unable to generate id";
+void
+ResourceGroup::create_resource_id (void)
+{
+  if (id_counter - m_resources.size() > SIZE_COUNTER_DIFFERENCE)
+  {
+    renumber_ids();
+  }
+  id_counter++;
 }
 
 bool
-ResourceGroup::change_resource_id (
-  const int index,
-  const std::string & resource_id)
+ResourceGroup::is_unique_resource_name (const std::string & resource_name)
 {
-  if (ResourceGroup::validate_resources_id(resource_id))
+  for (auto & it : m_resources)
   {
-    ResourceGroup::_get_resource(index).Resource::set_id(resource_id);
+    if (it.name() == resource_name)
+    {
+      return false;
+    }
+  }
+  return true;
+}
+
+bool
+ResourceGroup::add_resource (const std::string & resource_name)
+{
+  if (!is_unique_resource_name(resource_name))
+  {
+    return false;
+  }
+
+  Resource new_res;
+  create_resource_id ();
+  new_res.set_id(std::to_string(id_counter));
+  new_res.set_name(resource_name);
+  m_resources.push_back(new_res);
+  return true;
+}
+
+bool
+ResourceGroup::change_resource_name (
+  const int index,
+  const std::string & resource_name)
+{
+  if (is_unique_resource_name(resource_name))
+  {
+    ResourceGroup::_get_resource(index).Resource::set_name(resource_name);
     return true;
   }
   return false;
 }
 
 void
-ResourceGroup::change_resource_name (
+ResourceGroup::change_resource_long_name (
   const int index,
-  const std::string & resource_name)
+  const std::string & resource_long_name)
 {
-  ResourceGroup::_get_resource(index).Resource::set_name(resource_name);
+  ResourceGroup::_get_resource(index).Resource::set_long_name(resource_long_name);
 }
 
 void
@@ -101,6 +101,14 @@ ResourceGroup::change_resource_cost (
   const float & resource_cost)
 {
   ResourceGroup::_get_resource(index).Resource::set_cost(resource_cost);
+}
+
+void
+ResourceGroup::change_resource_description (
+  const int index,
+  const std::string & resource_description)
+{
+  ResourceGroup::_get_resource(index).Resource::set_description(resource_description);
 }
 
 NAMESPACE__THITTAM__END

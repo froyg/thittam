@@ -15,7 +15,6 @@
 int
 main (int argc, char ** argv)
 {
-  thittam::util::init_random ();
   auto app = std::make_shared<thittam::AppImpl> ();
   int ret = app->run (argc, argv);
   return ret;

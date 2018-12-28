@@ -17,8 +17,6 @@
 #include "resource.h"
 #include "util.h"
 
-#define FAILED_TO_GENERATE_RANDOM_ID "FAILED"
-
 NAMESPACE__THITTAM__START
 
 class ResourceGroup
@@ -34,11 +32,14 @@ public:
     return m_name;
   }
 
+  const std::string & description () const
+  {
+    return m_description;
+  }
+
   void set_id (const std::string & id)
   {
-    if (id.length() <= 6) {
-      m_id = id;
-    }
+    m_id = id;
   }
 
   void set_name (const std::string & name)
@@ -46,22 +47,35 @@ public:
     m_name = name;
   }
 
-  size_t add_resource (void);
+  void set_description (const std::string & description)
+  {
+    m_description = description;
+  }
 
-  bool change_resource_id (const int index, const std::string & resource_id);
-  void change_resource_name (const int index, const std::string & resource_name);
+  bool add_resource (const std::string & resource_name);
+
+  bool change_resource_name (const int index, const std::string & resource_name);
+  void change_resource_long_name (const int index, const std::string & resource_long_name);
   void change_resource_cost (const int index, const float & resource_cost);
+  void change_resource_description (const int index, const std::string & resource_description);
 
   const Resource & get_resource (const int index) const;
 
 private:
+  static unsigned int id_counter;
   std::string m_id;
-  std::string m_name = "group name";
+  // Hidden from user. NOTNULL & UNIQUE
+  
+  std::string m_name;
+  // NOTNULL & UNIQUE
+
+  std::string m_description;
   std::list <Resource> m_resources;
 
   Resource & _get_resource (const int index);
-  bool validate_resources_id (const std::string & resource_id);
-  std::string generate_unique_resource_id (void);
+  void create_resource_id (void);
+  void renumber_ids (void);
+  bool is_unique_resource_name (const std::string & resource_name);
 };
 
 NAMESPACE__THITTAM__END
