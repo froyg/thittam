@@ -54,15 +54,11 @@ public:
 
   bool add_resource (const std::string & resource_name);
 
-  bool change_resource_name (const int index, const std::string & resource_name);
-  void change_resource_long_name (const int index, const std::string & resource_long_name);
-  void change_resource_cost (const int index, const float & resource_cost);
-  void change_resource_description (const int index, const std::string & resource_description);
-
-  const Resource & get_resource (const int index) const;
+  const Resource * get_resource (const std::string& id) const;
+  Resource * get_resource_mutable (const std::string& id);
 
 private:
-  static unsigned int id_counter;
+  static unsigned int m_id_counter;
   std::string m_id;
   // Hidden from user. NOTNULL & UNIQUE
   
@@ -72,7 +68,6 @@ private:
   std::string m_description;
   std::list <Resource> m_resources;
 
-  Resource & _get_resource (const int index);
   void create_resource_id (void);
   void renumber_ids (void);
   bool is_unique_resource_name (const std::string & resource_name);
