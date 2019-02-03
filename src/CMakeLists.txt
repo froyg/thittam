@@ -67,6 +67,8 @@ add_library (app
   resource-manager.cxx
   resource-view_impl.cxx
   resource-controller_impl.cxx
+  resource-group-view_impl.cxx
+  resource-group-controller_impl.cxx
   )
 
 

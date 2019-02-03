@@ -13,9 +13,11 @@ NAMESPACE__THITTAM__START
 
 ResourcesControllerImpl::ResourcesControllerImpl (
   hipro::log::Logger* logger,
-  std::unique_ptr<ResourceMVCFactory> resource_mvc_factory)
+  std::unique_ptr<ResourceMVCFactory> resource_mvc_factory,
+  std::unique_ptr<ResourceGroupMVCFactory> resource_group_mvc_factory)
   : logger (logger),
-    m_resource_mvc_factory (std::move (resource_mvc_factory))
+    m_resource_mvc_factory (std::move (resource_mvc_factory)),
+    m_resource_group_mvc_factory (std::move (resource_group_mvc_factory))
 {
 
 }
@@ -93,6 +95,20 @@ ResourcesControllerImpl::add_resource_done (
 
 void ResourcesControllerImpl::view_add_group_clicked (void)
 {
+  m_resource_group_controller =
+    m_resource_group_mvc_factory->create (&m_resource_group);
+  m_resource_group_controller->show (
+    std::bind (&ResourcesControllerImpl::add_resource_group_done, this,
+               std::placeholders::_1));
+}
+
+void
+ResourcesControllerImpl::add_resource_group_done (
+  ResourceGroupController::DoneType done_type)
+{
+  // todo: Add the resource to the tree
+  m_resource_group_controller->hide ();
+  m_resource_group_controller.reset ();
 }
 
 void ResourcesControllerImpl::view_delete_clicked (void)
