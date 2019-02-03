@@ -13,6 +13,7 @@
 #include <gtkmm.h>
 
 #include "resources-view.h"
+
 #include "log.h"
 
 NAMESPACE__THITTAM__START

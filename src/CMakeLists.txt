@@ -65,6 +65,8 @@ add_library (app
   wbs-path.cxx
   resource-group.cxx
   resource-manager.cxx
+  resource-view_impl.cxx
+  resource-controller_impl.cxx
   )
 
 

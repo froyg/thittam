@@ -11,8 +11,11 @@
 
 NAMESPACE__THITTAM__START
 
-ResourcesControllerImpl::ResourcesControllerImpl (hipro::log::Logger* logger)
-  : logger (logger)
+ResourcesControllerImpl::ResourcesControllerImpl (
+  hipro::log::Logger* logger,
+  std::unique_ptr<ResourceMVCFactory> resource_mvc_factory)
+  : logger (logger),
+    m_resource_mvc_factory (std::move (resource_mvc_factory))
 {
 
 }
@@ -73,24 +76,23 @@ void ResourcesControllerImpl::view_node_changed (
 
 void ResourcesControllerImpl::view_add_resource_clicked (void)
 {
-  // int gi = group_index;
-  // if (gi == -1)
-  // {
-  //   return;
-  // }
-  // size_t ri = m_rm->add_resource (gi);
-  // m_view->add_resource (
-  //   gi,
-  //   m_rm->get_resource_id (gi, ri),
-  //   m_rm->get_resource_name (gi, ri),
-  //   m_rm->get_resource_cost (gi, ri));
+  m_resource_controller = m_resource_mvc_factory->create (&m_resource);
+  m_resource_controller->show (
+    std::bind (&ResourcesControllerImpl::add_resource_done, this,
+               std::placeholders::_1));
+}
+
+void
+ResourcesControllerImpl::add_resource_done (
+  ResourceController::DoneType done_type)
+{
+  // todo: Add the resource to the tree
+  m_resource_controller->hide ();
+  m_resource_controller.reset ();
 }
 
 void ResourcesControllerImpl::view_add_group_clicked (void)
 {
-  // Log_I << "Adding new group";
-  // size_t gi = m_rm->add_group ();
-  // m_view->add_group (m_rm->get_group_id (gi), m_rm->get_group_name (gi));
 }
 
 void ResourcesControllerImpl::view_delete_clicked (void)

@@ -20,6 +20,7 @@
 #include "gantt-controller_impl.h"
 #include "resource-usage-view_impl.h"
 #include "resource-usage-controller_impl.h"
+#include "resource-mvc-factory_impl.h"
 
 NAMESPACE__THITTAM__START
 
@@ -43,12 +44,14 @@ ProjectUIFactoryImpl::create (Project * project)
   auto wbs_controller = std::make_unique<WBSControllerImpl> (logger);
   auto wbs = std::make_unique<WBSImpl> (logger);
 
+  auto resource_mvc_factory = std::make_unique<ResourceMVCFactoryImpl> (
+    logger, m_parent_window);
   auto resources_ui = Gtk::Builder::create_from_resource (
     "/ui/resources-view.glade");
   auto resources_view =
     std::make_unique<ResourcesViewImpl> (logger, resources_ui);
-  auto resources_controller =
-    std::make_unique<ResourcesControllerImpl> (logger);
+  auto resources_controller = std::make_unique<ResourcesControllerImpl> (
+    logger, std::move (resource_mvc_factory));
   auto resource_manager = std::make_unique<ResourceManager> ();
 
   auto gantt_ui = Gtk::Builder::create_from_resource (
