@@ -23,36 +23,19 @@ class ResourceManager
 {
 public:
   bool add_group (const std::string & group_name);
-  const std::string & get_group_id (const int) const;
-  const std::string & get_group_name (const int) const;
-  const std::string & get_group_description (const int) const;
-  bool change_group_name (const int index, const std::string & group_name);
-  void change_group_description (const int index, const std::string & group_description);
+  bool add_resource (const std::string & group_id, const std::string & resource_name);
 
-  bool add_resource (const int index, const std::string & resource_name);
-  const std::string & get_resource_id (const int, const int) const;
-  const std::string & get_resource_name (const int, const int) const;
-  const std::string & get_resource_long_name (const int, const int) const;
-  const float get_resource_cost (const int, const int) const;
-  const std::string & get_resource_description (const int, const int) const;
-
-  bool change_resource_name (const int, const int, const std::string &);
-  void change_resource_long_name (const int, const int, const std::string &);
-  void change_resource_cost (const int, const int, const float &);
-  void change_resource_description (const int, const int, const std::string &);
-
-  const ResourceGroup & get_group (const int index) const;
-  const Resource & get_resource (const int, const int) const;
+  const Resource * get_resource (const std::string & group_id, const std::string & resource_id) const;
+  Resource * get_resource_mutable (const std::string & group_id, const std::string & resource_id);
+  const ResourceGroup * get_resource_group (const std::string &id) const;
+  ResourceGroup * get_resource_group_mutable (const std::string &id);
 
   // WIP
   void generate_json (void);
 
 private:
-  static unsigned int id_counter;
+  static unsigned int m_id_counter;
   std::list <ResourceGroup> m_resource_groups;
-
-  ResourceGroup & _get_group (const std::string & id);
-  ResourceGroup & _get_group (const int index);
 
   void create_group_id (void);
   void renumber_ids (void);
