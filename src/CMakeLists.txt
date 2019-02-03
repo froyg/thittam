@@ -37,6 +37,8 @@ add_custom_command(OUTPUT ${GRESOURCE_C}
   ${RESOURCE_DIR}/resources-view.glade
   ${RESOURCE_DIR}/resource-usage-view.glade
   ${RESOURCE_DIR}/wbs-view.glade
+  ${RESOURCE_DIR}/resource-view.glade
+  ${RESOURCE_DIR}/resource-group-view.glade
   COMMENT "Generating ${GRESOURCE_C}")
 
 add_library (app
