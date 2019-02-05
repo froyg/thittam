@@ -1,5 +1,64 @@
 @startuml
 
+abstract class ResourceInputCallbacks {
+    +view_ok_clicked()
+}
+
+class ResourceInputView {
+    -handler: ResourceInputCallbacks
+    -on_ok_clicked()
+    -on_cancel_clicked()
+    +get_name()
+    +get_description()
+    +show_error(const std::string &)
+}
+
+class ResourceInputFactory {
+}
+
+class ResourceInputController {
+    -view: ResourceInputView
+}
+
+ResourceInputView --* ResourceInputCallbacks
+
+ResourceInputFactory --* ResourceInputView
+ResourceInputFactory --* ResourceInputController
+
+ResourceManagerController --* ResourceInputFactory
+
+ResourceInputController ---|> ResourceInputCallbacks
+
+abstract class ResourceGroupInputCallbacks {
+    +view_ok_clicked()
+}
+
+class ResourceGroupInputView {
+    -handler: ResourceGroupInputCallbacks
+    -on_ok_clicked()
+    -on_cancel_clicked()
+    +get_name()
+    +get_description()
+    +show_error(const std::string &)
+}
+
+class ResourceGroupInputFactory {
+}
+
+class ResourceGroupInputController {
+    -view: ResourceGroupInputView
+}
+
+ResourceGroupInputView --* ResourceGroupInputCallbacks
+
+ResourceGroupInputFactory --* ResourceGroupInputView
+ResourceGroupInputFactory --* ResourceGroupInputController
+
+ResourceManagerController --* ResourceGroupInputFactory
+
+ResourceGroupInputController ---|> ResourceGroupInputCallbacks
+
+
 abstract class ResourceManagerCallbacks {
     +view_add_clicked()
     +view_add_group_clicked()
