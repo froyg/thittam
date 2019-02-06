@@ -3,22 +3,22 @@
 # 2 space indents.
 --indent=spaces=2
 
-# Header Blocks start and end braces on separate line.
---style=allman
+--indent-after-parens
+--indent-col1-comments
+
+--style=gnu
 
 # Braces must always be used even for one line header blocks.
 --add-braces
 
-# Keep single space between header blocks and (
-# Ex: if and (), for and (), func and ().
-# Keep single space around operators(+ - / * , & ^), etc.
---unpad-paren
+--pad-paren
 --pad-header
 --pad-oper
+--pad-comma
+--pad-first-paren-out
 
-# * and & between type and name.
---align-pointer=middle
---align-reference=middle
+--align-pointer=type
+--align-reference=type
 
 # Only use spaces even when not meaning to indent.
 --convert-tabs
