@@ -22,55 +22,61 @@ NAMESPACE__THITTAM__START
 class ResourceGroup
 {
 public:
-  const std::string & id (void) const
+  const std::string&
+  id ( void ) const
   {
     return m_id;
   }
 
-  const std::string & name (void) const
+  const std::string&
+  name ( void ) const
   {
     return m_name;
   }
 
-  const std::string & description () const
+  const std::string&
+  description() const
   {
     return m_description;
   }
 
-  void set_id (const std::string & id)
+  void
+  set_id ( const std::string& id )
   {
     m_id = id;
   }
 
-  void set_name (const std::string & name)
+  void
+  set_name ( const std::string& name )
   {
     m_name = name;
   }
 
-  void set_description (const std::string & description)
+  void
+  set_description ( const std::string& description )
   {
     m_description = description;
   }
 
-  bool add_resource (const std::string & resource_name);
+  bool add_resource ( Resource& resource );
 
-  const Resource * get_resource (const std::string& id) const;
-  Resource * get_resource_mutable (const std::string& id);
+  const Resource* get_resource ( const std::string& id ) const;
+  Resource* get_resource_mutable ( const std::string& id );
 
 private:
   static unsigned int m_id_counter;
   std::string m_id;
   // Hidden from user. NOTNULL & UNIQUE
-  
+
   std::string m_name;
   // NOTNULL & UNIQUE
 
   std::string m_description;
   std::list <Resource> m_resources;
 
-  void create_resource_id (void);
-  void renumber_ids (void);
-  bool is_unique_resource_name (const std::string & resource_name);
+  void create_resource_id ( void );
+  void renumber_ids ( void );
+  bool is_unique_resource_name ( const std::string& resource_name );
 };
 
 NAMESPACE__THITTAM__END

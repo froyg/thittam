@@ -13,78 +13,78 @@
 
 NAMESPACE__THITTAM__START
 
-const Resource *
-ResourceGroup::get_resource (const std::string& id) const
+unsigned int ResourceGroup::m_id_counter = 0;
+
+const Resource*
+ResourceGroup::get_resource ( const std::string& id ) const
 {
-  for (auto & it : m_resources)
-  {
-    if (it.id() == id)
+  for ( auto& it : m_resources )
     {
-      return &it;
+      if ( it.id() == id )
+        {
+          return &it;
+        }
     }
-  }
   return NULL;
 }
 
-Resource *
-ResourceGroup::get_resource_mutable (const std::string& id)
+Resource*
+ResourceGroup::get_resource_mutable ( const std::string& id )
 {
-  for (auto & it : m_resources)
-  {
-    if (it.id() == id)
+  for ( auto& it : m_resources )
     {
-      return &it;
+      if ( it.id() == id )
+        {
+          return &it;
+        }
     }
-  }
   return NULL;
 }
 
 void
-ResourceGroup::renumber_ids (void)
+ResourceGroup::renumber_ids ( void )
 {
-  for (auto & it : m_resources)
-  {
-    m_id_counter++;
-    it.set_id(std::to_string(m_id_counter));
-  }
+  for ( auto& it : m_resources )
+    {
+      m_id_counter++;
+      it.set_id ( std::to_string ( m_id_counter ) );
+    }
 }
 
 void
-ResourceGroup::create_resource_id (void)
+ResourceGroup::create_resource_id ( void )
 {
-  if (m_id_counter - m_resources.size() > SIZE_COUNTER_DIFFERENCE)
-  {
-    renumber_ids();
-  }
+  if ( m_id_counter - m_resources.size() > SIZE_COUNTER_DIFFERENCE )
+    {
+      renumber_ids();
+    }
   m_id_counter++;
 }
 
 bool
-ResourceGroup::is_unique_resource_name (const std::string & resource_name)
+ResourceGroup::is_unique_resource_name ( const std::string& resource_name )
 {
-  for (auto & it : m_resources)
-  {
-    if (it.name() == resource_name)
+  for ( auto& it : m_resources )
     {
-      return false;
+      if ( it.name() == resource_name )
+        {
+          return false;
+        }
     }
-  }
   return true;
 }
 
 bool
-ResourceGroup::add_resource (const std::string & resource_name)
+ResourceGroup::add_resource ( Resource& resource )
 {
-  if (!is_unique_resource_name(resource_name))
-  {
-    return false;
-  }
+  if ( !is_unique_resource_name ( resource.name() ) )
+    {
+      return false;
+    }
 
-  Resource new_res;
-  create_resource_id ();
-  new_res.set_id(std::to_string(m_id_counter));
-  new_res.set_name(resource_name);
-  m_resources.push_back(new_res);
+  create_resource_id();
+  resource.set_id ( std::to_string ( m_id_counter ) );
+  m_resources.push_back ( resource );
   return true;
 }
 
