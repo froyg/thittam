@@ -177,12 +177,13 @@ AppImpl::create_app_stage1 (void)
 {
   m_ui_builder =
     Gtk::Builder::create_from_resource ("/ui/main-view.glade");
-
-  m_project_factory = std::make_unique<ProjectFactoryImpl> (logger);
-  m_project_ui_factory = std::make_unique<ProjectUIFactoryImpl> (logger);
-
   auto main_view = std::make_unique<MainViewImpl> (logger, m_ui_builder);
   auto main_controller = std::make_unique<MainControllerImpl> (logger);
+
+  m_project_factory = std::make_unique<ProjectFactoryImpl> (logger);
+  auto project_ui_factory = std::make_unique<ProjectUIFactoryImpl> (logger);
+  project_ui_factory->set_parent_window (main_view->window ());
+  m_project_ui_factory = std::move (project_ui_factory);
 
   main_controller->set_view (main_view.get ());
   main_controller->set_app (this);

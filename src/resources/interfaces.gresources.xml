@@ -7,5 +7,7 @@
     <file preprocess="xml-stripblanks">resources-view.glade</file>
     <file preprocess="xml-stripblanks">gantt-view.glade</file>
     <file preprocess="xml-stripblanks">resource-usage-view.glade</file>
+    <file preprocess="xml-stripblanks">resource-view.glade</file>
+    <file preprocess="xml-stripblanks">resource-group-view.glade</file>
   </gresource>
 </gresources>

@@ -19,20 +19,6 @@ int effort_str_to_minutes (
   return 2400;
 }
 
-void init_random (void)
-{
-  srand((unsigned)time(NULL));
-}
-
-unsigned int
-generate_random_id ()
-{
-  // For 6 digit random number.
-  srand(time(NULL));
-  unsigned int number = rand() % MOD_MAX;
-  return number;
-}
-
 NAMESPACE__THITTAM_UTIL__END
 
 /*

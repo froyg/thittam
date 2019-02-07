@@ -37,6 +37,8 @@ add_custom_command(OUTPUT ${GRESOURCE_C}
   ${RESOURCE_DIR}/resources-view.glade
   ${RESOURCE_DIR}/resource-usage-view.glade
   ${RESOURCE_DIR}/wbs-view.glade
+  ${RESOURCE_DIR}/resource-view.glade
+  ${RESOURCE_DIR}/resource-group-view.glade
   COMMENT "Generating ${GRESOURCE_C}")
 
 add_library (app
@@ -65,6 +67,10 @@ add_library (app
   wbs-path.cxx
   resource-group.cxx
   resource-manager.cxx
+  resource-view_impl.cxx
+  resource-controller_impl.cxx
+  resource-group-view_impl.cxx
+  resource-group-controller_impl.cxx
   )
 
 
