@@ -66,12 +66,13 @@ public:
 
   struct Selection {
     int group_index;
+    int resource_index;
     std::string group_id;
     std::string resource_id;
     bool
-    is_group();
+    is_group() const;
     bool
-    is_resource();
+    is_resource() const;
   };
 
 private:
@@ -101,13 +102,15 @@ operator!=(const ResourcesControllerImpl::Selection& s1,
 bool
 operator==(const ResourcesControllerImpl::Selection& s1,
   const ResourcesControllerImpl::Selection& s2);
+bool operator<(const ResourcesControllerImpl::Selection &s1,
+               const ResourcesControllerImpl::Selection &s2);
 
 NAMESPACE__THITTAM__END
 
 #endif // HIPRO__123e5b40_5a93_11e8_a7b6_448500dfb04c
 
-/*
-  Local Variables:
-  mode: c++
-  End:
-*/
+    /*
+      Local Variables:
+      mode: c++
+      End:
+    */
