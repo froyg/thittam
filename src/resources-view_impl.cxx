@@ -226,6 +226,8 @@ ResourcesViewImpl::add_resource (
   resource.set_value ( m_cols.name, name );
   resource.set_value ( m_cols.cost, cost );
   resource.set_value ( m_cols.description, description );
+  m_tree_view.expand_row(p, false);
+  m_tree_selection->select(resource);
 }
 
 void
@@ -233,10 +235,11 @@ ResourcesViewImpl::add_group ( const std::string& id,
   const std::string& name,
   const std::string& description )
 {
-  auto row = *m_tree_store->append();
-  row.set_value ( m_cols.id, id );
-  row.set_value ( m_cols.name, name );
-  row.set_value ( m_cols.description, description );
+  auto resource_group = *m_tree_store->append();
+  resource_group.set_value ( m_cols.id, id );
+  resource_group.set_value ( m_cols.name, name );
+  resource_group.set_value ( m_cols.description, description );
+  m_tree_selection->select(resource_group);
 }
 
 NAMESPACE__THITTAM__END
