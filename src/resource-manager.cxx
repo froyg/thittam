@@ -7,7 +7,7 @@
  * distribution or for further clarifications, please contact
  * legal@hipro.co.in. */
 
-#include <fstream>
+// #include <fstream>
 
 #include "resource-manager.h"
 
@@ -104,15 +104,15 @@ void
 ResourceManager::generate_json ( void )
 {
   // WIP
-  std::ofstream outFile;
-  outFile.open ( "new.json" );
+  // std::ofstream outFile;
+  // outFile.open ( "new.json" );
 
-  for ( auto& it : m_resource_groups )
-    {
-      outFile << it.ResourceGroup::id() << "\n";
-      outFile << it.ResourceGroup::name() << "\n";
-    }
-  outFile.close();
+  // for ( auto& it : m_resource_groups )
+  //   {
+  //     outFile << it.ResourceGroup::id() << "\n";
+  //     outFile << it.ResourceGroup::name() << "\n";
+  //   }
+  // outFile.close();
 }
 
 NAMESPACE__THITTAM__END

@@ -10,6 +10,6 @@ $ ./src/thittam
 
 ####Before Commiting run below command in thittam directory:
 
-thittam$ sh run_before_commit_astyle.sh
+thittam$ sh format-code.sh
 
 This applies astyle config to all \*.cxx and \*.h files.

@@ -95,16 +95,18 @@ void
 ResourcesControllerImpl::add_resource_done (
   ResourceController::DoneType done_type )
 {
-  m_resource_controller->hide();
   if ( done_type == ResourceController::DoneType::CANCEL )
     {
       return;
     }
-  m_resource_controller.reset();
   auto& res = m_resource;
   auto& group = *m_rm->get_resource_group_mutable ( group_id );
-  group.add_resource ( res );
-  m_view->add_resource ( group_index, res.id(), res.name(), res.cost(), res.description() );
+  if ( group.add_resource ( res ) )
+    {
+      m_resource_controller->hide();
+      m_resource_controller.reset();
+      m_view->add_resource ( group_index, res.id(), res.name(), res.cost(), res.description() );
+    }
 }
 
 void
@@ -121,15 +123,17 @@ void
 ResourcesControllerImpl::add_resource_group_done (
   ResourceGroupController::DoneType done_type )
 {
-  m_resource_group_controller->hide();
   if ( done_type == ResourceGroupController::DoneType::CANCEL )
     {
       return;
     }
-  m_resource_group_controller.reset();
   auto& group = m_resource_group;
-  m_rm->add_group ( group );
-  m_view->add_group ( group.id(), group.name(), group.description() );
+  if ( m_rm->add_group ( group ) )
+    {
+      m_resource_group_controller->hide();
+      m_resource_group_controller.reset();
+      m_view->add_group ( group.id(), group.name(), group.description() );
+    }
 }
 
 void
