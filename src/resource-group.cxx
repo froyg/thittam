@@ -64,6 +64,11 @@ ResourceGroup::create_resource_id ( void )
 bool
 ResourceGroup::is_unique_resource_name ( const std::string& resource_name )
 {
+  // Resource Name must be unique and not null
+  if ( resource_name.empty() )
+    {
+      return false;
+    }
   for ( auto& it : m_resources )
     {
       if ( it.name() == resource_name )

@@ -76,6 +76,11 @@ ResourceManager::create_group_id ( void )
 bool
 ResourceManager::is_unique_group_name ( const std::string& group_name )
 {
+  // Resource Group Name must be unique and not null
+  if ( group_name.empty() )
+    {
+      return false;
+    }
   for ( auto& it : m_resource_groups )
     {
       if ( it.name() == group_name )

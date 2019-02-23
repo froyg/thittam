@@ -97,6 +97,8 @@ ResourcesControllerImpl::add_resource_done (
 {
   if ( done_type == ResourceController::DoneType::CANCEL )
     {
+      m_resource_controller->hide();
+      m_resource_controller.reset();
       return;
     }
   auto& res = m_resource;
@@ -125,6 +127,8 @@ ResourcesControllerImpl::add_resource_group_done (
 {
   if ( done_type == ResourceGroupController::DoneType::CANCEL )
     {
+      m_resource_group_controller->hide();
+      m_resource_group_controller.reset();
       return;
     }
   auto& group = m_resource_group;
