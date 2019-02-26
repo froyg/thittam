@@ -7,7 +7,7 @@
  * distribution or for further clarifications, please contact
  * legal@hipro.co.in. */
 
-#include <fstream>
+// #include <fstream>
 
 #include "resource-manager.h"
 
@@ -76,6 +76,11 @@ ResourceManager::create_group_id ( void )
 bool
 ResourceManager::is_unique_group_name ( const std::string& group_name )
 {
+  // Resource Group Name must be unique and not null
+  if ( group_name.empty() )
+    {
+      return false;
+    }
   for ( auto& it : m_resource_groups )
     {
       if ( it.name() == group_name )
@@ -104,15 +109,15 @@ void
 ResourceManager::generate_json ( void )
 {
   // WIP
-  std::ofstream outFile;
-  outFile.open ( "new.json" );
+  // std::ofstream outFile;
+  // outFile.open ( "new.json" );
 
-  for ( auto& it : m_resource_groups )
-    {
-      outFile << it.ResourceGroup::id() << "\n";
-      outFile << it.ResourceGroup::name() << "\n";
-    }
-  outFile.close();
+  // for ( auto& it : m_resource_groups )
+  //   {
+  //     outFile << it.ResourceGroup::id() << "\n";
+  //     outFile << it.ResourceGroup::name() << "\n";
+  //   }
+  // outFile.close();
 }
 
 NAMESPACE__THITTAM__END

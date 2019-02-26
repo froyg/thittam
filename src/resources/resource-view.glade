@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.20.0 -->
+<!-- Generated with glade 3.20.4 -->
 <interface>
   <requires lib="gtk+" version="3.20"/>
   <object class="GtkWindow" id="top-widget">
@@ -100,9 +100,12 @@
                 <property name="xscale">0</property>
                 <child>
                   <object class="GtkLabel">
+                    <attributes>
+                      <attribute name="foreground" value="red"/>
+                    </attributes>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="label" translatable="yes">Short name :</property>
+                    <property name="label" translatable="yes">(Must be Unique)Short Name :</property>
                   </object>
                 </child>
               </object>
@@ -121,7 +124,7 @@
                   <object class="GtkLabel">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="label" translatable="yes">Long name :</property>
+                    <property name="label" translatable="yes">Descriptive Name :</property>
                   </object>
                 </child>
               </object>
@@ -230,6 +233,9 @@
           </object>
         </child>
       </object>
+    </child>
+    <child type="titlebar">
+      <placeholder/>
     </child>
   </object>
 </interface>
