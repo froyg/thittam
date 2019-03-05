@@ -11,6 +11,7 @@
 #define HIPRO__b118fb6a_00fd_11e9_ae49_30e37a0d36da
 
 #include <string>
+#include <cmath>
 
 #include "_namespace.h"
 
@@ -63,7 +64,7 @@ public:
 
   void set_cost (const float & cost)
   {
-    m_cost = cost;
+    m_cost = roundf(cost * 100) / 100;
   }
 
   void set_description (const std::string & description)
