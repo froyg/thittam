@@ -11,11 +11,9 @@
 # Braces must always be used even for one line header blocks.
 --add-braces
 
---pad-paren
 --pad-header
 --pad-oper
 --pad-comma
---pad-first-paren-out
 
 --align-pointer=type
 --align-reference=type
