@@ -24,13 +24,15 @@
 class FileConfigSource : public ConfigSource
 {
 public:
-  FileConfigSource (hipro::log::Logger* logger,
-                    const bofs::path & config_file);
-  ~FileConfigSource () {}
+  FileConfigSource(hipro::log::Logger* logger,
+    const bofs::path& config_file);
+  ~FileConfigSource() {}
 
   /*--- ConfigSource interface ---*/
-  const std::string & read (void);
-  void write (const std::string & data);
+  const std::string&
+  read(void);
+  void
+  write(const std::string& data);
 
 private:
   hipro::log::Logger* logger;
@@ -41,20 +43,24 @@ private:
 class PersistentConfig : public Config
 {
 public:
-  PersistentConfig (hipro::log::Logger* logger,
-                    std::unique_ptr<ConfigSource> && config_source);
-  ~PersistentConfig () {}
+  PersistentConfig(hipro::log::Logger* logger,
+    std::unique_ptr<ConfigSource>&& config_source);
+  ~PersistentConfig() {}
 
   /*--- Config interface ---*/
-  void set_server_address (const std::string & server_address);
-  const std::string & server_address (void) const
+  void
+  set_server_address(const std::string& server_address);
+  const std::string&
+  server_address(void) const
   {
     return m_server_address;
   }
-  void operator= (const Config & other);
+  void
+  operator= (const Config& other);
 
 private:
-  void save (void);
+  void
+  save(void);
 
 private:
   hipro::log::Logger* logger;
@@ -67,24 +73,27 @@ private:
 class InMemoryConfig : public Config
 {
 public:
-  InMemoryConfig (hipro::log::Logger* logger)
-    : logger (logger) {}
-  ~InMemoryConfig () {}
+  InMemoryConfig(hipro::log::Logger* logger)
+    : logger(logger) {}
+  ~InMemoryConfig() {}
 
   /*--- Config interface ---*/
-  void set_server_address (const std::string & server_address)
+  void
+  set_server_address(const std::string& server_address)
   {
     m_server_address = server_address;
   }
 
-  const std::string & server_address (void) const
+  const std::string&
+  server_address(void) const
   {
     return m_server_address;
   }
 
-  void operator= (const Config & other)
+  void
+  operator= (const Config& other)
   {
-    m_server_address = other.server_address ();
+    m_server_address = other.server_address();
   }
 
 private:

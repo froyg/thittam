@@ -11,9 +11,9 @@
 
 NAMESPACE__THITTAM__START
 
-ResourceUsageControllerImpl::ResourceUsageControllerImpl (
+ResourceUsageControllerImpl::ResourceUsageControllerImpl(
   hipro::log::Logger* logger)
-  : logger (logger)
+  : logger(logger)
 {
 
 }

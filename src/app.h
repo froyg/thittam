@@ -26,14 +26,17 @@ public:
 public:
   /* Method to run the App. This does not return until the
    * application is closed */
-  virtual int run (int argc, char **argv) = 0;
+  virtual int
+  run(int argc, char** argv) = 0;
 
   /* Request the application to quit. The application will not quit
    * immediately. It'll quit at the earliest. */
-  virtual void quit (void) = 0;
+  virtual void
+  quit(void) = 0;
 
   /* dtor */
-  virtual ~App () {}
+  virtual
+  ~App() {}
 };
 
 class SubApp
@@ -44,22 +47,26 @@ public:
 
   /* Signal raised when the sub-app is closed */
   typedef ::boost::signals2::signal <
-    void (void)
-    > signal_closed_t;
+  void (void)
+  > signal_closed_t;
 
 public:
   /* Accessor for the signal-closed */
-  virtual signal_closed_t & signal_closed (void) = 0;
+  virtual signal_closed_t&
+  signal_closed(void) = 0;
 
   /* Method to start the SubApp  */
-  virtual void start (void) = 0;
+  virtual void
+  start(void) = 0;
 
   /* Method to force a SubApp to stop. This is called before the
    * SubApp is destroyed */
-  virtual void stop (void) = 0;
+  virtual void
+  stop(void) = 0;
 
   /* dtor */
-  virtual ~SubApp () {}
+  virtual
+  ~SubApp() {}
 };
 
 NAMESPACE__THITTAM__END

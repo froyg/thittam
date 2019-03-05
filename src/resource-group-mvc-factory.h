@@ -21,9 +21,11 @@ NAMESPACE__THITTAM__START
 class ResourceGroupMVCFactory
 {
 public:
-  virtual ~ResourceGroupMVCFactory () {}
+  virtual
+  ~ResourceGroupMVCFactory() {}
 
-  virtual std::unique_ptr<ResourceGroupController> create (
+  virtual std::unique_ptr<ResourceGroupController>
+  create(
     ResourceGroup* model) = 0;
 };
 

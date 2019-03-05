@@ -19,9 +19,11 @@ NAMESPACE__THITTAM__START
 class ResourcesController
 {
 public:
-  virtual ~ResourcesController () {}
+  virtual
+  ~ResourcesController() {}
 
-  virtual Gtk::Widget* view_widget (void) = 0;
+  virtual Gtk::Widget*
+  view_widget(void) = 0;
 };
 
 NAMESPACE__THITTAM__END

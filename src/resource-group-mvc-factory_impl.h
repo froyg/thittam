@@ -19,25 +19,26 @@ NAMESPACE__THITTAM__START
 class ResourceGroupMVCFactoryImpl : public ResourceGroupMVCFactory
 {
 public:
-  ResourceGroupMVCFactoryImpl (
+  ResourceGroupMVCFactoryImpl(
     hipro::log::Logger* logger, Gtk::Window* main_window)
-    : logger (logger),
-      m_main_window (main_window)
+    : logger(logger),
+      m_main_window(main_window)
   {
 
   }
 
-  std::unique_ptr<ResourceGroupController> create (ResourceGroup* model)
+  std::unique_ptr<ResourceGroupController>
+  create(ResourceGroup* model)
   {
     auto controller = std::make_unique<ResourceGroupControllerImpl> (logger);
-    auto ui = Gtk::Builder::create_from_resource (
-      "/ui/resource-group-view.glade");
+    auto ui = Gtk::Builder::create_from_resource(
+        "/ui/resource-group-view.glade");
     auto view = std::make_unique<ResourceGroupViewImpl> (
-      logger, ui, m_main_window);
+        logger, ui, m_main_window);
 
-    view->set_handler (controller.get ());
-    controller->set_model (model);
-    controller->set_view (std::move (view));
+    view->set_handler(controller.get());
+    controller->set_model(model);
+    controller->set_view(std::move(view));
     return controller;
   }
 

@@ -11,38 +11,38 @@
 
 NAMESPACE__THITTAM__START
 
-ProjectControllerImpl::ProjectControllerImpl (hipro::log::Logger* logger)
-  : logger (logger)
+ProjectControllerImpl::ProjectControllerImpl(hipro::log::Logger* logger)
+  : logger(logger)
 {
 
 }
 
 void
-ProjectControllerImpl::view_wbs_selected (void)
+ProjectControllerImpl::view_wbs_selected(void)
 {
-  auto widget = m_wbs_controller->view_widget ();
-  m_view->attach_content (widget);
+  auto widget = m_wbs_controller->view_widget();
+  m_view->attach_content(widget);
 }
 
 void
-ProjectControllerImpl::view_resources_selected (void)
+ProjectControllerImpl::view_resources_selected(void)
 {
-  auto widget = m_resources_controller->view_widget ();
-  m_view->attach_content (widget);
+  auto widget = m_resources_controller->view_widget();
+  m_view->attach_content(widget);
 }
 
 void
-ProjectControllerImpl::view_gantt_selected (void)
+ProjectControllerImpl::view_gantt_selected(void)
 {
-  auto widget = m_gantt_controller->view_widget ();
-  m_view->attach_content (widget);
+  auto widget = m_gantt_controller->view_widget();
+  m_view->attach_content(widget);
 }
 
 void
-ProjectControllerImpl::view_resource_usage_selected (void)
+ProjectControllerImpl::view_resource_usage_selected(void)
 {
-  auto widget = m_resource_usage_controller->view_widget ();
-  m_view->attach_content (widget);
+  auto widget = m_resource_usage_controller->view_widget();
+  m_view->attach_content(widget);
 }
 
 NAMESPACE__THITTAM__END

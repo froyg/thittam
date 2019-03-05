@@ -25,26 +25,32 @@ class ResourceGroupControllerImpl :
   public ResourceGroupViewCallbacks
 {
 public:
-  ResourceGroupControllerImpl (hipro::log::Logger* logger);
+  ResourceGroupControllerImpl(hipro::log::Logger* logger);
 
   /*--- DI ---*/
-  void set_view (std::unique_ptr<ResourceGroupView> view)
+  void
+  set_view(std::unique_ptr<ResourceGroupView> view)
   {
-    m_view = std::move (view);
+    m_view = std::move(view);
   }
 
-  void set_model (ResourceGroup* model)
+  void
+  set_model(ResourceGroup* model)
   {
     m_model = model;
   }
 
   /*--- ResourceGroupController interface ---*/
-  void show (OnDoneCallbackType on_done_callback);
-  void hide (void);
+  void
+  show(OnDoneCallbackType on_done_callback);
+  void
+  hide(void);
 
   /*--- ResourceGroupViewCallbacks interface ---*/
-  void view_save_pressed (void);
-  void view_cancel_pressed (void);
+  void
+  view_save_pressed(void);
+  void
+  view_cancel_pressed(void);
 
 private:
   hipro::log::Logger* logger = nullptr;

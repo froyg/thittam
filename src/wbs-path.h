@@ -20,64 +20,73 @@ NAMESPACE__THITTAM__START
 class WBSPath
 {
 public:
-  WBSPath ()
+  WBSPath()
   {
-    m_parts.reserve (10);
+    m_parts.reserve(10);
   }
 
-  WBSPath (const WBSPath & other)
+  WBSPath(const WBSPath& other)
   {
     m_parts = other.m_parts;
   }
 
-  WBSPath (WBSPath && other)
+  WBSPath(WBSPath&& other)
   {
-    m_parts = std::move (other.m_parts);
+    m_parts = std::move(other.m_parts);
   }
 
-  const std::vector<int> & parts (void) const
+  const std::vector<int>&
+  parts(void) const
   {
     return m_parts;
   }
 
-  void push_back (int index)
+  void
+  push_back(int index)
   {
-    m_parts.push_back (index);
+    m_parts.push_back(index);
   }
 
-  size_t parts_length (void) const
+  size_t
+  parts_length(void) const
   {
-    return m_parts.size ();
+    return m_parts.size();
   }
 
-  void operator= (const WBSPath & other)
+  void
+  operator= (const WBSPath& other)
   {
-    m_parts = other.parts ();
+    m_parts = other.parts();
   }
 
-  bool operator== (const WBSPath & right) const
+  bool
+  operator== (const WBSPath& right) const
   {
-    return m_parts == right.parts ();
+    return m_parts == right.parts();
   }
 
-  bool empty (void) const
+  bool
+  empty(void) const
   {
-    return m_parts.empty ();
+    return m_parts.empty();
   }
 
-  void clear (void)
+  void
+  clear(void)
   {
-    m_parts.clear ();
+    m_parts.clear();
   }
 
-  int operator[](size_t index) const
+  int
+  operator[](size_t index) const
   {
     return m_parts[index];
   }
 
-  int last_part (void) const
+  int
+  last_part(void) const
   {
-    return m_parts.back ();
+    return m_parts.back();
   }
 
 private:
@@ -85,7 +94,8 @@ private:
 };
 
 
-std::ostream& operator << (std::ostream & os, const WBSPath & path);
+std::ostream&
+operator << (std::ostream& os, const WBSPath& path);
 
 
 NAMESPACE__THITTAM__END

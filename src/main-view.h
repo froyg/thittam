@@ -21,33 +21,48 @@ NAMESPACE__THITTAM__START
 class MainViewCallbacks
 {
 public:
-  virtual ~MainViewCallbacks () {}
+  virtual
+  ~MainViewCallbacks() {}
 
-  virtual void view_close_pressed (void) = 0;
-  virtual void view_file_new_pressed (void) = 0;
-  virtual void view_file_open_pressed (void) = 0;
-  virtual void view_file_save_pressed (void) = 0;
-  virtual void view_file_save_as_pressed (void) = 0;
+  virtual void
+  view_close_pressed(void) = 0;
+  virtual void
+  view_file_new_pressed(void) = 0;
+  virtual void
+  view_file_open_pressed(void) = 0;
+  virtual void
+  view_file_save_pressed(void) = 0;
+  virtual void
+  view_file_save_as_pressed(void) = 0;
 
 };
 
 class MainView
 {
 public:
-  virtual ~MainView () {}
+  virtual
+  ~MainView() {}
 
   /* Accessor for the main application window */
-  virtual Gtk::Window * window (void) = 0;
-  virtual void attach_content (Gtk::Widget* widget) = 0;
+  virtual Gtk::Window*
+  window(void) = 0;
+  virtual void
+  attach_content(Gtk::Widget* widget) = 0;
 
-  virtual void show (void) = 0;
-  virtual bool get_file_to_open (std::string * file_name) = 0;
-  virtual bool get_file_to_save (std::string * file_name) = 0;
-  virtual bool get_file_to_save_as (std::string * file_name) = 0;
-  virtual bool confirm_data_discard (
-    const std::string & title,
-    const std::string & description) = 0;
-  virtual void show_error (const std::string & msg) = 0;
+  virtual void
+  show(void) = 0;
+  virtual bool
+  get_file_to_open(std::string* file_name) = 0;
+  virtual bool
+  get_file_to_save(std::string* file_name) = 0;
+  virtual bool
+  get_file_to_save_as(std::string* file_name) = 0;
+  virtual bool
+  confirm_data_discard(
+    const std::string& title,
+    const std::string& description) = 0;
+  virtual void
+  show_error(const std::string& msg) = 0;
 };
 
 NAMESPACE__THITTAM__END

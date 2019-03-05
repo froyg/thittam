@@ -18,12 +18,15 @@ NAMESPACE__THITTAM__START
 class WBSTreeModel
 {
 public:
-  virtual ~WBSTreeModel () {}
+  virtual
+  ~WBSTreeModel() {}
 
-  virtual WBS::Path convert_gtk_tree_path_to_wbs_path (
-    const Gtk::TreeModel::Path & path) = 0;
-  virtual WBS::Path convert_gtk_tree_iter_to_wbs_path (
-    const Gtk::TreeModel::iterator & it) = 0;
+  virtual WBS::Path
+  convert_gtk_tree_path_to_wbs_path(
+    const Gtk::TreeModel::Path& path) = 0;
+  virtual WBS::Path
+  convert_gtk_tree_iter_to_wbs_path(
+    const Gtk::TreeModel::iterator& it) = 0;
 };
 
 NAMESPACE__THITTAM__END

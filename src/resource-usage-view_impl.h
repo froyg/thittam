@@ -20,17 +20,19 @@ NAMESPACE__THITTAM__START
 class ResourceUsageViewImpl : public ResourceUsageView
 {
 public:
-  ResourceUsageViewImpl (
+  ResourceUsageViewImpl(
     hipro::log::Logger* logger,
     Glib::RefPtr<Gtk::Builder> builder);
 
   /*--- ResourceUsageView interface ---*/
-  Gtk::Widget* widget (void)
+  Gtk::Widget*
+  widget(void)
   {
     return m_top_widget;
   }
 
-  void set_handler (ResourceUsageViewCallbacks* handler)
+  void
+  set_handler(ResourceUsageViewCallbacks* handler)
   {
     m_handler = handler;
   }

@@ -19,18 +19,22 @@ NAMESPACE__THITTAM__START
 class GANTTViewCallbacks
 {
 public:
-  virtual ~GANTTViewCallbacks () {}
+  virtual
+  ~GANTTViewCallbacks() {}
 
 };
 
 class GANTTView
 {
 public:
-  virtual ~GANTTView () {}
+  virtual
+  ~GANTTView() {}
 
-  virtual Gtk::Widget* widget (void) = 0;
+  virtual Gtk::Widget*
+  widget(void) = 0;
 
-  virtual void set_handler (GANTTViewCallbacks* handler) = 0;
+  virtual void
+  set_handler(GANTTViewCallbacks* handler) = 0;
 };
 
 NAMESPACE__THITTAM__END

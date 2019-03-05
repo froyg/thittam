@@ -23,38 +23,52 @@ NAMESPACE__THITTAM__START
 class MainViewImpl : public MainView
 {
 public:
-  MainViewImpl (
+  MainViewImpl(
     hipro::log::Logger* logger,
     Glib::RefPtr<Gtk::Builder> builder);
-  ~MainViewImpl () { }
+  ~MainViewImpl() { }
 
   /*--- DI ---*/
-  void set_handler (MainViewCallbacks * handler)
+  void
+  set_handler(MainViewCallbacks* handler)
   {
     m_handler = handler;
   }
 
   /*--- MainView interface ---*/
-  Gtk::Window * window (void)
+  Gtk::Window*
+  window(void)
   {
     return m_window;
   }
-  void attach_content (Gtk::Widget* widget);
+  void
+  attach_content(Gtk::Widget* widget);
 
-  void show (void);
-  bool get_file_to_open (std::string * file_name);
-  bool get_file_to_save (std::string * file_name);
-  bool get_file_to_save_as (std::string * file_name);
-  bool confirm_data_discard (
-    const std::string & title, const std::string & description);
-  void show_error (const std::string & msg);
+  void
+  show(void);
+  bool
+  get_file_to_open(std::string* file_name);
+  bool
+  get_file_to_save(std::string* file_name);
+  bool
+  get_file_to_save_as(std::string* file_name);
+  bool
+  confirm_data_discard(
+    const std::string& title, const std::string& description);
+  void
+  show_error(const std::string& msg);
 
 private:
-  void cb_on_file_new (void);
-  void cb_on_file_open (void);
-  void cb_on_file_save (void);
-  void cb_on_file_save_as (void);
-  void cb_on_close (void);
+  void
+  cb_on_file_new(void);
+  void
+  cb_on_file_open(void);
+  void
+  cb_on_file_save(void);
+  void
+  cb_on_file_save_as(void);
+  void
+  cb_on_close(void);
 
 private:
   hipro::log::Logger* logger = nullptr;

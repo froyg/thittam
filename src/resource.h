@@ -22,52 +22,62 @@ NAMESPACE__THITTAM__START
 class Resource
 {
 public:
-  const std::string & id (void) const
+  const std::string&
+  id(void) const
   {
     return m_id;
   }
 
-  const std::string & name (void) const
+  const std::string&
+  name(void) const
   {
     return m_name;
   }
 
-  const std::string & long_name (void) const
+  const std::string&
+  long_name(void) const
   {
     return m_long_name;
   }
 
-  const float & cost (void) const
+  const float&
+  cost(void) const
   {
     return m_cost;
   }
 
-  const std::string & description (void) const
+  const std::string&
+  description(void) const
   {
     return m_description;
   }
 
-  void set_id (const std::string & id)
+  void
+  set_id(const std::string& id)
   {
     m_id = id;
   }
 
-  void set_name (const std::string & name)
+  void
+  set_name(const std::string& name)
   {
     m_name = name;
   }
 
-  void set_long_name (const std::string & long_name)
+  void
+  set_long_name(const std::string& long_name)
   {
     m_long_name = long_name;
   }
 
-  void set_cost (const float & cost)
+  void
+  set_cost(const float& cost)
   {
     m_cost = roundf(cost * 100) / 100;
   }
 
-  void set_description (const std::string & description)
+  void
+  set_description(const std::string& description)
   {
     m_description = description;
   }

@@ -11,8 +11,8 @@
 
 NAMESPACE__THITTAM__START
 
-GANTTControllerImpl::GANTTControllerImpl (hipro::log::Logger* logger)
-  : logger (logger)
+GANTTControllerImpl::GANTTControllerImpl(hipro::log::Logger* logger)
+  : logger(logger)
 {
 
 }

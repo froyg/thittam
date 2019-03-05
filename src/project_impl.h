@@ -21,31 +21,39 @@ NAMESPACE__THITTAM__START
 class ProjectImpl : public Project
 {
 public:
-  ~ProjectImpl () {}
-  ProjectImpl (hipro::log::Logger* logger);
+  ~ProjectImpl() {}
+  ProjectImpl(hipro::log::Logger* logger);
 
   /*--- DI ---*/
-  void set_wbs (std::unique_ptr<WBS> wbs)
+  void
+  set_wbs(std::unique_ptr<WBS> wbs)
   {
-    m_wbs = std::move (wbs);
+    m_wbs = std::move(wbs);
   }
 
   /*--- Project interface ---*/
-  const std::string & name (void) const
+  const std::string&
+  name(void) const
   {
     return m_name;
   }
 
-  WBS* wbs (void) const
+  WBS*
+  wbs(void) const
   {
-    return m_wbs.get ();
+    return m_wbs.get();
   }
 
-  bool dirty (void) const;
-  void clear_dirty (void);
-  bool check (const boost::property_tree::ptree & data) const;
-  void load (const boost::property_tree::ptree & data) const;
-  boost::property_tree::ptree serialize (void);
+  bool
+  dirty(void) const;
+  void
+  clear_dirty(void);
+  bool
+  check(const boost::property_tree::ptree& data) const;
+  void
+  load(const boost::property_tree::ptree& data) const;
+  boost::property_tree::ptree
+  serialize(void);
 
 private:
   hipro::log::Logger* logger = nullptr;

@@ -24,9 +24,11 @@ NAMESPACE__THITTAM__START
 class ProjectUIFactory
 {
 public:
-  virtual ~ProjectUIFactory () {}
+  virtual
+  ~ProjectUIFactory() {}
 
-  virtual std::unique_ptr<ProjectController> create (Project * project) = 0;
+  virtual std::unique_ptr<ProjectController>
+  create(Project* project) = 0;
 };
 
 NAMESPACE__THITTAM__END

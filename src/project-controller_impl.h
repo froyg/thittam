@@ -24,61 +24,73 @@
 NAMESPACE__THITTAM__START
 
 class ProjectControllerImpl : public ProjectController,
-                              public ProjectViewCallbacks
+  public ProjectViewCallbacks
 {
 public:
-  ProjectControllerImpl (hipro::log::Logger* logger);
-  ~ProjectControllerImpl () {}
+  ProjectControllerImpl(hipro::log::Logger* logger);
+  ~ProjectControllerImpl() {}
 
   /*--- DI ---*/
-  void set_wbs_controller (std::unique_ptr<WBSController> controller)
+  void
+  set_wbs_controller(std::unique_ptr<WBSController> controller)
   {
-    m_wbs_controller = std::move (controller);
+    m_wbs_controller = std::move(controller);
   }
 
-  void set_resources_controller (
+  void
+  set_resources_controller(
     std::unique_ptr<ResourcesController> controller)
   {
-    m_resources_controller = std::move (controller);
+    m_resources_controller = std::move(controller);
   }
 
-  void set_gantt_controller (std::unique_ptr<GANTTController> controller)
+  void
+  set_gantt_controller(std::unique_ptr<GANTTController> controller)
   {
-    m_gantt_controller = std::move (controller);
+    m_gantt_controller = std::move(controller);
   }
 
-  void set_resource_usage_controller (
+  void
+  set_resource_usage_controller(
     std::unique_ptr<ResourceUsageController> controller)
   {
-    m_resource_usage_controller = std::move (controller);
+    m_resource_usage_controller = std::move(controller);
   }
 
-  void set_view (std::unique_ptr<ProjectView> view)
+  void
+  set_view(std::unique_ptr<ProjectView> view)
   {
-    m_view = std::move (view);
+    m_view = std::move(view);
   }
 
-  void set_wbs (std::unique_ptr<WBS> wbs)
+  void
+  set_wbs(std::unique_ptr<WBS> wbs)
   {
-    m_wbs = std::move (wbs);
+    m_wbs = std::move(wbs);
   }
 
   /*--- ProjectController interface ---*/
-  Gtk::Widget * view_widget (void)
+  Gtk::Widget*
+  view_widget(void)
   {
-    return m_view->widget ();
+    return m_view->widget();
   }
 
-  void show_wbs (void)
+  void
+  show_wbs(void)
   {
-    view_wbs_selected ();
+    view_wbs_selected();
   }
 
   /*--- ProjectViewCallbacks interface ---*/
-  void view_wbs_selected (void);
-  void view_resources_selected (void);
-  void view_gantt_selected (void);
-  void view_resource_usage_selected (void);
+  void
+  view_wbs_selected(void);
+  void
+  view_resources_selected(void);
+  void
+  view_gantt_selected(void);
+  void
+  view_resource_usage_selected(void);
 
 private:
   hipro::log::Logger* logger = nullptr;

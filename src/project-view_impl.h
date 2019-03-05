@@ -19,28 +19,35 @@ NAMESPACE__THITTAM__START
 class ProjectViewImpl : public ProjectView
 {
 public:
-  ProjectViewImpl (
+  ProjectViewImpl(
     hipro::log::Logger* logger,
     Glib::RefPtr<Gtk::Builder> builder);
-  ~ProjectViewImpl () {}
+  ~ProjectViewImpl() {}
 
   /*--- ProjectView interface ---*/
-  Gtk::Widget* widget (void)
+  Gtk::Widget*
+  widget(void)
   {
     return m_top_widget;
   }
 
-  void set_handler (ProjectViewCallbacks* handler)
+  void
+  set_handler(ProjectViewCallbacks* handler)
   {
     m_handler = handler;
   }
-  void attach_content (Gtk::Widget* widget);
+  void
+  attach_content(Gtk::Widget* widget);
 
 private:
-  void cb_on_wbs_clicked (void);
-  void cb_on_resources_clicked (void);
-  void cb_on_gantt_clicked (void);
-  void cb_on_resource_usage_clicked (void);
+  void
+  cb_on_wbs_clicked(void);
+  void
+  cb_on_resources_clicked(void);
+  void
+  cb_on_gantt_clicked(void);
+  void
+  cb_on_resource_usage_clicked(void);
 
 private:
   hipro::log::Logger* logger = nullptr;

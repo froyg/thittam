@@ -20,17 +20,25 @@ NAMESPACE__THITTAM__START
 class Project
 {
 public:
-  virtual ~Project () {}
+  virtual
+  ~Project() {}
 
-  virtual const std::string & name (void) const = 0;
-  virtual WBS* wbs (void) const = 0;
+  virtual const std::string&
+  name(void) const = 0;
+  virtual WBS*
+  wbs(void) const = 0;
 
-  virtual bool dirty (void) const = 0;
-  virtual void clear_dirty (void) = 0;
+  virtual bool
+  dirty(void) const = 0;
+  virtual void
+  clear_dirty(void) = 0;
 
-  virtual bool check (const boost::property_tree::ptree & data) const = 0;
-  virtual void load (const boost::property_tree::ptree & data) const = 0;
-  virtual boost::property_tree::ptree serialize (void) = 0;
+  virtual bool
+  check(const boost::property_tree::ptree& data) const = 0;
+  virtual void
+  load(const boost::property_tree::ptree& data) const = 0;
+  virtual boost::property_tree::ptree
+  serialize(void) = 0;
 };
 
 NAMESPACE__THITTAM__END

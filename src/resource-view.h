@@ -21,33 +21,49 @@ NAMESPACE__THITTAM__START
 class ResourceViewCallbacks
 {
 public:
-  virtual ~ResourceViewCallbacks () {}
+  virtual
+  ~ResourceViewCallbacks() {}
 
-  virtual void view_save_pressed (void) = 0;
-  virtual void view_cancel_pressed (void) = 0;
+  virtual void
+  view_save_pressed(void) = 0;
+  virtual void
+  view_cancel_pressed(void) = 0;
 };
 
 class ResourceView
 {
 public:
-  virtual ~ResourceView () {}
+  virtual
+  ~ResourceView() {}
 
-  virtual Gtk::Widget* widget (void) = 0;
+  virtual Gtk::Widget*
+  widget(void) = 0;
 
-  virtual void set_handler (ResourceViewCallbacks* handler) = 0;
+  virtual void
+  set_handler(ResourceViewCallbacks* handler) = 0;
 
-  virtual void show (void) = 0;
-  virtual void hide (void) = 0;
+  virtual void
+  show(void) = 0;
+  virtual void
+  hide(void) = 0;
 
-  virtual void set_short_name (const std::string& short_name) = 0;
-  virtual void set_long_name (const std::string& long_name) = 0;
-  virtual void set_cost (double cost) = 0;
-  virtual void set_description (const std::string& description) = 0;
+  virtual void
+  set_short_name(const std::string& short_name) = 0;
+  virtual void
+  set_long_name(const std::string& long_name) = 0;
+  virtual void
+  set_cost(double cost) = 0;
+  virtual void
+  set_description(const std::string& description) = 0;
 
-  virtual const std::string& short_name (void) const = 0;
-  virtual const std::string& long_name (void) const = 0;
-  virtual double cost (void) const = 0;
-  virtual const std::string& description (void) const = 0;
+  virtual const std::string&
+  short_name(void) const = 0;
+  virtual const std::string&
+  long_name(void) const = 0;
+  virtual double
+  cost(void) const = 0;
+  virtual const std::string&
+  description(void) const = 0;
 };
 
 NAMESPACE__THITTAM__END

@@ -41,11 +41,13 @@
 
 #include "gmock/gmock-generated-matchers.h"
 
-namespace testing {
+namespace testing
+{
 
 // Defines a matcher that matches an empty container. The container must
 // support both size() and empty(), which all STL-like containers provide.
-MATCHER(IsEmpty, negation ? "isn't empty" : "is empty") {
+MATCHER(IsEmpty, negation ? "isn't empty" : "is empty")
+{
   if (arg.empty()) {
     return true;
   }

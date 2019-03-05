@@ -16,91 +16,79 @@ NAMESPACE__THITTAM__START
 unsigned int ResourceGroup::m_id_counter = 0;
 
 const Resource*
-ResourceGroup::get_resource ( const std::string& id ) const
+ResourceGroup::get_resource(const std::string& id) const
 {
-  for ( auto& it : m_resources )
-    {
-      if ( it.id() == id )
-        {
-          return &it;
-        }
+  for (auto& it : m_resources) {
+    if (it.id() == id) {
+      return &it;
     }
+  }
   return NULL;
 }
 
 Resource*
-ResourceGroup::get_resource_mutable ( const std::string& id )
+ResourceGroup::get_resource_mutable(const std::string& id)
 {
-  for ( auto& it : m_resources )
-    {
-      if ( it.id() == id )
-        {
-          return &it;
-        }
+  for (auto& it : m_resources) {
+    if (it.id() == id) {
+      return &it;
     }
+  }
   return NULL;
 }
 
 void
-ResourceGroup::renumber_ids ( void )
+ResourceGroup::renumber_ids(void)
 {
-  for ( auto& it : m_resources )
-    {
-      m_id_counter++;
-      it.set_id ( std::to_string ( m_id_counter ) );
-    }
+  for (auto& it : m_resources) {
+    m_id_counter++;
+    it.set_id(std::to_string(m_id_counter));
+  }
 }
 
 void
-ResourceGroup::create_resource_id ( void )
+ResourceGroup::create_resource_id(void)
 {
-  if ( m_id_counter - m_resources.size() > SIZE_COUNTER_DIFFERENCE )
-    {
-      renumber_ids();
-    }
+  if (m_id_counter - m_resources.size() > SIZE_COUNTER_DIFFERENCE) {
+    renumber_ids();
+  }
   m_id_counter++;
 }
 
 bool
-ResourceGroup::is_unique_resource_name ( const std::string& resource_name )
+ResourceGroup::is_unique_resource_name(const std::string& resource_name)
 {
   // Resource Name must be unique and not null
   // and must not contain space
 
-  if (resource_name.empty())
-    {
+  if (resource_name.empty()) {
+    return false;
+  }
+
+  for (int i = 0; i < resource_name.length(); i++) {
+    if (resource_name.at(i) == ' ') {
       return false;
     }
+  }
 
-  for (int i = 0; i < resource_name.length(); i++)
-    {
-      if(resource_name.at(i) == ' ')
-        {
-          return false;
-        }
+  for (auto& it : m_resources) {
+    if (it.name() == resource_name) {
+      return false;
     }
-
-  for ( auto& it : m_resources )
-    {
-      if ( it.name() == resource_name )
-        {
-          return false;
-        }
-    }
+  }
   return true;
 }
 
 bool
-ResourceGroup::add_resource ( Resource& resource )
+ResourceGroup::add_resource(Resource& resource)
 {
-  if ( !is_unique_resource_name ( resource.name() ) )
-    {
-      return false;
-    }
+  if (!is_unique_resource_name(resource.name())) {
+    return false;
+  }
 
   create_resource_id();
-  resource.set_id ( std::to_string ( m_id_counter ) );
-  m_resources.push_back ( resource );
+  resource.set_id(std::to_string(m_id_counter));
+  m_resources.push_back(resource);
   return true;
 }
 

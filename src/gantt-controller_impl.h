@@ -19,19 +19,21 @@ NAMESPACE__THITTAM__START
 class GANTTControllerImpl : public GANTTController, public GANTTViewCallbacks
 {
 public:
-  GANTTControllerImpl (hipro::log::Logger* logger);
-  ~GANTTControllerImpl () {}
+  GANTTControllerImpl(hipro::log::Logger* logger);
+  ~GANTTControllerImpl() {}
 
   /*--- DI ---*/
-  void set_view (std::unique_ptr<GANTTView> view)
+  void
+  set_view(std::unique_ptr<GANTTView> view)
   {
-    m_view = std::move (view);
+    m_view = std::move(view);
   }
 
   /*--- GANTTController interface ---*/
-  Gtk::Widget * view_widget (void)
+  Gtk::Widget*
+  view_widget(void)
   {
-    return m_view->widget ();
+    return m_view->widget();
   }
 
 private:

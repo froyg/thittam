@@ -23,8 +23,8 @@
 
 NAMESPACE__HIPRO_LOG__START
 
-typedef boost::log::sources::severity_channel_logger_mt<
-  int, std::string> Logger;
+typedef boost::log::sources::severity_channel_logger_mt <
+int, std::string > Logger;
 
 static constexpr int LEVEL_TRACE = 1;
 static constexpr int LEVEL_DEBUG5 = 2;
@@ -44,20 +44,25 @@ static constexpr int MAX_LEVEL = 11;
 class LoggerManager
 {
 public:
-  Logger * get (const std::string & name);
+  Logger*
+  get(const std::string& name);
 
 private:
   std::map<std::string, std::unique_ptr<Logger>> m_cache;
 };
 
-void format_string (char * buffer, size_t len, const char * fmt, ...);
-void setup_console_logging (void);
-void setup_file_logging (const std::string & filename);
-void set_logging_severity (int level);
+void
+format_string(char* buffer, size_t len, const char* fmt, ...);
+void
+setup_console_logging(void);
+void
+setup_file_logging(const std::string& filename);
+void
+set_logging_severity(int level);
 
 NAMESPACE__HIPRO_LOG__END
 
-extern hipro::log::Logger * logger;
+extern hipro::log::Logger* logger;
 
 #define Log_T BOOST_LOG_SEV(*logger, hipro::log::LEVEL_TRACE) << boost::log::add_value("File", __FILE__) << boost::log::add_value("Line", __LINE__)
 #define Log_D BOOST_LOG_SEV(*logger, hipro::log::LEVEL_DEBUG) << boost::log::add_value("File", __FILE__) << boost::log::add_value("Line", __LINE__)

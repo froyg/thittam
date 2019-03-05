@@ -24,44 +24,57 @@ NAMESPACE__THITTAM__START
 class MainControllerImpl : public MainController, public MainViewCallbacks
 {
 public:
-  MainControllerImpl (hipro::log::Logger* logger);
-  ~MainControllerImpl () {}
+  MainControllerImpl(hipro::log::Logger* logger);
+  ~MainControllerImpl() {}
 
   /*--- DI ---*/
-  void set_view (MainView* view)
+  void
+  set_view(MainView* view)
   {
     m_view = view;
   }
 
-  void set_app (App* app)
+  void
+  set_app(App* app)
   {
     m_app = app;
   }
 
-  void set_project_factory (ProjectFactory* project_factory)
+  void
+  set_project_factory(ProjectFactory* project_factory)
   {
     m_project_factory = project_factory;
   }
 
-  void set_project_ui_factory (ProjectUIFactory* project_ui_factory)
+  void
+  set_project_ui_factory(ProjectUIFactory* project_ui_factory)
   {
     m_project_ui_factory = project_ui_factory;
   }
 
   /*--- MainController interface ---*/
-  void start (void);
+  void
+  start(void);
 
   /*--- MainViewCallbacks interface ---*/
-  void view_close_pressed (void);
-  void view_file_new_pressed (void);
-  void view_file_open_pressed (void);
-  void view_file_save_pressed (void);
-  void view_file_save_as_pressed (void);
+  void
+  view_close_pressed(void);
+  void
+  view_file_new_pressed(void);
+  void
+  view_file_open_pressed(void);
+  void
+  view_file_save_pressed(void);
+  void
+  view_file_save_as_pressed(void);
 
 private:
-  bool confirm_data_discard (void);
-  bool can_save_to (const std::string & file_name);
-  void do_save (void);
+  bool
+  confirm_data_discard(void);
+  bool
+  can_save_to(const std::string& file_name);
+  void
+  do_save(void);
 
 private:
   hipro::log::Logger* logger = nullptr;

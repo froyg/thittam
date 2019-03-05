@@ -19,18 +19,19 @@ NAMESPACE__THITTAM__START
 class ResourceController
 {
 public:
-  enum class DoneType
-    {
-      SAVE = 1,
-      CANCEL = 2,
-    };
+  enum class DoneType {
+    SAVE = 1,
+    CANCEL = 2,
+  };
   typedef std::function<void (DoneType)> OnDoneCallbackType;
 
 public:
-  ~ResourceController () {}
+  ~ResourceController() {}
 
-  virtual void show (OnDoneCallbackType on_done_callback) = 0;
-  virtual void hide (void) = 0;
+  virtual void
+  show(OnDoneCallbackType on_done_callback) = 0;
+  virtual void
+  hide(void) = 0;
 };
 
 NAMESPACE__THITTAM__END

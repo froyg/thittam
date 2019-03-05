@@ -23,13 +23,13 @@ class ResourceGroup
 {
 public:
   const std::string&
-  id ( void ) const
+  id(void) const
   {
     return m_id;
   }
 
   const std::string&
-  name ( void ) const
+  name(void) const
   {
     return m_name;
   }
@@ -41,27 +41,30 @@ public:
   }
 
   void
-  set_id ( const std::string& id )
+  set_id(const std::string& id)
   {
     m_id = id;
   }
 
   void
-  set_name ( const std::string& name )
+  set_name(const std::string& name)
   {
     m_name = name;
   }
 
   void
-  set_description ( const std::string& description )
+  set_description(const std::string& description)
   {
     m_description = description;
   }
 
-  bool add_resource ( Resource& resource );
+  bool
+  add_resource(Resource& resource);
 
-  const Resource* get_resource ( const std::string& id ) const;
-  Resource* get_resource_mutable ( const std::string& id );
+  const Resource*
+  get_resource(const std::string& id) const;
+  Resource*
+  get_resource_mutable(const std::string& id);
 
 private:
   static unsigned int m_id_counter;
@@ -74,9 +77,12 @@ private:
   std::string m_description;
   std::list <Resource> m_resources;
 
-  void create_resource_id ( void );
-  void renumber_ids ( void );
-  bool is_unique_resource_name ( const std::string& resource_name );
+  void
+  create_resource_id(void);
+  void
+  renumber_ids(void);
+  bool
+  is_unique_resource_name(const std::string& resource_name);
 };
 
 NAMESPACE__THITTAM__END

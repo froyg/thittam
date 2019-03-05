@@ -21,12 +21,16 @@ NAMESPACE__THITTAM__START
 class ProjectFactory
 {
 public:
-  virtual ~ProjectFactory () {}
+  virtual
+  ~ProjectFactory() {}
 
-  virtual bool verify (const std::string & file) const = 0;
-  virtual std::unique_ptr<Project> create (void) const = 0;
-  virtual std::unique_ptr<Project> create (
-    const std::string & file_name) const = 0;
+  virtual bool
+  verify(const std::string& file) const = 0;
+  virtual std::unique_ptr<Project>
+  create(void) const = 0;
+  virtual std::unique_ptr<Project>
+  create(
+    const std::string& file_name) const = 0;
 };
 
 NAMESPACE__THITTAM__END

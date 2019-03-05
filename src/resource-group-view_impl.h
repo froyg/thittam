@@ -19,34 +19,44 @@ NAMESPACE__THITTAM__START
 class ResourceGroupViewImpl : public ResourceGroupView
 {
 public:
-  ResourceGroupViewImpl (
+  ResourceGroupViewImpl(
     hipro::log::Logger* logger,
     Glib::RefPtr<Gtk::Builder> builder,
     Gtk::Window* parent);
 
   /*--- ResourceGroupView interface ---*/
-  Gtk::Widget* widget (void)
+  Gtk::Widget*
+  widget(void)
   {
     return m_top_window;
   }
 
-  void set_handler (ResourceGroupViewCallbacks* handler)
+  void
+  set_handler(ResourceGroupViewCallbacks* handler)
   {
     m_handler = handler;
   }
 
-  void show (void);
-  void hide (void);
+  void
+  show(void);
+  void
+  hide(void);
 
-  void set_name (const std::string& _name);
-  void set_description (const std::string& description);
+  void
+  set_name(const std::string& _name);
+  void
+  set_description(const std::string& description);
 
-  const std::string& name (void) const;
-  const std::string& description (void) const;
+  const std::string&
+  name(void) const;
+  const std::string&
+  description(void) const;
 
 private:
-  void cb_on_save_clicked (void);
-  void cb_on_cancel_clicked (void);
+  void
+  cb_on_save_clicked(void);
+  void
+  cb_on_cancel_clicked(void);
 
 private:
   hipro::log::Logger* logger = nullptr;

@@ -11,85 +11,84 @@
 
 NAMESPACE__THITTAM__START
 
-ResourceGroupViewImpl::ResourceGroupViewImpl (
+ResourceGroupViewImpl::ResourceGroupViewImpl(
   hipro::log::Logger* logger,
   Glib::RefPtr<Gtk::Builder> builder,
   Gtk::Window* parent)
-  : logger (logger),
-    m_parent (parent)
+  : logger(logger),
+    m_parent(parent)
 {
-  builder->get_widget ("top-widget", m_top_window);
-  auto old_parent = m_top_window->get_parent ();
-  if (old_parent)
-  {
-    old_parent->remove (*m_top_window);
+  builder->get_widget("top-widget", m_top_window);
+  auto old_parent = m_top_window->get_parent();
+  if (old_parent) {
+    old_parent->remove(*m_top_window);
   }
 
-  builder->get_widget ("ent-name", m_ent_name);
-  builder->get_widget ("ent-description", m_ent_description);
+  builder->get_widget("ent-name", m_ent_name);
+  builder->get_widget("ent-description", m_ent_description);
 
   Gtk::Button* btn = nullptr;
-  builder->get_widget ("btn-save", btn);
-  btn->signal_clicked ().connect (
-    sigc::mem_fun (*this, &ResourceGroupViewImpl::cb_on_save_clicked));
+  builder->get_widget("btn-save", btn);
+  btn->signal_clicked().connect(
+    sigc::mem_fun(*this, &ResourceGroupViewImpl::cb_on_save_clicked));
 
-  builder->get_widget ("btn-cancel", btn);
-  btn->signal_clicked ().connect (
-    sigc::mem_fun (*this, &ResourceGroupViewImpl::cb_on_cancel_clicked));
+  builder->get_widget("btn-cancel", btn);
+  btn->signal_clicked().connect(
+    sigc::mem_fun(*this, &ResourceGroupViewImpl::cb_on_cancel_clicked));
 }
 
 void
-ResourceGroupViewImpl::show (void)
+ResourceGroupViewImpl::show(void)
 {
-  m_top_window->set_transient_for (*m_parent);
-  m_top_window->set_modal (true);
-  m_top_window->show ();
+  m_top_window->set_transient_for(*m_parent);
+  m_top_window->set_modal(true);
+  m_top_window->show();
 }
 
 void
-ResourceGroupViewImpl::hide (void)
+ResourceGroupViewImpl::hide(void)
 {
-  m_top_window->hide ();
-  m_top_window->set_modal (false);
-  m_top_window->unset_transient_for ();
+  m_top_window->hide();
+  m_top_window->set_modal(false);
+  m_top_window->unset_transient_for();
 }
 
 void
-ResourceGroupViewImpl::set_name (const std::string& name)
+ResourceGroupViewImpl::set_name(const std::string& name)
 {
-  m_ent_name->set_text (name);
+  m_ent_name->set_text(name);
 }
 
 void
-ResourceGroupViewImpl::set_description (const std::string& description)
+ResourceGroupViewImpl::set_description(const std::string& description)
 {
-  m_ent_description->set_text (description);
+  m_ent_description->set_text(description);
 }
 
 const std::string&
-ResourceGroupViewImpl::name (void) const
+ResourceGroupViewImpl::name(void) const
 {
-  m_name = m_ent_name->get_text ();
-  return m_name.raw ();
+  m_name = m_ent_name->get_text();
+  return m_name.raw();
 }
 
 const std::string&
-ResourceGroupViewImpl::description (void) const
+ResourceGroupViewImpl::description(void) const
 {
-  m_description = m_ent_description->get_text ();
-  return m_description.raw ();
+  m_description = m_ent_description->get_text();
+  return m_description.raw();
 }
 
 void
-ResourceGroupViewImpl::cb_on_save_clicked (void)
+ResourceGroupViewImpl::cb_on_save_clicked(void)
 {
-  m_handler->view_save_pressed ();
+  m_handler->view_save_pressed();
 }
 
 void
-ResourceGroupViewImpl::cb_on_cancel_clicked (void)
+ResourceGroupViewImpl::cb_on_cancel_clicked(void)
 {
-  m_handler->view_cancel_pressed ();
+  m_handler->view_cancel_pressed();
 }
 
 NAMESPACE__THITTAM__END

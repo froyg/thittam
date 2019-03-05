@@ -1,31 +1,18 @@
 # Requirement: astyle version 3.1
 
-# 2 space indents.
 --indent=spaces=2
-
 --indent-after-parens
 --indent-col1-comments
-
---style=gnu
-
-# Braces must always be used even for one line header blocks.
+--max-code-length=78
+--style=kr
 --add-braces
-
+--convert-tabs
+--unpad-paren
 --pad-header
 --pad-oper
 --pad-comma
-
 --align-pointer=type
 --align-reference=type
-
-# Only use spaces even when not meaning to indent.
---convert-tabs
-
-# Preserve Original date don't let astyle overwrite it.
---preserve-date
-
-# Return type above function name in case of function definitions.
 --break-return-type
-
-# Remove Trailing Whitespace.
-# ? N/A
+--break-return-type-decl
+--preserve-date

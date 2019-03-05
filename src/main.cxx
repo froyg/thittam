@@ -13,10 +13,10 @@
 #include "util.h"
 
 int
-main (int argc, char ** argv)
+main(int argc, char** argv)
 {
   auto app = std::make_shared<thittam::AppImpl> ();
-  int ret = app->run (argc, argv);
+  int ret = app->run(argc, argv);
   return ret;
 }
 
