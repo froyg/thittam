@@ -15,41 +15,55 @@
 #include "resource-group-controller.h"
 #include "resource-group-view.h"
 #include "resource-group.h"
+#include "resource-manager.h"
 
 #include "log.h"
 
 NAMESPACE__THITTAM__START
 
-class ResourceGroupControllerImpl :
-  public ResourceGroupController,
+class ResourceGroupControllerImpl : public ResourceGroupController,
   public ResourceGroupViewCallbacks
 {
 public:
-  ResourceGroupControllerImpl (hipro::log::Logger* logger);
+  ResourceGroupControllerImpl(hipro::log::Logger* logger);
 
   /*--- DI ---*/
-  void set_view (std::unique_ptr<ResourceGroupView> view)
+  void
+  set_view(std::unique_ptr<ResourceGroupView> view)
   {
-    m_view = std::move (view);
+    m_view = std::move(view);
   }
 
-  void set_model (ResourceGroup* model)
+  void
+  set_model(ResourceGroup* model)
   {
     m_model = model;
   }
+  void
+  set_helper_model(const ResourceManager& model)
+  {
+    m_rm = &model;
+  }
 
   /*--- ResourceGroupController interface ---*/
-  void show (OnDoneCallbackType on_done_callback);
-  void hide (void);
+  void
+  show(OnDoneCallbackType on_done_callback);
+  void
+  hide(void);
 
   /*--- ResourceGroupViewCallbacks interface ---*/
-  void view_save_pressed (void);
-  void view_cancel_pressed (void);
+  void
+  view_group_name_changed(void);
+  void
+  view_save_pressed(void);
+  void
+  view_cancel_pressed(void);
 
 private:
   hipro::log::Logger* logger = nullptr;
 
   std::unique_ptr<ResourceGroupView> m_view;
+  const ResourceManager* m_rm;
   ResourceGroup* m_model = nullptr;
 
   OnDoneCallbackType m_on_done_callback;

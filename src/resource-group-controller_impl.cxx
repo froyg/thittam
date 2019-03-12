@@ -11,42 +11,48 @@
 
 NAMESPACE__THITTAM__START
 
-ResourceGroupControllerImpl::ResourceGroupControllerImpl (
+ResourceGroupControllerImpl::ResourceGroupControllerImpl(
   hipro::log::Logger* logger)
-  : logger (logger)
+  : logger(logger)
 {
 
 }
 
 void
-ResourceGroupControllerImpl::show (OnDoneCallbackType on_done_callback)
+ResourceGroupControllerImpl::show(OnDoneCallbackType on_done_callback)
 {
   m_on_done_callback = on_done_callback;
-  m_view->set_name (m_model->name ());
-  m_view->set_description (m_model->description ());
+  m_view->set_name(m_model->name());
+  m_view->set_description(m_model->description());
 
-  m_view->show ();
+  m_view->show();
 }
 
 void
-ResourceGroupControllerImpl::hide (void)
+ResourceGroupControllerImpl::hide(void)
 {
-  m_view->hide ();
+  m_view->hide();
 }
 
 void
-ResourceGroupControllerImpl::view_save_pressed (void)
+ResourceGroupControllerImpl::view_group_name_changed(void)
 {
-  m_model->set_name (m_view->name ());
-  m_model->set_description (m_view->description ());
-
-  m_on_done_callback (DoneType::SAVE);
+  m_view->enable_save(m_rm->is_unique_group_name(m_view->name()));
 }
 
 void
-ResourceGroupControllerImpl::view_cancel_pressed (void)
+ResourceGroupControllerImpl::view_save_pressed(void)
 {
-  m_on_done_callback (DoneType::CANCEL);
+  m_model->set_name(m_view->name());
+  m_model->set_description(m_view->description());
+
+  m_on_done_callback(DoneType::SAVE);
+}
+
+void
+ResourceGroupControllerImpl::view_cancel_pressed(void)
+{
+  m_on_done_callback(DoneType::CANCEL);
 }
 
 NAMESPACE__THITTAM__END

@@ -72,7 +72,7 @@ ResourceGroup::is_unique_resource_name ( const std::string& resource_name )
       return false;
     }
 
-  for (int i = 0; i < resource_name.length(); i++)
+  for (size_t i = 0; i < resource_name.length(); i++)
     {
       if(resource_name.at(i) == ' ')
         {
