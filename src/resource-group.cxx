@@ -67,26 +67,21 @@ ResourceGroup::is_unique_resource_name ( const std::string& resource_name )
   // Resource Name must be unique and not null
   // and must not contain space
 
-  if (resource_name.empty())
-    {
+  if (resource_name.empty()) {
+    return false;
+  }
+
+  for (size_t i = 0; i < resource_name.length(); i++) {
+    if(resource_name.at(i) == ' ') {
       return false;
     }
+  }
 
-  for (size_t i = 0; i < resource_name.length(); i++)
-    {
-      if(resource_name.at(i) == ' ')
-        {
-          return false;
-        }
+  for ( auto& it : m_resources ) {
+    if ( it.name() == resource_name ) {
+      return false;
     }
-
-  for ( auto& it : m_resources )
-    {
-      if ( it.name() == resource_name )
-        {
-          return false;
-        }
-    }
+  }
   return true;
 }
 
