@@ -16,25 +16,16 @@
 
 /*--- A class to safely delete a shared_ptr ---*/
 template< class T >
-class SafeDeleter
-{
-public:
-  void
-  operator()(T* m)
-  {
-    delete m;
-  }
-};
+class SafeDeleter { public: void operator()(T * m) { delete m; } };
 
 /*--- Short namespaces ---*/
-namespace boost
-{
-namespace signals2 { }
-namespace filesystem { }
-namespace posix_time { }
-namespace gregorian { }
-namespace property_tree { }
-namespace program_options { }
+namespace boost {
+  namespace signals2 { }
+  namespace filesystem { }
+  namespace posix_time { }
+  namespace gregorian { }
+  namespace property_tree { }
+  namespace program_options { }
 }
 
 namespace bsig = ::boost::signals2;
@@ -44,10 +35,8 @@ namespace bgre = ::boost::gregorian;
 namespace bprt = ::boost::property_tree;
 namespace bpop = ::boost::program_options;
 
-bpot::ptime
-utc_to_local(const bpot::ptime& pt);
-bpot::ptime
-local_to_utc(const bpot::ptime& pt);
+bpot::ptime utc_to_local (const bpot::ptime & pt);
+bpot::ptime local_to_utc (const bpot::ptime & pt);
 
 #endif // HIPRO_THITTAM__1f1ef54a_c2c2_11e2_ab99_001f3c9e2082
 

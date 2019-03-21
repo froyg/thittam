@@ -20,64 +20,47 @@ NAMESPACE__THITTAM__START
 class WBSControllerImpl : public WBSController, public WBSViewCallbacks
 {
 public:
-  WBSControllerImpl(hipro::log::Logger* logger);
-  ~WBSControllerImpl() {}
+  WBSControllerImpl (hipro::log::Logger* logger);
+  ~WBSControllerImpl () {}
 
   /*--- DI ---*/
-  void
-  set_view(std::unique_ptr<WBSView> view)
+  void set_view (std::unique_ptr<WBSView> view)
   {
-    m_view = std::move(view);
+    m_view = std::move (view);
   }
 
-  void
-  set_wbs(WBS* wbs)
+  void set_wbs (WBS * wbs)
   {
-    m_wbs = std::move(wbs);
+    m_wbs = std::move (wbs);
   }
 
   /*--- WBSController interface ---*/
-  Gtk::Widget*
-  view_widget(void)
+  Gtk::Widget * view_widget (void)
   {
-    return m_view->widget();
+    return m_view->widget ();
   }
 
   /*--- WBSViewCallbacks interface ---*/
-  void
-  view_node_selected(std::vector<WBS::Path>&& path_list);
-  void
-  view_node_activated(const WBS::Path& path);
-  void
-  view_add_child_clicked(void);
-  void
-  view_add_sibling_clicked(void);
-  void
-  view_cut_clicked(void);
-  void
-  view_copy_clicked(void);
-  void
-  view_paste_clicked(void);
-  void
-  view_delete_clicked(void);
-  void
-  view_indent_clicked(void);
-  void
-  view_unindent_clicked(void);
-  void
-  view_up_clicked(void);
-  void
-  view_down_clicked(void);
-  void
-  view_title_changed(const std::string& text);
-  void
-  view_effort_changed(const std::string& text);
+  void view_node_selected (std::vector<WBS::Path> && path_list);
+  void view_node_activated (const WBS::Path & path);
+  void view_add_child_clicked (void);
+  void view_add_sibling_clicked (void);
+  void view_cut_clicked (void);
+  void view_copy_clicked (void);
+  void view_paste_clicked (void);
+  void view_delete_clicked (void);
+  void view_indent_clicked (void);
+  void view_unindent_clicked (void);
+  void view_up_clicked (void);
+  void view_down_clicked (void);
+  void view_title_changed (const std::string & text);
+  void view_effort_changed (const std::string & text);
 
 private:
   hipro::log::Logger* logger = nullptr;
 
   std::unique_ptr<WBSView> m_view;
-  WBS* m_wbs = nullptr;
+  WBS * m_wbs = nullptr;
 
   WBS::Path m_selected_path;
 };

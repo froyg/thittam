@@ -19,14 +19,11 @@ NAMESPACE__THITTAM__START
 class ProjectController
 {
 public:
-  virtual
-  ~ProjectController() {}
+  virtual ~ProjectController () {}
 
-  virtual Gtk::Widget*
-  view_widget(void) = 0;
+  virtual Gtk::Widget * view_widget (void) = 0;
 
-  virtual void
-  show_wbs(void) = 0;
+  virtual void show_wbs (void) = 0;
 };
 
 NAMESPACE__THITTAM__END

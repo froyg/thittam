@@ -20,16 +20,13 @@ NAMESPACE__THITTAM__START
 class ProjectFactoryImpl : public ProjectFactory
 {
 public:
-  ProjectFactoryImpl(hipro::log::Logger* logger);
-  ~ProjectFactoryImpl() {}
+  ProjectFactoryImpl (hipro::log::Logger* logger);
+  ~ProjectFactoryImpl () {}
 
   /*--- ProjectFactory interface ---*/
-  bool
-  verify(const std::string& file) const;
-  std::unique_ptr<Project>
-  create(void) const;
-  std::unique_ptr<Project>
-  create(const std::string& file_name) const;
+  bool verify (const std::string & file) const;
+  std::unique_ptr<Project> create (void) const;
+  std::unique_ptr<Project> create (const std::string & file_name) const;
 
 private:
   hipro::log::Logger* logger = nullptr;

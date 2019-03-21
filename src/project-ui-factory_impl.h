@@ -20,19 +20,17 @@ NAMESPACE__THITTAM__START
 class ProjectUIFactoryImpl : public ProjectUIFactory
 {
 public:
-  ProjectUIFactoryImpl(hipro::log::Logger* logger);
-  ~ProjectUIFactoryImpl() {}
+  ProjectUIFactoryImpl (hipro::log::Logger* logger);
+  ~ProjectUIFactoryImpl () {}
 
   /*--- DI ---*/
-  void
-  set_parent_window(Gtk::Window* window)
+  void set_parent_window (Gtk::Window* window)
   {
     m_parent_window = window;
   }
 
   /*--- ProjectUIFactory interface ---*/
-  std::unique_ptr<ProjectController>
-  create(Project* project);
+  std::unique_ptr<ProjectController> create (Project * project);
 
 private:
   hipro::log::Logger* logger = nullptr;

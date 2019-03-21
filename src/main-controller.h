@@ -17,11 +17,9 @@ NAMESPACE__THITTAM__START
 class MainController
 {
 public:
-  virtual
-  ~MainController() {}
+  virtual ~MainController () {}
 
-  virtual void
-  start(void) = 0;
+  virtual void start (void) = 0;
 };
 
 NAMESPACE__THITTAM__END

@@ -22,37 +22,27 @@ NAMESPACE__THITTAM__START
 class WBSImpl : public WBS
 {
 public:
-  WBSImpl(hipro::log::Logger* logger);
-  ~WBSImpl() {}
+  WBSImpl (hipro::log::Logger* logger);
+  ~WBSImpl () {}
 
   /*--- WBS interface ---*/
-  bool
-  is_first_child(const Path& path) const;
-  bool
-  is_last_child(const Path& path) const;
-  bool
-  is_top_level(const Path& path) const;
+  bool is_first_child (const Path & path) const;
+  bool is_last_child (const Path & path) const;
+  bool is_top_level (const Path & path) const;
 
-  void
-  add_child(const Path& parent_path);
-  void
-  add_sibling(const Path& path);
-  void
-  indent(const Path& path);
-  void
-  unindent(const Path& path);
+  void add_child (const Path & parent_path);
+  void add_sibling (const Path & path);
+  void indent (const Path & path);
+  void unindent (const Path & path);
 
-  Task*
-  get_task_at_level(const Path& path, size_t level);
+  Task *get_task_at_level(const Path & path, size_t level);
 
-  bool
-  dirty(void) const
+  bool dirty (void) const
   {
     return m_dirty;
   }
 
-  void
-  clear_dirty(void)
+  void clear_dirty (void)
   {
     m_dirty = false;
   }

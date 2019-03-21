@@ -19,52 +19,38 @@ NAMESPACE__THITTAM__START
 class ResourceViewImpl : public ResourceView
 {
 public:
-  ResourceViewImpl(
+  ResourceViewImpl (
     hipro::log::Logger* logger,
     Glib::RefPtr<Gtk::Builder> builder,
     Gtk::Window* parent);
 
   /*--- ResourceView interface ---*/
-  Gtk::Widget*
-  widget(void)
+  Gtk::Widget* widget (void)
   {
     return m_top_window;
   }
 
-  void
-  set_handler(ResourceViewCallbacks* handler)
+  void set_handler (ResourceViewCallbacks* handler)
   {
     m_handler = handler;
   }
 
-  void
-  show(void);
-  void
-  hide(void);
+  void show (void);
+  void hide (void);
 
-  void
-  set_short_name(const std::string& short_name);
-  void
-  set_long_name(const std::string& long_name);
-  void
-  set_cost(double cost);
-  void
-  set_description(const std::string& description);
+  void set_short_name (const std::string& short_name);
+  void set_long_name (const std::string& long_name);
+  void set_cost (double cost);
+  void set_description (const std::string& description);
 
-  const std::string&
-  short_name(void) const;
-  const std::string&
-  long_name(void) const;
-  double
-  cost(void) const;
-  const std::string&
-  description(void) const;
+  const std::string& short_name (void) const;
+  const std::string& long_name (void) const;
+  double cost (void) const;
+  const std::string& description (void) const;
 
 private:
-  void
-  cb_on_save_clicked(void);
-  void
-  cb_on_cancel_clicked(void);
+  void cb_on_save_clicked (void);
+  void cb_on_cancel_clicked (void);
 
 private:
   hipro::log::Logger* logger = nullptr;

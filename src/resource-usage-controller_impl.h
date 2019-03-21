@@ -20,21 +20,19 @@ class ResourceUsageControllerImpl
   : public ResourceUsageController, public ResourceUsageViewCallbacks
 {
 public:
-  ResourceUsageControllerImpl(hipro::log::Logger* logger);
-  ~ResourceUsageControllerImpl() {}
+  ResourceUsageControllerImpl (hipro::log::Logger* logger);
+  ~ResourceUsageControllerImpl () {}
 
   /*--- DI ---*/
-  void
-  set_view(std::unique_ptr<ResourceUsageView> view)
+  void set_view (std::unique_ptr<ResourceUsageView> view)
   {
-    m_view = std::move(view);
+    m_view = std::move (view);
   }
 
   /*--- ResourceUsageController interface ---*/
-  Gtk::Widget*
-  view_widget(void)
+  Gtk::Widget * view_widget (void)
   {
-    return m_view->widget();
+    return m_view->widget ();
   }
 
 private:

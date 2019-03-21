@@ -19,11 +19,9 @@ NAMESPACE__THITTAM__START
 class WBSController
 {
 public:
-  virtual
-  ~WBSController() {}
+  virtual ~WBSController() {}
 
-  virtual Gtk::Widget*
-  view_widget(void) = 0;
+  virtual Gtk::Widget * view_widget (void) = 0;
 };
 
 NAMESPACE__THITTAM__END

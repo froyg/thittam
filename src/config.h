@@ -19,16 +19,13 @@ class ConfigSource
 {
 public:
   /* Method to read the entire configuration */
-  virtual const std::string&
-  read(void) = 0;
+  virtual const std::string & read (void) = 0;
 
   /* Method to push the configuration into the persistent store */
-  virtual void
-  write(const std::string& data) = 0;
+  virtual void write (const std::string & data) = 0;
 
   /* dtor */
-  virtual
-  ~ConfigSource() {}
+  virtual ~ConfigSource () {}
 };
 
 
@@ -37,18 +34,14 @@ class Config
 {
 public:
   /* Methods to set and retrieve the serial-port */
-  virtual void
-  set_server_address(const std::string& server_address) = 0;
-  virtual const std::string&
-  server_address(void) const = 0;
+  virtual void set_server_address (const std::string & server_address) = 0;
+  virtual const std::string & server_address (void) const = 0;
 
   /* Copy operator */
-  virtual void
-  operator= (const Config& other) = 0;
+  virtual void operator= (const Config & other) = 0;
 
   /* dtor */
-  virtual
-  ~Config() {}
+  virtual ~Config () {}
 };
 
 #endif // HIPRO_THITTAM__74ae38e2_fd94_11e2_878f_001f3c9e2082

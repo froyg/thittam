@@ -27,45 +27,34 @@ NAMESPACE__THITTAM__START
 namespace bofs = ::boost::filesystem;
 
 class AppImpl : public App,
-  public std::enable_shared_from_this<AppImpl>
+                public std::enable_shared_from_this<AppImpl>
 {
 public:
   typedef ::std::shared_ptr<AppImpl> ptr_t;
 
 public:
   /*--- ctor/dtor/factory ---*/
-  AppImpl();
-  ~AppImpl() {}
+  AppImpl ();
+  ~AppImpl () {}
 
   /*--- Methods required by the App interface ---*/
-  int
-  run(int argc, char** argv);
-  void
-  quit(void);
+  int run (int argc, char **argv);
+  void quit (void);
 
   /*--- Other convenience methods ---*/
-  bool
-  load_options(int argc, char** argv, int* error_number);
-  const bofs::path&
-  locate_configuration_file(void);
-  const bofs::path&
-  locate_home_directory(void);
+  bool load_options (int argc, char ** argv, int * error_number);
+  const bofs::path & locate_configuration_file (void);
+  const bofs::path & locate_home_directory (void);
 #ifdef _WIN32
-  const bofs::path&
-  locate_configuration_w32(void);
-  const bofs::path&
-  locate_home_directory_w32(void);
+  const bofs::path & locate_configuration_w32 (void);
+  const bofs::path & locate_home_directory_w32 (void);
 #else
-  const bofs::path&
-  locate_configuration_file_posix(void);
-  const bofs::path&
-  locate_home_directory_posix(void);
+  const bofs::path & locate_configuration_file_posix (void);
+  const bofs::path & locate_home_directory_posix (void);
 #endif
 
-  void
-  create_app_stage1(void);
-  void
-  on_sub_app_closed(SubApp::weak_ptr_t sub_app);
+  void create_app_stage1 (void);
+  void on_sub_app_closed (SubApp::weak_ptr_t sub_app);
 
   /*--- Data members ---*/
   hipro::log::Logger* logger;

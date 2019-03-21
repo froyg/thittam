@@ -14,16 +14,16 @@
 typedef boost::date_time::c_local_adjustor<bpot::ptime> local_adj;
 
 bpot::ptime
-utc_to_local(const bpot::ptime& pt)
+utc_to_local (const bpot::ptime & pt)
 {
-  return local_adj::utc_to_local(pt);
+  return local_adj::utc_to_local (pt);
 }
 
 bpot::ptime
-local_to_utc(const bpot::ptime& pt)
+local_to_utc (const bpot::ptime & pt)
 {
-  bpot::ptime ref_utc_time(bgre::date(2013, 01, 01), bpot::hours(0));
-  auto ref_local_time = utc_to_local(ref_utc_time);
+  bpot::ptime ref_utc_time (bgre::date (2013, 01, 01), bpot::hours (0));
+  auto ref_local_time = utc_to_local (ref_utc_time);
 
   bpot::time_duration tdiff = ref_local_time - ref_utc_time;
   return (pt - tdiff);

@@ -20,17 +20,15 @@ NAMESPACE__THITTAM__START
 class GANTTViewImpl : public GANTTView
 {
 public:
-  GANTTViewImpl(hipro::log::Logger* logger, Glib::RefPtr<Gtk::Builder> builder);
+  GANTTViewImpl (hipro::log::Logger* logger, Glib::RefPtr<Gtk::Builder> builder);
 
   /*--- GANTTView interface ---*/
-  Gtk::Widget*
-  widget(void)
+  Gtk::Widget* widget (void)
   {
     return m_top_widget;
   }
 
-  void
-  set_handler(GANTTViewCallbacks* handler)
+  void set_handler (GANTTViewCallbacks* handler)
   {
     m_handler = handler;
   }

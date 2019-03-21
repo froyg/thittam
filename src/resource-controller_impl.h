@@ -25,32 +25,26 @@ class ResourceControllerImpl :
   public ResourceViewCallbacks
 {
 public:
-  ResourceControllerImpl(hipro::log::Logger* logger);
+  ResourceControllerImpl (hipro::log::Logger* logger);
 
   /*--- DI ---*/
-  void
-  set_view(std::unique_ptr<ResourceView> view)
+  void set_view (std::unique_ptr<ResourceView> view)
   {
-    m_view = std::move(view);
+    m_view = std::move (view);
   }
 
-  void
-  set_model(Resource* model)
+  void set_model (Resource* model)
   {
     m_model = model;
   }
 
   /*--- ResourceController interface ---*/
-  void
-  show(OnDoneCallbackType on_done_callback);
-  void
-  hide(void);
+  void show (OnDoneCallbackType on_done_callback);
+  void hide (void);
 
   /*--- ResourceViewCallbacks interface ---*/
-  void
-  view_save_pressed(void);
-  void
-  view_cancel_pressed(void);
+  void view_save_pressed (void);
+  void view_cancel_pressed (void);
 
 private:
   hipro::log::Logger* logger = nullptr;

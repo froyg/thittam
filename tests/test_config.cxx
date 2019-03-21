@@ -24,15 +24,13 @@
 class ConfigTest : public ::testing::Test
 {
 protected:
-  void
-  SetUp(void)
+  void SetUp (void)
   {
-    m_logger = HLog::get("thittam.tests");
-    m_logger->set_level(HLogLevel::WARNING);
+    m_logger = HLog::get ("thittam.tests");
+    m_logger->set_level (HLogLevel::WARNING);
   }
 
-  void
-  TearDown(void)
+  void TearDown (void)
   {
 
   }
@@ -45,56 +43,44 @@ class MockConfigSource1 : public ConfigSource
 public:
   typedef ::boost::shared_ptr<MockConfigSource1> ptr_t;
 
-  MockConfigSource1() {}
+  MockConfigSource1 () {}
 
-  const std::string&
-  read(void)
-  {
-    return m_data;
-  }
-  void
-  write(const std::string& data)
-  {
-    m_data = data;
-  }
+  const std::string & read (void) { return m_data; }
+  void write (const std::string & data) { m_data = data; }
 
-  const std::string&
-  data(void)
-  {
-    return m_data;
-  }
+  const std::string & data (void) { return m_data; }
 
 private:
   std::string m_data;
 };
 
 
-TEST_F(ConfigTest, EmptyConfiguration)
+TEST_F (ConfigTest, EmptyConfiguration)
 {
-  ConfigSource::ptr_t cs(new MockConfigSource1());
-  PersistentConfig::ptr_t cfg(new PersistentConfig(m_logger, cs));
+  ConfigSource::ptr_t cs (new MockConfigSource1 ());
+  PersistentConfig::ptr_t cfg (new PersistentConfig (m_logger, cs));
 
-  EXPECT_EQ(cfg->server_address(), "");
+  EXPECT_EQ (cfg->server_address (), "");
 }
 
-TEST_F(ConfigTest, NewSettingInEmptyConfiguration)
+TEST_F (ConfigTest, NewSettingInEmptyConfiguration)
 {
-  ConfigSource::ptr_t cs(new MockConfigSource1());
-  PersistentConfig::ptr_t cfg(new PersistentConfig(m_logger, cs));
+  ConfigSource::ptr_t cs (new MockConfigSource1 ());
+  PersistentConfig::ptr_t cfg (new PersistentConfig (m_logger, cs));
 
-  EXPECT_EQ(cfg->server_address(), "");
+  EXPECT_EQ (cfg->server_address (), "");
 
   bprt::ptree pt;
-  cfg->set_server_address("test");
-  std::istringstream is1(cs->read());
-  bprt::read_info(is1, pt);
+  cfg->set_server_address ("test");
+  std::istringstream is1 (cs->read ());
+  bprt::read_info (is1, pt);
 
-  EXPECT_EQ(pt.get<std::string> ("basic.server_address", ""), "test");
+  EXPECT_EQ (pt.get<std::string> ("basic.server_address", ""), "test");
 
-  std::istringstream is2(cs->read());
-  bprt::read_info(is2, pt);
+  std::istringstream is2 (cs->read ());
+  bprt::read_info (is2, pt);
 
-  EXPECT_EQ(pt.get<std::string> ("basic.server_address", ""), "test");
+  EXPECT_EQ (pt.get<std::string> ("basic.server_address", ""), "test");
 }
 
 /*

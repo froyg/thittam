@@ -21,11 +21,9 @@ NAMESPACE__THITTAM__START
 class ResourceMVCFactory
 {
 public:
-  virtual
-  ~ResourceMVCFactory() {}
+  virtual ~ResourceMVCFactory () {}
 
-  virtual std::unique_ptr<ResourceController>
-  create(Resource* model) = 0;
+  virtual std::unique_ptr<ResourceController> create (Resource* model) = 0;
 };
 
 NAMESPACE__THITTAM__END

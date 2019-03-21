@@ -19,22 +19,18 @@ NAMESPACE__THITTAM__START
 class ResourceUsageViewCallbacks
 {
 public:
-  virtual
-  ~ResourceUsageViewCallbacks() {}
+  virtual ~ResourceUsageViewCallbacks () {}
 
 };
 
 class ResourceUsageView
 {
 public:
-  virtual
-  ~ResourceUsageView() {}
+  virtual ~ResourceUsageView () {}
 
-  virtual Gtk::Widget*
-  widget(void) = 0;
+  virtual Gtk::Widget* widget (void) = 0;
 
-  virtual void
-  set_handler(ResourceUsageViewCallbacks* handler) = 0;
+  virtual void set_handler (ResourceUsageViewCallbacks* handler) = 0;
 };
 
 NAMESPACE__THITTAM__END
