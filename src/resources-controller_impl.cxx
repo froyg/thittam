@@ -18,26 +18,52 @@ ResourcesControllerImpl::ResourcesControllerImpl(
   : logger(logger), m_resource_mvc_factory(std::move(resource_mvc_factory)),
     m_resource_group_mvc_factory(std::move(resource_group_mvc_factory)) {}
 
+bool
+ResourcesControllerImpl::Selection::is_group()
+{
+  return resource_id.empty();
+}
+
+bool
+ResourcesControllerImpl::Selection::is_resource()
+{
+  return !is_group();
+}
+
+bool
+operator==(const ResourcesControllerImpl::Selection& s1,
+  const ResourcesControllerImpl::Selection& s2)
+{
+  return s1.group_index == s2.group_index && s1.resource_id == s2.resource_id;
+}
+
+bool
+operator!=(const ResourcesControllerImpl::Selection& s1,
+  const ResourcesControllerImpl::Selection& s2)
+{
+  return !(s1 == s2);
+}
+
 void
 ResourcesControllerImpl::view_node_selected(
-  const Gtk::TreeModel::Path& path, const Gtk::TreeRow& row)
+  const std::vector<Gtk::TreeModel::Path>& paths)
 {
-  bool f = m_view->node_is_selected(path);
-  m_view->enable_add_resource(f);
-  m_view->enable_delete(f);
-  if (f == true) {
-    group_index = path[0];
-    const auto& id = m_view->get_id(row);
-    if (m_view->selected_is_group()) {
-      group_id = id;
-      resource_id = "";
+  m_view->enable_delete(true);
+  m_view->enable_add_resource(paths.size() == 1);
+  m_selections.erase(m_selections.begin(), m_selections.end());
+  for (const auto& path : paths) {
+    const auto& row_iter = m_view->path_to_rowiter(path);
+    Selection s;
+    s.group_index = path[0];
+    const auto& id = m_view->get_id(row_iter);
+    if (m_view->is_group(path)) {
+      s.group_id = id;
+      s.resource_id = "";
     } else {
-      group_id = m_view->get_id(*row.parent());
-      resource_id = id;
+      s.group_id = m_view->get_id(row_iter->parent());
+      s.resource_id = id;
     }
-  } else {
-    group_index = -1;
-    group_id = resource_id = "";
+    m_selections.push_back(s);
   }
 }
 
@@ -87,12 +113,13 @@ ResourcesControllerImpl::add_resource_done(
     m_resource_controller.reset();
     return;
   }
+  auto s = m_selections[0];
   auto& res = m_resource;
-  auto& group = *m_rm->get_resource_group_mutable(group_id);
+  auto& group = *m_rm->get_resource_group_mutable(s.group_id);
   if (group.add_resource(res)) {
     m_resource_controller->hide();
     m_resource_controller.reset();
-    m_view->add_resource(group_index, res.id(), res.name(), res.cost(),
+    m_view->add_resource(s.group_index, res.id(), res.name(), res.cost(),
       res.description());
   }
 }
