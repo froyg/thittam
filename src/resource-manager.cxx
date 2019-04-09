@@ -79,7 +79,7 @@ ResourceManager::is_unique_group_name(const std::string& group_name) const
   }
 
   for (size_t i = 0; i < group_name.length(); i++) {
-    if(group_name.at(i) == ' ') {
+    if(!isalnum(group_name.at(i))) {
       return false;
     }
   }
