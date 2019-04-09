@@ -72,9 +72,18 @@ bool
 ResourceManager::is_unique_group_name(const std::string& group_name) const
 {
   // Resource Group Name must be unique and not null
+  // and must not contain space
+
   if (group_name.empty()) {
     return false;
   }
+
+  for (size_t i = 0; i < group_name.length(); i++) {
+    if(!isalnum(group_name.at(i))) {
+      return false;
+    }
+  }
+
   for (auto& it : m_resource_groups) {
     if (it.name() == group_name) {
       return false;
