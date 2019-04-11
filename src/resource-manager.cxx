@@ -105,6 +105,18 @@ ResourceManager::add_group(ResourceGroup& group)
   return true;
 }
 
+bool
+ResourceManager::delete_group ( const std::string& group_id )
+{
+  const auto old_size = m_resource_groups.size();
+  m_resource_groups.remove_if (
+    [&group_id] ( const auto & rg ) -> bool
+  {
+    return group_id == rg.id();
+  } );
+  return ( old_size - m_resource_groups.size() > 0 );
+}
+
 void
 ResourceManager::generate_json(void)
 {

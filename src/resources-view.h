@@ -82,6 +82,8 @@ public:
     const std::string&) = 0;
   virtual void
   add_group(const std::string&, const std::string&, const std::string&) = 0;
+  virtual void delete_resource_or_group ( const int, const int ) = 0;
+  virtual void delete_resources(const int, const std::vector<int>&) = 0;
 };
 
 NAMESPACE__THITTAM__END

@@ -145,5 +145,15 @@
         <property name="use_underline">True</property>
       </object>
     </child>
+    <child>
+      <object class="GtkMenuItem" id="menu-delete">
+        <property name="visible">True</property>
+        <property name="sensitive">False</property>
+        <property name="can_focus">False</property>
+        <property name="action_name">resource.delete</property>
+        <property name="label" translatable="yes">Delete</property>
+        <property name="use_underline">True</property>
+      </object>
+    </child>
   </object>
 </interface>

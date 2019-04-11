@@ -33,15 +33,17 @@ ResourcesViewImpl::ResourcesViewImpl(
 void
 ResourcesViewImpl::init_toolbar(Glib::RefPtr<Gtk::Builder> builder)
 {
-  builder->get_widget("tb-add-resource", m_btn_add_resource);
-  builder->get_widget("tb-add-group", m_btn_add_group);
+  builder->get_widget ( "tb-add-resource", m_btn_add_resource );
+  builder->get_widget ( "tb-add-group", m_btn_add_group );
+  builder->get_widget ( "tb-delete", m_btn_delete );
 
-  m_btn_add_resource->signal_clicked().connect(
-    sigc::mem_fun(*this, &ResourcesViewImpl::cb_on_add_resource_clicked));
-  m_btn_add_group->signal_clicked().connect(
-    sigc::mem_fun(*this, &ResourcesViewImpl::cb_on_add_group_clicked));
+  m_btn_add_resource->signal_clicked().connect (
+    sigc::mem_fun ( *this, &ResourcesViewImpl::cb_on_add_resource_clicked ) );
+  m_btn_add_group->signal_clicked().connect (
+    sigc::mem_fun ( *this, &ResourcesViewImpl::cb_on_add_group_clicked ) );
+  m_btn_delete->signal_clicked().connect (
+    sigc::mem_fun ( *this, &ResourcesViewImpl::cb_on_delete_clicked ) );
 }
-
 
 void
 ResourcesViewImpl::init_menu(Glib::RefPtr<Gtk::Builder> builder)
@@ -53,15 +55,17 @@ ResourcesViewImpl::init_menu(Glib::RefPtr<Gtk::Builder> builder)
       sigc::mem_fun(*this, &ResourcesViewImpl::cb_on_add_resource_clicked));
   m_action_add_group = m_action_group->add_action(
       "add-group",
-      sigc::mem_fun(*this, &ResourcesViewImpl::cb_on_add_group_clicked));
+      sigc::mem_fun ( *this, &ResourcesViewImpl::cb_on_add_group_clicked ) );
+  m_action_delete = m_action_group->add_action (
+      "delete", sigc::mem_fun ( *this, &ResourcesViewImpl::cb_on_delete_clicked ) );
 
   m_top_widget->insert_action_group("resource", m_action_group);
 
-  builder->get_widget("resource-popup", m_menu);
-  builder->get_widget("menu-add-resource", m_menu_add_resource);
-  builder->get_widget("menu-add-resource-group", m_menu_add_group);
+  builder->get_widget ( "resource-popup", m_menu );
+  builder->get_widget ( "menu-add-resource", m_menu_add_resource );
+  builder->get_widget ( "menu-add-resource-group", m_menu_add_group );
+  builder->get_widget ( "menu-delete", m_menu_delete );
 }
-
 
 void
 ResourcesViewImpl::init_tree(Glib::RefPtr<Gtk::Builder> builder)
@@ -105,7 +109,13 @@ ResourcesViewImpl::cb_on_add_group_clicked(void)
 }
 
 void
-ResourcesViewImpl::cb_on_row_selected(void)
+ResourcesViewImpl::cb_on_delete_clicked ( void )
+{
+  m_handler->view_delete_clicked();
+}
+
+void
+ResourcesViewImpl::cb_on_row_selected ( void )
 {
   const auto& paths = m_tree_selection->get_selected_rows();
   m_handler->view_node_selected(paths);
@@ -191,13 +201,17 @@ void
 ResourcesViewImpl::enable_add_group(bool enable)
 {
   m_action_add_group->set_enabled(enable);
-  m_menu_add_group->set_sensitive(enable);
+  // m_menu_add_group->set_sensitive(enable);
   m_btn_add_group->set_sensitive(enable);
 }
 
 void
 ResourcesViewImpl::enable_delete(bool enable)
 {
+  m_action_delete->set_enabled ( enable );
+  // todo: gives segfault
+  // m_menu_add_group->set_sensitive(enable);
+  m_btn_add_group->set_sensitive ( enable );
 }
 
 void
@@ -229,6 +243,39 @@ ResourcesViewImpl::add_group(const std::string& id,
   row.set_value(m_cols.description, description);
 }
 
+void
+ResourcesViewImpl::delete_resource_or_group ( const int group_index, const int resource_index )
+{
+  if ( group_index < 0 )
+    {
+      return;
+    }
+  Gtk::TreePath p;
+  p.push_back ( group_index );
+  if ( resource_index >= 0 )
+    {
+      p.push_back ( resource_index );
+    }
+  auto iter = *m_tree_store->get_iter ( p );
+  m_tree_store->erase ( iter );
+  enable_add_group ( true );
+}
+
+void ResourcesViewImpl::delete_resources(const int group_index, const std::vector<int> &resource_indices)
+{
+  int count = 0;
+  for (const auto i : resource_indices)
+  {
+    Gtk::TreePath p;
+    p.push_back(group_index);
+    p.push_back(i - count);
+    Log_I << i << "-" << count << "=" << (i - count);
+    auto iter = *m_tree_store->get_iter(p);
+    m_tree_store->erase(iter);
+    count++;
+  }
+  enable_add_group(true);
+}
 NAMESPACE__THITTAM__END
 
 /*
