@@ -25,52 +25,67 @@ class ResourcesControllerImpl
   : public ResourcesController, public ResourcesViewCallbacks
 {
 public:
-  ResourcesControllerImpl (
+  ResourcesControllerImpl(
     hipro::log::Logger* logger,
     std::unique_ptr<ResourceMVCFactory> resource_mvc_factory,
-    std::unique_ptr<ResourceGroupMVCFactory> resource_group_mvc_factory );
+    std::unique_ptr<ResourceGroupMVCFactory> resource_group_mvc_factory);
   ~ResourcesControllerImpl() {}
 
   /*--- DI ---*/
   void
-  set_view ( std::unique_ptr<ResourcesView> view )
+  set_view(std::unique_ptr<ResourcesView> view)
   {
-    m_view = std::move ( view );
+    m_view = std::move(view);
   }
 
   void
-  set_rm ( std::unique_ptr<ResourceManager> rm )
+  set_rm(std::unique_ptr<ResourceManager> rm)
   {
-    m_rm = std::move ( rm );
+    m_rm = std::move(rm);
   }
 
   /*--- ResourcesController interface ---*/
   Gtk::Widget*
-  view_widget ( void )
+  view_widget(void)
   {
     return m_view->widget();
   }
 
   // Called when a node is selected
-  void view_node_selected ( const Gtk::TreeModel::Path&, const Gtk::TreeRow& );
-  void view_node_changed ( const Gtk::TreeModel::Path&, const Gtk::TreeRow& );
+  void
+  view_node_selected(const std::vector<Gtk::TreeModel::Path>&);
+  void
+  view_node_changed(const Gtk::TreeModel::Path&, const Gtk::TreeRow&);
 
-  void view_add_resource_clicked ( void );
-  void view_add_group_clicked ( void );
-  void view_delete_clicked ( void );
+  void
+  view_add_resource_clicked(void);
+  void
+  view_add_group_clicked(void);
+  void
+  view_delete_clicked(void);
+
+  struct Selection {
+    int group_index;
+    int resource_index;
+    std::string group_id;
+    std::string resource_id;
+    bool
+    is_group() const;
+    bool
+    is_resource() const;
+  };
 
 private:
-  void add_resource_done ( ResourceController::DoneType done_type );
-  void add_resource_group_done ( ResourceGroupController::DoneType done_type );
+  void
+  add_resource_done(ResourceController::DoneType done_type);
+  void
+  add_resource_group_done(ResourceGroupController::DoneType done_type);
 
-private:
   hipro::log::Logger* logger = nullptr;
   std::unique_ptr<ResourceMVCFactory> m_resource_mvc_factory;
   std::unique_ptr<ResourceGroupMVCFactory> m_resource_group_mvc_factory;
 
-  int group_index = -1;
-  std::string group_id = "";
-  std::string resource_id = "";
+  std::vector<Selection> m_selections;
 
   std::unique_ptr<ResourcesView> m_view;
   std::unique_ptr<ResourceManager> m_rm;
@@ -81,12 +96,21 @@ private:
   std::unique_ptr<ResourceGroupController> m_resource_group_controller;
 };
 
+bool
+operator!=(const ResourcesControllerImpl::Selection& s1,
+  const ResourcesControllerImpl::Selection& s2);
+bool
+operator==(const ResourcesControllerImpl::Selection& s1,
+  const ResourcesControllerImpl::Selection& s2);
+bool operator<(const ResourcesControllerImpl::Selection &s1,
+               const ResourcesControllerImpl::Selection &s2);
+
 NAMESPACE__THITTAM__END
 
 #endif // HIPRO__123e5b40_5a93_11e8_a7b6_448500dfb04c
 
-/*
-  Local Variables:
-  mode: c++
-  End:
-*/
+    /*
+      Local Variables:
+      mode: c++
+      End:
+    */

@@ -15,16 +15,18 @@
 #include "_namespace.h"
 #include "resource-group-controller.h"
 #include "resource-group.h"
+#include "resource-manager.h"
 
 NAMESPACE__THITTAM__START
 
 class ResourceGroupMVCFactory
 {
 public:
-  virtual ~ResourceGroupMVCFactory () {}
+  virtual
+  ~ResourceGroupMVCFactory() {}
 
-  virtual std::unique_ptr<ResourceGroupController> create (
-    ResourceGroup* model) = 0;
+  virtual std::unique_ptr<ResourceGroupController>
+  create(ResourceGroup* model, const ResourceManager& groups) = 0;
 };
 
 NAMESPACE__THITTAM__END
