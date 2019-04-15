@@ -108,6 +108,73 @@ ResourceManager::delete_group ( const std::string& group_id )
   return ( old_size - m_resource_groups.size() > 0 );
 }
 
+// returns a resource's parent resource group
+ResourceGroup*
+ResourceManager::get_parent_mutable (const std::string& resource_id)
+{
+	for(auto& it : m_resource_groups) {
+		if(get_resource(it.id(), resource_id) != NULL) {
+			return &it;
+		}
+	}
+	return NULL;
+}
+
+bool
+ResourceManager::modify_organisation (std::vector<std::string> ids, 
+	const std::string& id)
+{
+	// if `selection` is group and `buffer` is resource
+	// paste resources in that group
+
+	for(unsigned int i = 0; i < ids.size(); i++) {
+		auto selection = get_resource_group_mutable(id);
+		if(!selection) {
+			return false;
+		}
+
+		auto parent = get_parent_mutable(ids[i]);
+		if(!parent) {
+			return false;
+		}
+
+		auto res = get_resource_mutable(parent->id(), ids[i]);
+		if(!res) {
+			return false;
+		}
+
+		// create copy of resource
+		Resource new_res;
+		new_res.set_id(res->id());
+		new_res.set_name(res->name());
+		new_res.set_long_name(res->long_name());
+		new_res.set_cost(res->cost());
+		new_res.set_description(res->description());
+
+		// delete this resource first, so that
+		// id and name remain unique and can be reused
+		if(!parent->delete_resource(res->id())) {
+			return false;
+		}
+
+		// give this resource to ResourceGroup::add_resource()
+		if(!selection->add_resource(new_res)) {
+			return false;
+		}
+	}
+	return true;
+
+// TODO
+	// if selection is `resource` and `buffer` is group
+		// do nothing
+
+	// if `selection` is resource and `buffer` is resource
+		// paste resources after that res
+
+	// if `selection` is group and `buffer` is group
+		// paste groups after that group
+}
+
 void
 ResourceManager::generate_json(void)
 {
