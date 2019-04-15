@@ -44,14 +44,12 @@ public:
   void
   enable_delete(bool enable);
 
-  void
-  add_resource(const int, const std::string&,
-    const std::string&, const float,
-    const std::string&);
-  void
-  add_group(const std::string& id,
-    const std::string& name,
-    const std::string& description);
+  void add_resource ( const int, const std::string&, const std::string&,
+    const float, const std::string& );
+  void add_group ( const std::string& id, const std::string& name,
+    const std::string& description );
+  void delete_resource_or_group ( const int, const int );
+  void delete_resources(const int, const std::vector<int>&);
 
   class Columns : public Gtk::TreeModel::ColumnRecord
   {
@@ -77,14 +75,17 @@ private:
 
   Gtk::ToolButton* m_btn_add_resource = nullptr;
   Gtk::ToolButton* m_btn_add_group = nullptr;
+  Gtk::ToolButton* m_btn_delete = nullptr;
 
   Glib::RefPtr<Gio::SimpleActionGroup> m_action_group;
   Glib::RefPtr<Gio::SimpleAction> m_action_add_resource;
   Glib::RefPtr<Gio::SimpleAction> m_action_add_group;
+  Glib::RefPtr<Gio::SimpleAction> m_action_delete;
 
   Gtk::Menu* m_menu = nullptr;
   Gtk::MenuItem* m_menu_add_resource = nullptr;
   Gtk::MenuItem* m_menu_add_group = nullptr;
+  Gtk::MenuItem* m_menu_delete = nullptr;
 
   void
   init_toolbar(Glib::RefPtr<Gtk::Builder> builder);
@@ -110,16 +111,12 @@ private:
   float
   get_cost(const Gtk::TreeIter);
 
-  void
-  cb_on_add_resource_clicked(void);
-  void
-  cb_on_add_group_clicked(void);
-  void
-  cb_on_row_selected(void);
-  void
-  cb_on_row_changed(
-    const Gtk::TreeModel::Path&,
-    const Gtk::TreeModel::iterator&);
+  void cb_on_add_resource_clicked ( void );
+  void cb_on_add_group_clicked ( void );
+  void cb_on_delete_clicked ( void );
+  void cb_on_row_selected ( void );
+  void cb_on_row_changed ( const Gtk::TreeModel::Path&,
+    const Gtk::TreeModel::iterator& );
 
   bool
   node_is_selected(const Gtk::TreeModel::Path&);

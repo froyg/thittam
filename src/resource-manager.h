@@ -22,21 +22,17 @@ NAMESPACE__THITTAM__START
 class ResourceManager
 {
 public:
-  bool
-  add_group(ResourceGroup& group_name);
+  bool add_group ( ResourceGroup& group_name );
+  bool delete_group ( const std::string& group_id );
 
-  const Resource*
-  get_resource(const std::string& group_id,
-    const std::string& resource_id) const;
-  Resource*
-  get_resource_mutable(const std::string& group_id,
-    const std::string& resource_id);
-  const ResourceGroup*
-  get_resource_group(const std::string& id) const;
-  ResourceGroup*
-  get_resource_group_mutable(const std::string& id);
-  bool
-  is_unique_group_name(const std::string& group_name) const;
+  const Resource* get_resource ( const std::string& group_id, const std::string& resource_id ) const;
+  Resource* get_resource_mutable ( const std::string& group_id, const std::string& resource_id );
+  const ResourceGroup* get_resource_group ( const std::string& id ) const;
+  ResourceGroup* get_resource_group_mutable ( const std::string& id );
+  bool is_unique_group_name(const std::string &group_name) const;
+
+  // paste
+  bool modify_organisation (std::vector<std::string> ids, const std::string& id);
 
   // WIP
   void
@@ -46,10 +42,9 @@ private:
   static unsigned int m_id_counter;
   std::list <ResourceGroup> m_resource_groups;
 
-  void
-  create_group_id(void);
-  void
-  renumber_ids(void);
+  void create_group_id(void);
+  void renumber_ids(void);
+  ResourceGroup* get_parent_mutable (const std::string& resource_id);
 };
 
 NAMESPACE__THITTAM__END

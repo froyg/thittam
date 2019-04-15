@@ -11,6 +11,7 @@
 #define HIPRO__ea8a30f8_00fd_11e9_8822_30e37a0d36da
 
 #include <string>
+#include <vector>
 #include <list>
 
 #include "_namespace.h"
@@ -59,6 +60,8 @@ public:
   }
 
   bool add_resource ( Resource& resource );
+  bool delete_resource ( const std::string& resource_id );
+  bool delete_resources ( const std::vector<std::string>& resource_id);
 
   const Resource* get_resource ( const std::string& id ) const;
   Resource* get_resource_mutable ( const std::string& id );

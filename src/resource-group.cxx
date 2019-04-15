@@ -99,6 +99,33 @@ ResourceGroup::add_resource ( Resource& resource )
   return true;
 }
 
+bool
+ResourceGroup::delete_resource ( const std::string& resource_id )
+{
+  const auto old_size = m_resources.size();
+  m_resources.remove_if (
+    [&resource_id] ( const auto & rg ) -> bool
+  {
+    return resource_id == rg.id();
+  } );
+  return ( old_size - m_resources.size() > 0 );
+}
+
+bool ResourceGroup::delete_resources(const std::vector<std::string> &resource_ids)
+{
+  auto j = m_resources.begin();
+  for (const auto i : resource_ids)
+  {
+    while (j->id() != i)
+    {
+      j++;
+    }
+    m_resources.erase(j);
+    j--;
+  }
+  return true;
+}
+
 NAMESPACE__THITTAM__END
 
 /*
