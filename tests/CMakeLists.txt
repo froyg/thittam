@@ -7,19 +7,21 @@
 # distribution or for further clarifications, please contact
 # legal@hipro.co.in.
 
-cmake_minimum_required (VERSION 2.8)
-project (thittam)
+set (CMAKE_CXX_FLAGS
+  "${CMAKE_CXX_FLAGS} -std=gnu++1y -Wall -Werror")
 
-add_definitions (-DBOOST_LOG_DYN_LINK)
-find_package (Boost REQUIRED COMPONENTS
-  log log_setup thread date_time system program_options
+add_executable (runtests
+  test_util.cxx
+  main.cxx
   )
 
-find_package (Threads)
-find_package (PkgConfig)
+target_include_directories (runtests
+  PRIVATE
+  ${CMAKE_SOURCE_DIR}/src
+  )
 
-pkg_check_modules(GTKMM REQUIRED gtkmm-3.0)
-
-add_subdirectory (googletest)
-add_subdirectory (src)
-add_subdirectory (tests)
+target_link_libraries(runtests
+  app
+  gmock
+  gtest
+  )
