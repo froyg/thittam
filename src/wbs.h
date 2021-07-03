@@ -12,6 +12,7 @@
 
 #include "_namespace.h"
 #include "wbs-path.h"
+#include "task.h"
 
 NAMESPACE__THITTAM__START
 
@@ -27,10 +28,12 @@ public:
   virtual bool is_last_child (const Path & path) const = 0;
   virtual bool is_top_level (const Path & path) const = 0;
 
-  virtual void add_child (const Path & parent_path) = 0;
-  virtual void add_sibling (const Path & path) = 0;
-  virtual void indent (const Path & path) = 0;
-  virtual void unindent (const Path & path) = 0;
+  virtual std::shared_ptr<Task> add_child (const Path & parent_path) = 0;
+  virtual std::shared_ptr<Task> add_sibling (const Path & path) = 0;
+
+  virtual std::shared_ptr<Task> get_task_at_level(
+    const Path & path, size_t level) = 0;
+  virtual std::shared_ptr<Task> get_task (const Path& path) = 0;
 
   virtual bool dirty (void) const = 0;
   virtual void clear_dirty (void) = 0;

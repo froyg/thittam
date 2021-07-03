@@ -44,7 +44,7 @@ WBSControllerImpl::view_node_selected (
     m_view->enable_paste (true);
   }
 
-  m_selected_path = path_list[0];
+  m_selection = path_list;
 }
 
 void
@@ -56,62 +56,71 @@ WBSControllerImpl::view_node_activated (const WBS::Path & path)
 void
 WBSControllerImpl::view_add_child_clicked (void)
 {
-  Log_I << "Adding child";
-  m_view->add_child (m_selected_path);
-  m_view->renumber ();
-
-  m_wbs->add_child (m_selected_path);
+  WBS::Path parent;
+  if (! m_selection.empty ())
+  {
+    parent = m_selection[0];
+  }
+  auto child = m_wbs->add_child (parent);
+  m_view->add_child (parent, child->id ());
 }
 
 void
 WBSControllerImpl::view_add_sibling_clicked (void)
 {
-  Log_I << "Adding Sibling";
-  m_view->add_sibling (m_selected_path);
-  m_view->renumber ();
+  ASSERT ((! m_selection.empty ()), "No selection to add-sibling");
 
-  m_wbs->add_sibling (m_selected_path);
+  auto child = m_wbs->add_sibling (m_selection[0]);
+  m_view->add_sibling (m_selection[0], child->id ());
 }
 
 void
 WBSControllerImpl::view_indent_clicked (void)
 {
-  // Take a copy. When the view gets updated, the current selection will get
-  // updated.
-  auto path = m_selected_path;
+  ASSERT ((! m_selection.empty ()), "No selection to indent");
 
-  assert (path.parts_length() != 0);
-  if (path.last_part () == 0)
+  if (m_wbs->is_first_child (m_selection[0]))
   {
-    // TODO: Put this message in status bar of thittam
-    Log_D << "Can't indent first element";
+    // todo: beep/status message stating error
     return;
   }
 
-  m_view->indent(path);
-  m_view->renumber();
+  auto selection = std::move (m_selection);
+  auto first_task_path = selection[0];
+  auto first_task = m_wbs->get_task (first_task_path);
+  auto orig_parent = first_task->parent ();
+  auto orig_parent_path = selection[0].parent ();
+  auto new_parent_path = selection[0].previous_sibling ();
+  auto new_parent = m_wbs->get_task (new_parent_path);
 
-  m_wbs->indent (path);
+  std::vector<std::shared_ptr<Task>> to_indent;
+  size_t path_count = 0;
+  for (auto& path : selection)
+  {
+    auto parent = path.parent ();
+    if (parent != orig_parent_path)
+    {
+      break;
+    }
+
+    auto task = m_wbs->get_task (path);
+    to_indent.push_back (task);
+    path_count ++;
+  }
+
+  for (auto task: to_indent)
+  {
+    m_view->remove (first_task_path);
+    orig_parent->remove_child (task);
+    new_parent->add_child (task);
+    m_view->add_child (
+      new_parent_path, task->id (), task->title (), task->work ());
+  }
 }
 
 void
 WBSControllerImpl::view_unindent_clicked (void)
 {
-  auto path = m_selected_path;
-
-  assert (path.parts_length() != 0);
-  if (path.parts_length() < 2)
-  {
-    // TODO: Put this message in status bar of thittam
-    Log_I << "Can't unindent level 1 task";
-    return;
-  }
-
-  m_view->unindent(path);
-
-  m_view->renumber();
-
-  m_wbs->unindent (path);
 }
 
 void

@@ -30,74 +30,50 @@ Task::set_work (const std::string & work)
 }
 
 void
-Task::add_child (std::unique_ptr<Task> && task)
+Task::add_child (std::shared_ptr<Task> task)
 {
-  auto task_raw = task.get ();
-  auto child_index = m_children_raw.size ();
-  m_children_raw.push_back(task_raw);
-  m_children_owned.push_back (std::move (task));
+  auto child_index = m_children.size ();
+  m_children.push_back (task);
 
-  task_raw->set_parent (this);
-  task_raw->m_id = compute_child_id (child_index);
+  task->set_parent (this);
+  task->m_id = compute_child_id (child_index);
 }
 
 void
-Task::add_child_after (size_t index, std::unique_ptr<Task> && task)
+Task::add_child_after (size_t index, std::shared_ptr<Task> task)
 {
-  auto task_raw = task.get ();
-  auto raw_it = m_children_raw.begin () + index + 1;
-  auto owned_it = m_children_owned.begin () + index + 1;
+  auto it = m_children.begin () + index + 1;
 
-  m_children_raw.insert (raw_it, task_raw);
-  m_children_owned.insert (owned_it, std::move (task));
+  m_children.insert (it, task);
 
-  task_raw->set_parent (this);
-  recompute_id_of_children ();
+  task->set_parent (this);
+  recompute_id_of_children (index);
 }
 
 void
 Task::remove_child (size_t index)
 {
-  auto raw_it = m_children_raw.begin () + index;
-  auto owned_it = m_children_owned.begin () + index;
+  auto it = m_children.begin () + index;
 
-  m_children_raw.erase (raw_it);
-  m_children_owned.erase (owned_it);
-
+  m_children.erase (it);
   recompute_id_of_children (index);
 }
 
 void
-Task::indent_child (size_t index)
+Task::remove_child (std::shared_ptr<Task> task)
 {
-  assert(index != 0);
-  auto new_parent = m_children_raw[index - 1];
-  auto raw_it = m_children_raw.begin () + index;
-  auto owned_it = m_children_owned.begin () + index;
+  size_t index = 0;
+  for (auto it = m_children.begin (); it != m_children.end (); ++it)
+  {
+    index += 1;
+    if (*it == task)
+    {
+      m_children.erase (it);
+      break;
+    }
+  }
 
-  auto task = std::move (*owned_it);
-
-  m_children_raw.erase (raw_it);
-  m_children_owned.erase (owned_it);
-
-  new_parent->add_child (std::move (task));
-}
-
-void
-Task::unindent_child (size_t index, size_t parent_index)
-{
-  assert (m_parent != nullptr);
-
-  auto new_parent = m_parent;
-  auto raw_it = m_children_raw.begin () + index;
-  auto owned_it = m_children_owned.begin () + index;
-
-  auto task = std::move (*owned_it);
-
-  m_children_raw.erase (raw_it);
-  m_children_owned.erase (owned_it);
-
-  new_parent->add_child_after (parent_index, std::move (task));
+  recompute_id_of_children (index);
 }
 
 boost::property_tree::ptree
@@ -110,7 +86,7 @@ Task::dump (void)
     pt.put ("work", m_work);
 
     boost::property_tree::ptree child_array;
-    for (auto & child : m_children_raw)
+    for (auto & child : m_children)
       {
         child_array.push_back
           (std::make_pair ("", boost::property_tree::ptree(child->id ())));
@@ -122,10 +98,10 @@ Task::dump (void)
 void
 Task::recompute_id_of_children (size_t start_index)
 {
-  m_id = compute_child_id (start_index);
-  for (size_t i = start_index; i < m_children_raw.size (); ++i)
+  for (size_t i = start_index; i < m_children.size (); ++i)
   {
-    m_children_raw[i]->recompute_id_of_children ();
+    m_children[i]->m_id = compute_child_id (i);
+    m_children[i]->recompute_id_of_children ();
   }
 }
 

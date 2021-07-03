@@ -10,8 +10,9 @@
 #ifndef HIPRO__69867568_a3e0_11e8_8d95_448500dfb04c
 #define HIPRO__69867568_a3e0_11e8_8d95_448500dfb04c
 
+#include <assert.h>
 #include <vector>
-#include <ostream>
+#include <iostream>
 
 #include "_namespace.h"
 
@@ -55,9 +56,19 @@ public:
     m_parts = other.parts ();
   }
 
+  void operator= (WBSPath&& other)
+  {
+    m_parts = std::move (other.m_parts);
+  }
+
   bool operator== (const WBSPath & right) const
   {
     return m_parts == right.parts ();
+  }
+
+  bool operator!= (const WBSPath & right) const
+  {
+    return m_parts != right.parts ();
   }
 
   bool empty (void) const
@@ -78,6 +89,43 @@ public:
   int last_part (void) const
   {
     return m_parts.back ();
+  }
+
+  WBSPath next_sibling() const
+  {
+    assert (! m_parts.empty ());
+
+    WBSPath new_path (*this);
+    auto &x = new_path.m_parts[this->parts_length() - 1];
+    x = x + 1;
+
+    return new_path;
+  }
+
+  WBSPath previous_sibling() const
+  {
+    assert (! m_parts.empty ());
+
+    WBSPath new_path (*this);
+    auto &x = new_path.m_parts[this->parts_length() - 1];
+
+    assert (x != 0);
+    x = x - 1;
+
+    return new_path;
+  }
+
+  WBSPath parent (void) const
+  {
+    WBSPath parent_path;
+    if (! this->empty ())
+    {
+      for (size_t i = 0; i < (m_parts.size () - 1); ++i)
+      {
+        parent_path.push_back (m_parts[i]);
+      }
+    }
+    return parent_path;
   }
 
 private:

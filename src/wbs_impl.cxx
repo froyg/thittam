@@ -13,91 +13,90 @@
 NAMESPACE__THITTAM__START
 
 WBSImpl::WBSImpl (hipro::log::Logger* logger)
-  : logger (logger)
+  : logger (logger),
+    m_root (std::make_shared<Task> ())
 {
 
 }
+
 
 bool
 WBSImpl::is_first_child (const Path & path) const
 {
-  // todo
-  return false;
+  return path.last_part () == 0;
 }
+
 
 bool
 WBSImpl::is_last_child (const Path & path) const
 {
-  // todo
+  auto parent = m_root;
+  for (size_t i = 0; i < (path.parts_length() - 1); ++i)
+  {
+    parent = parent->child (path[i]);
+  }
+
+  if (path.last_part () == ((int)parent->children_count () - 1))
+  {
+    return true;
+  }
+
   return false;
 }
+
 
 bool
 WBSImpl::is_top_level (const Path & path) const
 {
-  // todo
-  return false;
+  return path.parts_length () == 1;
 }
 
-Task *
+
+std::shared_ptr<Task>
 WBSImpl::get_task_at_level(const Path & path, size_t level)
 {
-  Task * parent = &m_root;
+  auto task = m_root;
   for (size_t i = 0; i < path.parts_length() and i < level; i++)
   {
-    parent = parent->child (path[i]);
+    task = task->child (path[i]);
   }
-  return parent;
+  return task;
 }
 
-void
+std::shared_ptr<Task>
+WBSImpl::get_task (const Path& path)
+{
+  auto task = m_root;
+  auto& parts = path.parts ();
+  for (auto i : parts)
+  {
+    task = task->child (i);
+  }
+  return task;
+}
+
+std::shared_ptr<Task>
 WBSImpl::add_child (const Path & path)
 {
-  /* Find the parent */
-  auto parent = get_task_at_level (path, path.parts_length ());
-
-  /* Make a new node/task */
-  auto task = std::make_unique<Task> ();
-
-  /* Add to tree */
-  parent->add_child (std::move (task));
+  auto parent = get_task (path);
+  auto task = std::make_shared<Task> ();
+  parent->add_child (task);
+  return task;
 }
 
-void
+std::shared_ptr<Task>
 WBSImpl::add_sibling (const Path & path)
 {
-  ASSERT ((path.parts_length () != 0), "Sibling path cannot be empty");
+  ASSERT ((! path.empty ()), "Sibling path cannot be empty");
 
   auto parent = get_task_at_level (path, path.parts_length () - 1);
-  auto sibling_index = path[path.parts_length () - 1];
+  auto sibling_index = path.last_part ();
 
-  auto task = std::make_unique<Task> ();
-  parent->add_child_after (sibling_index, std::move (task));
+  auto task = std::make_shared<Task> ();
+  parent->add_child_after (sibling_index, task);
+  return task;
 }
 
-void
-WBSImpl::indent (const Path & path)
-{
-  assert (path.empty () == false);
-  assert (path.last_part () != 0);
-
-  auto parent = get_task_at_level (path, path.parts_length () - 1);
-  auto child_index = path[path.parts_length () - 1];
-
-  parent->indent_child (child_index);
-}
-
-void
-WBSImpl::unindent (const Path & path)
-{
-  assert (path.parts_length () > 1);
-
-  size_t child_index = path[path.parts_length () - 1];
-  size_t parent_index = path[path.parts_length () - 2];
-  auto parent = get_task_at_level (path, path.parts_length () - 1);
-
-  parent->unindent_child (child_index, parent_index);
-}
 
 NAMESPACE__THITTAM__END
 

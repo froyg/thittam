@@ -30,12 +30,11 @@ public:
   bool is_last_child (const Path & path) const;
   bool is_top_level (const Path & path) const;
 
-  void add_child (const Path & parent_path);
-  void add_sibling (const Path & path);
-  void indent (const Path & path);
-  void unindent (const Path & path);
+  std::shared_ptr<Task> add_child (const Path & parent_path);
+  std::shared_ptr<Task> add_sibling (const Path & path);
 
-  Task *get_task_at_level(const Path & path, size_t level);
+  std::shared_ptr<Task> get_task_at_level(const Path & path, size_t level);
+  std::shared_ptr<Task> get_task (const Path& path);
 
   bool dirty (void) const
   {
@@ -51,7 +50,7 @@ private:
   hipro::log::Logger* logger = nullptr;
   bool m_dirty = false;
 
-  Task m_root;
+  std::shared_ptr<Task> m_root;
 };
 
 NAMESPACE__THITTAM__END

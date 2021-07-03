@@ -73,29 +73,28 @@ public:
 
   bool has_children (void) const
   {
-    return (m_children_raw.empty () != true);
+    return (m_children.empty () != true);
   }
 
-  Task * child (size_t index)
+  std::shared_ptr<Task> child (size_t index) const
   {
-    return m_children_raw[index];
+    return m_children[index];
   }
 
   size_t children_count (void) const
   {
-    return m_children_raw.size ();
+    return m_children.size ();
   }
 
-  const std::vector<Task *> & children (void) const
+  const std::vector<std::shared_ptr<Task>> & children (void) const
   {
-    return m_children_raw;
+    return m_children;
   }
 
-  void add_child (std::unique_ptr<Task> && task);
-  void add_child_after (size_t index, std::unique_ptr<Task> && task);
+  void add_child (std::shared_ptr<Task> task);
+  void add_child_after (size_t index, std::shared_ptr<Task> task);
   void remove_child (size_t index);
-  void indent_child (size_t index);
-  void unindent_child (size_t index, size_t parent_index);
+  void remove_child (std::shared_ptr<Task> task);
 
   boost::property_tree::ptree dump (void);
 
@@ -111,8 +110,7 @@ private:
   int m_work_in_minutes;
 
   Task * m_parent = nullptr;
-  std::vector<Task *> m_children_raw;
-  std::vector<std::unique_ptr<Task>> m_children_owned;
+  std::vector<std::shared_ptr<Task>> m_children;
 
   const int m_working_days_per_week = 0;
   const int m_working_hours_per_day = 0;
